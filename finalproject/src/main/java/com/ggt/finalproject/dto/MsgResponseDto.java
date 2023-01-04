@@ -1,6 +1,5 @@
 package com.ggt.finalproject.dto;
 
-import com.ggt.finalproject.errcode.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.ggt.finalproject.errcode;
 
-public interface StatusCode {
+public interface ErrorCode {
     String getMsg();
     int getStatusCode();
 }

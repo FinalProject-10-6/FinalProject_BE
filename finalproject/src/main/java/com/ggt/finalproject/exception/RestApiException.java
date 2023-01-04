@@ -1,13 +1,13 @@
 package com.ggt.finalproject.exception;
 
-import com.ggt.finalproject.errcode.StatusCode;
+import com.ggt.finalproject.errcode.ErrorCode;
 import lombok.Getter;
 
 @Getter
 public class RestApiException extends RuntimeException{
-    private final StatusCode errorCode;
+    private final ErrorCode errorCode;
 
-    public RestApiException(StatusCode errorCode) {
+    public RestApiException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }
