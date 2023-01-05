@@ -58,7 +58,7 @@ public class UserService {
         return MsgResponseDto.success("사용 가능한 아이디 입니다.");
     }
 
-    @Transactional
+    @Transactional       // 로그인
     public MsgResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String loginId = loginRequestDto.getLoginId();
         String password = loginRequestDto.getPassword();
