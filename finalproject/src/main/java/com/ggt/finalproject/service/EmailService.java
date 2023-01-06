@@ -34,7 +34,7 @@ public class EmailService {
         MimeMessage  message = javaMailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, to); // to 보내는 대상
-        message.setSubject("ㅇㅇㅇ 회원가입 인증 코드: "); //메일 제목
+        message.setSubject("꿀통 회원가입 인증 코드: "); //메일 제목
 
         // 메일 내용 메일의 subtype을 html로 지정하여 html문법 사용 가능
         String msg="";
@@ -45,7 +45,7 @@ public class EmailService {
         msg += "</td></tr></tbody></table></div>";
 
         message.setText(msg, "utf-8", "html"); //내용, charset타입, subtype
-        message.setFrom(new InternetAddress(id,"prac_Admin")); //보내는 사람의 메일 주소, 보내는 사람 이름
+        message.setFrom(new InternetAddress(id,"꿀통대장")); //보내는 사람의 메일 주소, 보내는 사람 이름
 
         return message;
     }
