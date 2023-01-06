@@ -5,8 +5,9 @@ import com.ggt.finalproject.dto.LoginRequestDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.SignupRequestDto;
 import com.ggt.finalproject.entity.User;
-import com.ggt.finalproject.errcode.UserErrorCode;
-import com.ggt.finalproject.exception.RestApiException;
+//import com.ggt.finalproject.errcode.UserErrorCode;
+import com.ggt.finalproject.exception.CustomException;
+import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,15 +31,15 @@ public class UserService {
 
         // id 중복검사
         if (userRepository.existsByLoginId(signupRequestDto.getLoginId()))
-            throw new RestApiException(UserErrorCode.OVERLAPPED_LOGINID);
+            throw new CustomException(ErrorCode.OVERLAPPED_LOGINID);
 
         // nickname 중복검사
         if (userRepository.existsByNickname(signupRequestDto.getNickname()))
-            throw new RestApiException(UserErrorCode.OVERLAPPED_NICKNAME);
+            throw new CustomException(ErrorCode.OVERLAPPED_NICKNAME);
 
         // email 중복검사
         if (userRepository.existsByEmail(signupRequestDto.getEmail()))
-            throw new RestApiException(UserErrorCode.OVERLAPPED_EMAIL);
+            throw new CustomException(ErrorCode.OVERLAPPED_EMAIL);
 
         // password 암호화
         password = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -53,7 +54,7 @@ public class UserService {
     public MsgResponseDto idCheck(String loginId) {
         Optional<User> found = userRepository.findByLoginId(loginId);
         if (found.isPresent()) {
-            throw new RestApiException(UserErrorCode.OVERLAPPED_LOGINID);
+            throw new CustomException(ErrorCode.OVERLAPPED_LOGINID);
         }
         return MsgResponseDto.success("사용 가능한 아이디 입니다.");
     }
@@ -65,12 +66,12 @@ public class UserService {
 
         // id 가 틀림
         User user = userRepository.findByLoginId(loginId).orElseThrow(
-                () -> new RestApiException(UserErrorCode.WRONG_ID)
+                () -> new CustomException(ErrorCode.WRONG_ID)
         );
 
         // password 가 틀림
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RestApiException(UserErrorCode.WRONG_PASSWORD);
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
         // 헤더에  email, role 담은 토큰 추가
