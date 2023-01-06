@@ -11,16 +11,14 @@ import org.springframework.http.ResponseEntity;
 @RequiredArgsConstructor
 public class ErrorResponse {
 
-    private final int status;
-    private final String code;
+    private final int statusCode;
     private final String msg;
 
     public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
         return ResponseEntity
-                .status(errorCode.getStatus())
+                .status(errorCode.getStatusCode())
                 .body(ErrorResponse.builder()
-                        .status(errorCode.getStatus())
-                        .code(errorCode.getCode())
+                        .statusCode(errorCode.getStatusCode())
                         .msg(errorCode.getMessage())
                         .build()
                 );
