@@ -1,9 +1,12 @@
 package com.ggt.finalproject.controller;
 
+import com.ggt.finalproject.dto.EmailDto;
 import com.ggt.finalproject.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -15,8 +18,8 @@ public class EmailController {
 
     @PostMapping("/emailCheck")
     @ResponseBody
-    public String mailConfirm(@RequestParam String email) throws Exception {
-        String code = emailService.sendSimpleMessage(email);
+    public String mailConfirm(@RequestBody @Valid EmailDto emailDto) throws Exception {
+        String code = emailService.sendSimpleMessage(emailDto);
         log.info("인증코드 : " + code);
         return code;
     }

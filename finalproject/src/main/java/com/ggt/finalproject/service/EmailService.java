@@ -1,5 +1,6 @@
 package com.ggt.finalproject.service;
 
+import com.ggt.finalproject.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +68,8 @@ public class EmailService {
         MimeMessage 객체 안에 내가 전송할 메일의 내용을 담아준다.
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
-    public String sendSimpleMessage(String to)throws Exception {
+    public String sendSimpleMessage(EmailDto emailDto)throws Exception {
+        String to = emailDto.getEmail();
         MimeMessage message = createMessage(to);
         try{
             javaMailSender.send(message); // 메일 발송
