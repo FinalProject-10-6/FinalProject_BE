@@ -73,8 +73,8 @@ public class UserService {
             throw new RestApiException(UserErrorCode.WRONG_PASSWORD);
         }
 
-        // 헤더에  id, role 담은 토큰 추가
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getLoginId(), user.getUserRole()));
+        // 헤더에  email, role 담은 토큰 추가
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getUserRole()));
 
         return MsgResponseDto.success("로그인 성공");
     }
