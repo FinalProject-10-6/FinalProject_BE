@@ -28,7 +28,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String profile = "/*기본프로필url*/";        // 추후에 기본프로필로 교체
+    private String profileImg = "/*기본프로필url*/";        // 추후에 기본프로필로 교체
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
