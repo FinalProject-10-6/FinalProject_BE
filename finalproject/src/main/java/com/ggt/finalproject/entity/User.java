@@ -48,13 +48,13 @@ public class User {
         this.userRole = UserRoleEnum.USER;
     }
 
-    public User(String loginId, Long kakaoId, String password, String email, String nickname, String profile, UserRoleEnum userRole) {
+    public User(String loginId, Long kakaoId, String password, String email, String nickname, String profileImg, UserRoleEnum userRole) {
         this.loginId = loginId;
         this.kakaoId = kakaoId;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
-        this.profile = profile;
+        this.profileImg = profileImg;
         this.userRole = userRole;
     }
 
