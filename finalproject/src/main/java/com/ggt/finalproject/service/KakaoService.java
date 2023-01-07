@@ -42,7 +42,7 @@ public class KakaoService {
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. JWT 토큰 반환
-        String createToken =  jwtUtil.createToken(kakaoUser.getLoginId(), kakaoUser.getUserRole());
+        String createToken =  jwtUtil.createToken(kakaoUser.getLoginId(), kakaoUser.getEmail());
 //        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, createToken);
 
         return createToken;
