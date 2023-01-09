@@ -14,12 +14,12 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
-    private final String username;
+    private final String loginId;
     private final String password;
 
-    public UserDetailsImpl(User user, String username, String password) {
+    public UserDetailsImpl(User user, String loginId, String password) {
         this.user = user;
-        this.username = username;
+        this.loginId = loginId;
         this.password = password;
     }
 
@@ -41,7 +41,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.loginId;
     }
 
     @Override

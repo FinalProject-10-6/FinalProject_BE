@@ -25,16 +25,16 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String username = request.getParameter("username");
+        String loginId = request.getParameter("loginId");
         String password = request.getParameter("password");
 
-        System.out.println("username = " + username);
+        System.out.println("loginId = " + loginId);
         System.out.println("password = " + password);
         System.out.println("request.getRequestURI() = " + request.getRequestURI());
 
 
-        if (username != null && password != null && (request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/test-secured"))) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (loginId != null && password != null && (request.getRequestURI().equals("/api/user/login") || request.getRequestURI().equals("/api/test-secured"))) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
 
             // 비밀번호 확인
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {

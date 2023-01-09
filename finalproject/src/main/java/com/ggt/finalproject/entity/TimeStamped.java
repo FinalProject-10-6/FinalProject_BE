@@ -19,7 +19,7 @@ public class TimeStamped {
     // 생성시간
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     // 황크시간
     @LastModifiedDate

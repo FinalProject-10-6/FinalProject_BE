@@ -18,6 +18,8 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String loginId;
+    private Long kakaoId;
+
 
     @Column(nullable = false)
     private String password;
@@ -47,6 +49,24 @@ public class User {
         this.userRole = UserRoleEnum.USER;
     }
 
+//    public User(String loginId, Long kakaoId, String password, String email, String nickname, String profileImg, UserRoleEnum userRole) {
+//        this.loginId = loginId;
+//        this.kakaoId = kakaoId;
+//        this.password = password;
+//        this.email = email;
+//        this.nickname = nickname;
+//        this.profileImg = profileImg;
+//        this.userRole = userRole;
+//    }
+
+    public User(String loginId, Long kakaoId, String password, String email, UserRoleEnum userRole) {
+        this.loginId = loginId;
+        this.kakaoId = kakaoId;
+        this.password = password;
+        this.email = email;
+        this.userRole = userRole;
+    }
+
 
     public void updateMyPage(MyPageDto myPageDto, String profileImg){
         this.password = password;
@@ -54,5 +74,14 @@ public class User {
         this.profileImg = profileImg;
     }
 
+
+
+    public User kakaoIdUpdate(Long kakaoId){
+        this.kakaoId = kakaoId;
+        return this;
+    }
+    public User(Long id) {
+        this.id = getId();
+    }
 
 }

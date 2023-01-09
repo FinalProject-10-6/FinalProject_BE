@@ -3,6 +3,7 @@ package com.ggt.finalproject.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ggt.finalproject.dto.SecurityExceptionDto;
+import com.ggt.finalproject.exception.ErrorResponse;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,32 +28,36 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtUtil.resolveToken(request);
+        String accessToken = jwtUtil.resolveToken(request, "Access");
+        String refreshToken = jwtUtil.resolveToken(request, "Refresh");
 
-        if(token != null) {
-            if(!jwtUtil.validateToken(token)){
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+        if (accessToken != null) {
+            if (!jwtUtil.validateToken(accessToken)) {
+                jwtExceptionHandler(response, "토큰이 만료되었습니다", HttpStatus.BAD_REQUEST.value());
                 return;
             }
-            Claims info = jwtUtil.getUserInfoFromToken(token);
-            setAuthentication(info.getSubject());
+            setAuthentication(jwtUtil.getEmailFromToken(accessToken));
+        } else if (refreshToken != null) {
+            if (!jwtUtil.refreshTokenValidation(refreshToken)) {
+                jwtExceptionHandler(response, "리프레쉬 토큰이 만료되었습니다.", HttpStatus.BAD_REQUEST.value());
+                return;
+            }
+            setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
         }
-        filterChain.doFilter(request,response);
+
+        filterChain.doFilter(request, response);
     }
 
-    public void setAuthentication(String username) {
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = jwtUtil.createAuthentication(username);
-        context.setAuthentication(authentication);
-
-        SecurityContextHolder.setContext(context);
+    public void setAuthentication(String email) {
+        Authentication authentication = jwtUtil.createAuthentication(email);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
         response.setStatus(statusCode);
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
+            String json = new ObjectMapper().writeValueAsString(new ErrorResponse(statusCode,msg));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

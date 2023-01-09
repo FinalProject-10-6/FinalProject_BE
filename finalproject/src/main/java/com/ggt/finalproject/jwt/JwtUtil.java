@@ -1,6 +1,9 @@
 package com.ggt.finalproject.jwt;
 
+import com.ggt.finalproject.dto.TokenDto;
+import com.ggt.finalproject.entity.RefreshToken;
 import com.ggt.finalproject.entity.UserRoleEnum;
+import com.ggt.finalproject.repository.RefreshTokenRepository;
 import com.ggt.finalproject.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -18,17 +21,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
     private final UserDetailsServiceImpl userDetailsService;
-
+    private final RefreshTokenRepository refreshTokenRepository;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
-    private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    private static final long ACCESS_TIME = 1000L * 60 * 60 * 24;
+    private static final long REFRESH_TIME = 1000L * 60 * 60 * 24 * 7;
+    public static final String ACCESS_TOKEN = "Access_Token";
+    public static final String REFRESH_TOKEN = "Refresh_Token";
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -42,26 +48,28 @@ public class JwtUtil {
     }
 
     // header 토큰을 가져오기
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
+    public String resolveToken(HttpServletRequest request, String type) {
+        return type.equals("Access") ? request.getHeader(ACCESS_TOKEN) : request.getHeader(REFRESH_TOKEN);
+    }
+
+    // access, refresh 둘다생성
+    public TokenDto createAllToken(String email) {
+        return new TokenDto(createToken(email, "Access"), createToken(email, "Refresh"));
     }
 
     // 토큰 생성
-    public String createToken(String loginId, UserRoleEnum role) {
+    public String createToken(String nickname,String type) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
-                Jwts.builder()
-                        .setSubject(loginId)
-                        .claim(AUTHORIZATION_KEY, role)
-                        .setExpiration(new Date(date.getTime() + TOKEN_TIME))
-                        .setIssuedAt(date)
-                        .signWith(key, signatureAlgorithm)
-                        .compact();
+        long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
+
+        return Jwts.builder()
+                .setSubject(nickname)
+                .claim(AUTHORIZATION_KEY, type)
+                .setExpiration(new Date(date.getTime() + time))
+                .setIssuedAt(date)
+                .signWith(key, signatureAlgorithm)
+                .compact();
     }
 
     // 토큰 검증
@@ -81,14 +89,30 @@ public class JwtUtil {
         return false;
     }
 
+    // refreshToken 검증
+    public Boolean refreshTokenValidation(String token) {
+
+        // 1차 토큰 검증
+        if (!validateToken(token)) return false;
+
+        // DB에 저장한 토큰 비교
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(getEmailFromToken(token));
+
+        return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+    }
+
+    // 인증 객체 생성
+    public Authentication createAuthentication(String loginId) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    // 인증 객체 생성
-    public Authentication createAuthentication(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    public String getEmailFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }
