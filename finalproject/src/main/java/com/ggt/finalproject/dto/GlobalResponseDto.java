@@ -11,21 +11,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GlobalResponseDto<T> {
 
-    private int status;
-    private T data;
+    private int statusCode;
     private T msg;
 
 
     public static <T> GlobalResponseDto<Object> success(T data, String msg) {
-        return new GlobalResponseDto<>(200, data, msg);
+        return new GlobalResponseDto<>(200,msg);
     }
 
     public static GlobalResponseDto<String> fail(ErrorCode errorCode) {
-        return new GlobalResponseDto<>(errorCode.getStatus(), errorCode.getCode(), errorCode.getMessage());
+        return new GlobalResponseDto<>(errorCode.getStatusCode(),errorCode.getMessage());
     }
 
 
     public static GlobalResponseDto<String> fail(String msg) {
-        return new GlobalResponseDto<>(400,null,msg);
+        return new GlobalResponseDto<>(400,msg);
     }
 }

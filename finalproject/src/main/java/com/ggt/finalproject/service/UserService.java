@@ -4,11 +4,14 @@ package com.ggt.finalproject.service;
 import com.ggt.finalproject.dto.LoginRequestDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.SignupRequestDto;
+import com.ggt.finalproject.dto.TokenDto;
+import com.ggt.finalproject.entity.RefreshToken;
 import com.ggt.finalproject.entity.User;
 //import com.ggt.finalproject.errcode.UserErrorCode;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.jwt.JwtUtil;
+import com.ggt.finalproject.repository.RefreshTokenRepository;
 import com.ggt.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional    // 회원가입
     public MsgResponseDto signup(SignupRequestDto signupRequestDto) {
@@ -74,11 +78,30 @@ public class UserService {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
-        // 헤더에  email, role 담은 토큰 추가
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getLoginId(), user.getUserRole()));
+
+        // 이메일받아와서  access, refresh 토큰 둘다생성
+        TokenDto tokenDto = jwtUtil.createAllToken(loginRequestDto.getLoginId());
+
+        // refresh토큰 db에서 찾기
+//        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(loginRequestDto.getEmail());
+//
+//        // refreshToken 있으면 sava, 없다면 newtoken 만들고 save
+//        if (refreshToken.isPresent()) {
+//            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
+//        } else {
+//            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginRequestDto.getEmail());
+//            refreshTokenRepository.save(newToken);
+//        }
+        setHeader(response, tokenDto);
+
 
         return MsgResponseDto.success("로그인 성공");
     }
 
+    // 헤더에 response 둘다 담기
+    public void setHeader(HttpServletResponse response, TokenDto tokenDto) {
+        response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+    }
 
 }
