@@ -21,7 +21,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping("/create")
     public MsgResponseDto createPost(@RequestPart(value = "file") MultipartFile file,
                                         @RequestPart(value = "data") PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return postService.createPost(file, requestDto, userDetails.getUser());

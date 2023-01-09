@@ -75,7 +75,7 @@ public class UserService {
         }
 
         // 헤더에  email, role 담은 토큰 추가
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getUserRole()));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getLoginId(), user.getUserRole()));
 
         return MsgResponseDto.success("로그인 성공");
     }

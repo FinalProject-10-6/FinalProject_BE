@@ -9,11 +9,11 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
+//@Where(clause = "postStatus = true")
+//@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
 @Entity
 @NoArgsConstructor
 @Getter
-@Where(clause = "postStatus = true")
-@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
 public class Post extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
