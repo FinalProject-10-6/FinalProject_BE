@@ -1,6 +1,7 @@
 package com.ggt.finalproject.entity;
 
 
+import com.ggt.finalproject.dto.MyPageDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -66,6 +67,15 @@ public class User {
         this.userRole = userRole;
     }
 
+
+    public void updateMyPage(MyPageDto myPageDto, String profileImg){
+        this.password = password;
+        this.nickname = nickname;
+        this.profileImg = profileImg;
+    }
+
+
+
     public User kakaoIdUpdate(Long kakaoId){
         this.kakaoId = kakaoId;
         return this;
@@ -73,4 +83,5 @@ public class User {
     public User(Long id) {
         this.id = getId();
     }
+
 }
