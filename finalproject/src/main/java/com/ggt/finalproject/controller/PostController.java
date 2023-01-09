@@ -21,7 +21,7 @@ public class PostController {
 
     @PostMapping
     public MsgResponseDto createPost(@RequestPart(value = "file") MultipartFile file,
-                                        @RequestPart(value = "data") PostRequestDto requestDto) throws IOException {
+                                        @RequestPart(value = "data") PostRequestDto requestDto, HttpServletRequest request) throws IOException {
         return postService.createPost(file, requestDto, request);
     }
 
