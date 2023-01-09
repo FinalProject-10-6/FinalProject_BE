@@ -1,6 +1,7 @@
 package com.ggt.finalproject.entity;
 
 
+import com.ggt.finalproject.dto.MyPageDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +29,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String profile = "/*기본프로필url*/";        // 추후에 기본프로필로 교체
+    private String profileImg = "/*기본프로필url*/";        // 추후에 기본프로필로 교체
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -44,6 +45,13 @@ public class User {
         this.email = email;
         this.nickname = nickname;
         this.userRole = UserRoleEnum.USER;
+    }
+
+
+    public void updateMyPage(MyPageDto myPageDto, String profileImg){
+        this.password = password;
+        this.nickname = nickname;
+        this.profileImg = profileImg;
     }
 
 
