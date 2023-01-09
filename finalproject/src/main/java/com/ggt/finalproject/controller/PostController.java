@@ -3,9 +3,11 @@ package com.ggt.finalproject.controller;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.PostRequestDto;
 import com.ggt.finalproject.dto.PostResponseDto;
+import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,8 +23,8 @@ public class PostController {
 
     @PostMapping
     public MsgResponseDto createPost(@RequestPart(value = "file") MultipartFile file,
-                                        @RequestPart(value = "data") PostRequestDto requestDto, HttpServletRequest request) throws IOException {
-        return postService.createPost(file, requestDto, request);
+                                        @RequestPart(value = "data") PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return postService.createPost(file, requestDto, userDetails.getUser());
     }
 
     @GetMapping("/postList")
@@ -36,8 +38,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")
-    public MsgResponseDto deletePost(@PathVariable Long postId, HttpServletRequest request){
-        return postService.deletePost(postId, request);
+    public MsgResponseDto deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.deletePost(postId, userDetails.getUser());
     }
 
 
