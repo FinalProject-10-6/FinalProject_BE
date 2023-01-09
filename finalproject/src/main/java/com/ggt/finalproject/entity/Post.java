@@ -1,5 +1,6 @@
 package com.ggt.finalproject.entity;
 
+import com.ggt.finalproject.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -23,8 +24,8 @@ public class Post extends TimeStamped {
     private String content;
     @Column
     private String category;
-    @Column
-    private String videoFile;
+//    @Column
+//    private String videoFile;
     @Column
     private String imageFile;
     @Column(nullable = false)
@@ -38,4 +39,11 @@ public class Post extends TimeStamped {
         this.postStatus = false;
     }
 
+    public Post(PostRequestDto requestDto, User user, String imageFile) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.imageFile = imageFile;
+        this.category = requestDto.getCategory();
+        this.user = user;
+    }
 }

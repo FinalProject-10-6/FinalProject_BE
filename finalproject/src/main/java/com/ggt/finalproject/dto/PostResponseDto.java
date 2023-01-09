@@ -13,7 +13,7 @@ public class PostResponseDto {
     private String content;
     private String title;
 
-    private String videoFile;
+//    private String videoFile;
 
     private String imageFile;
 
@@ -25,7 +25,7 @@ public class PostResponseDto {
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
-        this.videoFile = post.getVideoFile();
+//        this.videoFile = post.getVideoFile();
         this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
