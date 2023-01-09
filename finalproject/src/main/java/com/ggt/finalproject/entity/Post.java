@@ -35,6 +35,11 @@ public class Post extends TimeStamped {
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
+    //좋아요를 위해 추가 - 종열
+    @Column
+    private Long likePostSum;
+
+
     public void postStatus() {
         this.postStatus = false;
     }
@@ -45,5 +50,11 @@ public class Post extends TimeStamped {
         this.imageFile = imageFile;
         this.category = requestDto.getCategory();
         this.user = user;
+        this.likePostSum = 0L;
+    }
+
+    // 좋아요를 위해 추가 - 종열
+    public void setLikePostSum(Long sum){
+        this.likePostSum = sum;
     }
 }

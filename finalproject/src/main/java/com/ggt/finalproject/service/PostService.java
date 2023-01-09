@@ -7,6 +7,7 @@ import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.entity.UserRoleEnum;
 import com.ggt.finalproject.jwt.JwtUtil;
+import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     private final AWSS3Service awss3Service;
+    private final LikePostRepository likePostRepository;
 
     // 포스트 생성
     @Transactional
