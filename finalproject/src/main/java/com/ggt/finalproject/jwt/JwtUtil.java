@@ -58,13 +58,13 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String email,String type) {
+    public String createToken(String nickname,String type) {
         Date date = new Date();
 
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(nickname)
                 .claim(AUTHORIZATION_KEY, type)
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)

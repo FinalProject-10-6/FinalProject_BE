@@ -52,6 +52,6 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return "타입변경 해야함..";
+        return "redirect:/";
+        }
     }
-}
