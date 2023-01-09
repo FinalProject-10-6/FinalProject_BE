@@ -30,7 +30,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostResponseDto> getPosts() {
         List<PostResponseDto> postList = new ArrayList<>();
-        List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc(true);
+        List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc();
         for(Post post : posts) {
             postList.add(new PostResponseDto(post));
         }
@@ -51,7 +51,9 @@ public class PostService {
     @Transactional
     public MsgResponseDto deletePost(Long id, HttpServletRequest request) {
         if(postRepository.existsById(id)){
-            Post post;
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("존재하지 않는 포스트입니다")
+            );
             Claims claims;
 
             String token = jwtUtil.resolveToken(request);

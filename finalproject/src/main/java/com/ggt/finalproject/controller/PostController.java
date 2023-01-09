@@ -1,13 +1,13 @@
 package com.ggt.finalproject.controller;
 
+import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.PostResponseDto;
 import com.ggt.finalproject.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,6 +24,11 @@ public class PostController {
     @GetMapping("/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId) {
         return postService.getPost(postId);
+    }
+
+    @DeleteMapping("/{postId}")
+    public MsgResponseDto deletePost(@PathVariable Long postId, HttpServletRequest request){
+        return postService.deletePost(postId, request);
     }
 
 
