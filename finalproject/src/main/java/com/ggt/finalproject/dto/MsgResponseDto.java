@@ -16,4 +16,8 @@ public class MsgResponseDto {
         return new MsgResponseDto(msg, HttpStatus.OK.value());
     }
 
+    public static MsgResponseDto fail(String msg) {
+        return new MsgResponseDto(msg, HttpStatus.BAD_REQUEST.value());
+    }
+
 }

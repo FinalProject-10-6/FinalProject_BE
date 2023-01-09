@@ -70,4 +70,7 @@ public class User {
         this.kakaoId = kakaoId;
         return this;
     }
+    public User(Long id) {
+        this.id = getId();
+    }
 }
