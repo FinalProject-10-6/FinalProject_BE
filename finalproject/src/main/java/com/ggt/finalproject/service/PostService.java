@@ -50,27 +50,22 @@ public class PostService {
     // 소프트 딜리트하기
     @Transactional
     public MsgResponseDto deletePost(Long id, HttpServletRequest request) {
-        if(postRepository.existsById(id)){
-            Post post = postRepository.findById(id).orElseThrow(
-                    () -> new IllegalArgumentException("존재하지 않는 포스트입니다")
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("이미 존재하지 않는 포스트입니다")
+        );
+        Claims claims;
+        String token = jwtUtil.resolveToken(request);
+        if (jwtUtil.validateToken(token)) {
+            claims = jwtUtil.getUserInfoFromToken(token);
+            User user = userRepository.findByLoginId(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("회원을 찾을 수 없습니다")
             );
-            Claims claims;
-
-            String token = jwtUtil.resolveToken(request);
-            if(jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-                User user = userRepository.findByLoginId(claims.getSubject()).orElseThrow(
-                        () -> new IllegalArgumentException("회원을 찾을 수 없습니다")
-                );
-                UserRoleEnum userRoleEnum = user.getUserRole();
-                if(post.getUser().equals(user.getId()) || userRoleEnum.equals(UserRoleEnum.ADMIN)) {
-                    postRepository.delete(post);
-                }
+            UserRoleEnum userRoleEnum = user.getUserRole();
+            if (post.getUser().equals(user.getId()) || userRoleEnum.equals(UserRoleEnum.ADMIN)) {
+                postRepository.delete(post);
+                return MsgResponseDto.success("게시글삭제가 완료되었습니다");
             }
-        } else {
-            return new MsgResponseDto("잘못된 토큰값입니다", HttpStatus.BAD_REQUEST.value());
         }
+            return MsgResponseDto.fail("토큰값이 잘못되었습니다");
     }
-
-
 }
