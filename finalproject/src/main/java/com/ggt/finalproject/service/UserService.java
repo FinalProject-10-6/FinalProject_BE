@@ -63,6 +63,16 @@ public class UserService {
         return MsgResponseDto.success("사용 가능한 아이디 입니다.");
     }
 
+    @Transactional     // 닉네임 중복체크
+    public MsgResponseDto nickCheck(String nickname) {
+        Optional<User> found = userRepository.findByNickname(nickname);
+        if(found.isPresent()) {
+            throw new CustomException(ErrorCode.OVERLAPPED_NICKNAME);
+        }
+        return MsgResponseDto.success("사용 가능한 닉네임 입니다.");
+    }
+
+
     @Transactional       // 로그인
     public MsgResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String loginId = loginRequestDto.getLoginId();
@@ -103,5 +113,6 @@ public class UserService {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
+
 
 }

@@ -35,6 +35,10 @@ public class UserController {
         return userService.idCheck(loginId);
     }
 
+    // 닉네임 중복체크
+    @PostMapping("/nickCheck/{nickname}")
+    public MsgResponseDto nickCheck(@PathVariable String nickname) {return userService.nickCheck(nickname);}
+
     // 로그인
     @PostMapping("/login")
     public MsgResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
