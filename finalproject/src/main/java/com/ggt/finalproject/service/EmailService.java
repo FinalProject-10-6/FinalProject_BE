@@ -1,6 +1,8 @@
 package com.ggt.finalproject.service;
 
 import com.ggt.finalproject.dto.EmailDto;
+import com.ggt.finalproject.entity.EmailCode;
+import com.ggt.finalproject.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,7 @@ import java.util.Random;
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final EmailCodeRepository emailCodeRepository;
 
     //인증번호 생성
 //    private final String ePw = createKey();
@@ -95,6 +98,19 @@ public class EmailService {
 
         message.setText(msg, "utf-8", "html"); //내용, charset타입, subtype
         message.setFrom(new InternetAddress(id,"꿀통대장")); //보내는 사람의 메일 주소, 보내는 사람 이름
+
+
+//        EmailCode emailCode = new EmailCode(emailDto.getEmail(), ePw);
+        //DB에 인증코드 저장ㅣ
+        if(emailCodeRepository.existsByEmail(emailDto.getEmail())){
+            EmailCode emailCode = emailCodeRepository.findByEmail(emailDto.getEmail());
+            emailCode.update(emailDto.getEmail(),ePw);
+            emailCodeRepository.save(emailCode);
+
+        } else {
+            EmailCode emailCode = new EmailCode(emailDto.getEmail(), ePw);
+            emailCode = emailCodeRepository.save(emailCode);
+        }
 
 
 //        String to = emailDto.getEmail();
