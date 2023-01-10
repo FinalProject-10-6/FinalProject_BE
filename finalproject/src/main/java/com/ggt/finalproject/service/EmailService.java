@@ -1,10 +1,15 @@
 package com.ggt.finalproject.service;
 
+import com.ggt.finalproject.dto.EmailCodeRequestDto;
 import com.ggt.finalproject.dto.EmailDto;
+import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.entity.EmailCode;
+import com.ggt.finalproject.exception.CustomException;
+import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
@@ -122,5 +127,21 @@ public class EmailService {
             throw new IllegalArgumentException();
         }
         return ePw; // 메일로 보냈던 인증 코드를 서버로 리턴
+    }
+
+    public MsgResponseDto mailCheck(EmailCodeRequestDto emailCodeRequestDto) {
+        String email = emailCodeRequestDto.getEmail();
+        String code = emailCodeRequestDto.getEmailCode();
+
+
+        EmailCode emailCode = emailCodeRepository.findByEmail(email);
+
+        if(!emailCode.getEmailCode().matches(code)){
+            throw new CustomException(ErrorCode.WRONG_EMAIL_CODE);
+        } else {
+            emailCodeRepository.deleteById(emailCode.getId());
+            return MsgResponseDto.success("이메일 인증 완료");
+        }
+
     }
 }
