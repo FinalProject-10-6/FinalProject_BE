@@ -22,9 +22,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/create")
-    public MsgResponseDto createPost(@RequestPart(value = "file") MultipartFile file,
+    public MsgResponseDto createPost(@RequestPart(value = "file") List<MultipartFile> multipartFileList,
                                         @RequestPart(value = "data") PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        return postService.createPost(file, requestDto, userDetails.getUser());
+        return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
     }
 
     @GetMapping("/postList")

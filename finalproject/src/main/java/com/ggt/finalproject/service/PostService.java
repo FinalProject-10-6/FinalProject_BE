@@ -4,6 +4,7 @@ import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.PostRequestDto;
 import com.ggt.finalproject.dto.PostResponseDto;
 import com.ggt.finalproject.entity.Post;
+import com.ggt.finalproject.entity.TimeStamped;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.entity.UserRoleEnum;
 import com.ggt.finalproject.jwt.JwtUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,22 +24,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
 
     // 포스트 생성
+//    @Transactional
+//    public MsgResponseDto createPost(MultipartFile file, PostRequestDto requestDto, User user) throws IOException {
+//        String imageFile = null;
+//        if (!file.isEmpty()) {
+//            imageFile = awss3Service.upload(file, "files");
+//        }
+//        postRepository.saveAndFlush(new Post(requestDto, user, imageFile));
+//        return MsgResponseDto.success("게시글작성완료");
+//    }
+
+    // 다중 포스트 생성
     @Transactional
-    public MsgResponseDto createPost(MultipartFile file, PostRequestDto requestDto, User user) throws IOException {
-            String imageFile = null;
-            if (!file.isEmpty()) {
-                imageFile = awss3Service.upload(file, "files");
-            }
-            postRepository.saveAndFlush(new Post(requestDto, user, imageFile));
-            return MsgResponseDto.success("게시글작성완료");
+    public MsgResponseDto createPost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user) throws IOException {
+        List<String> imageFiles = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFileList)
+            if (!multipartFile.isEmpty()) {
+                String imageFile = null;
+                imageFile = awss3Service.upload(multipartFile, "files"); // <- 아!! 알았다
+                imageFiles.add(imageFile);
+            }  // 아 post id값이 없어서 그렇구나!
+        postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
+        return MsgResponseDto.success("게시글작성완료");
     }
-
-
+// 아니징 저거 그냥 string값인데 앞에 파일중복이름 피하려고 시간 넣으려는거임
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
     public List<PostResponseDto> getPosts() {

@@ -3,11 +3,11 @@ package com.ggt.finalproject.entity;
 import com.ggt.finalproject.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Where(clause = "postStatus = true")
 //@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
@@ -26,8 +26,6 @@ public class Post extends TimeStamped {
     private String category;
 //    @Column
 //    private String videoFile;
-    @Column
-    private String imageFile;
     @Column(nullable = false)
     private boolean postStatus = true;    // true = 정상게시글   false = 삭제된글
 
@@ -39,15 +37,18 @@ public class Post extends TimeStamped {
     @Column
     private Long likePostSum;
 
+    @ElementCollection
+    private List<String> imageFiles;
+
 
     public void postStatus() {
         this.postStatus = false;
     }
 
-    public Post(PostRequestDto requestDto, User user, String imageFile) {
+    public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.imageFile = imageFile;
+        this.imageFiles = imageFiles;
         this.category = requestDto.getCategory();
         this.user = user;
         this.likePostSum = 0L;
