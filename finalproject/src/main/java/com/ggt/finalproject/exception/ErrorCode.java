@@ -14,8 +14,7 @@ public enum ErrorCode {
     OVERLAPPED_EMAIL(HttpStatus.BAD_REQUEST.value(),"중복된 email 입니다."),
     OVERLAPPED_NICKNAME(HttpStatus.BAD_REQUEST.value(),"중복된 nickname 입니다."),
     NOTFOUND_POST(HttpStatus.BAD_REQUEST.value(),"게시글을 찾을수 없습니다."),
-
-
+    WRONG_EMAIL_CODE(HttpStatus.BAD_REQUEST.value(), "잘못된 이메일 인증번호 입니다."),
     ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류");
 
 

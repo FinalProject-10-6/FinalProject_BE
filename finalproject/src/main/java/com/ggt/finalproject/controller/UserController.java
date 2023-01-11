@@ -35,6 +35,10 @@ public class UserController {
         return userService.idCheck(loginId);
     }
 
+    // 닉네임 중복체크
+    @PostMapping("/nickCheck/{nickname}")
+    public MsgResponseDto nickCheck(@PathVariable String nickname) {return userService.nickCheck(nickname);}
+
     // 로그인
     @PostMapping("/login")
     public MsgResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
@@ -43,15 +47,15 @@ public class UserController {
 
     //카카오로그인
     @GetMapping("/kakao/callback")
-    public String kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public MsgResponseDto kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
-        String createToken = kakaoService.kakaoLogin(code, response);
+//        String createToken = kakaoService.kakaoLogin(code, response);
+//
+//        // Cookie 생성 및 직접 브라우저에 Set
+//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
 
-        // Cookie 생성 및 직접 브라우저에 Set
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, createToken.substring(7));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        return "redirect:/";
+        return kakaoService.kakaoLogin(code, response);
         }
     }

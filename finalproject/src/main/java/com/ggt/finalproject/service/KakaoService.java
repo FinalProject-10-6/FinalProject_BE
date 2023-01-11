@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ggt.finalproject.dto.KakaoUserInfoDto;
+import com.ggt.finalproject.dto.MsgResponseDto;
+import com.ggt.finalproject.dto.TokenDto;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.entity.UserRoleEnum;
 import com.ggt.finalproject.jwt.JwtUtil;
@@ -31,7 +33,7 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public MsgResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
@@ -42,10 +44,15 @@ public class KakaoService {
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
         // 4. JWT 토큰 반환
-        String createToken =  jwtUtil.createToken(kakaoUser.getLoginId(), kakaoUser.getNickname());
+//        String createToken =  jwtUtil.createToken(kakaoUser.getLoginId(), kakaoUser.getNickname());
+        TokenDto tokenDto =  jwtUtil.createAllToken(kakaoUser.getEmail());
 //        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, createToken);
 
-        return createToken;
+        // 5. set헤더에 넣어주기
+        setHeader(response, tokenDto);
+
+//        return createToken;
+        return MsgResponseDto.success("로그인 완료");
     }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -57,7 +64,7 @@ public class KakaoService {
         // HTTP Body 생성
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
-        body.add("client_id", "0a5a9b8a46f9a0836b9ff04d61ffc21c\n");
+        body.add("client_id", "0a5a9b8a46f9a0836b9ff04d61ffc21c");
         body.add("redirect_uri", "http://localhost:3000/api/user/kakao/callback");
         body.add("code", code);
 
@@ -138,6 +145,12 @@ public class KakaoService {
             userRepository.save(kakaoUser);
         }
         return kakaoUser;
+    }
+
+    // 헤더에 response 둘다 담기
+    public void setHeader(HttpServletResponse response, TokenDto tokenDto) {
+        response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
+        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
 }
 

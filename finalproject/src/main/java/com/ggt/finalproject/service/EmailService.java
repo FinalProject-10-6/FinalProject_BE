@@ -1,8 +1,15 @@
 package com.ggt.finalproject.service;
 
+import com.ggt.finalproject.dto.EmailCodeRequestDto;
 import com.ggt.finalproject.dto.EmailDto;
+import com.ggt.finalproject.dto.MsgResponseDto;
+import com.ggt.finalproject.entity.EmailCode;
+import com.ggt.finalproject.exception.CustomException;
+import com.ggt.finalproject.exception.ErrorCode;
+import com.ggt.finalproject.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.MailException;
@@ -22,6 +29,7 @@ import java.util.Random;
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final EmailCodeRepository emailCodeRepository;
 
     //인증번호 생성
 //    private final String ePw = createKey();
@@ -97,6 +105,19 @@ public class EmailService {
         message.setFrom(new InternetAddress(id,"꿀통대장")); //보내는 사람의 메일 주소, 보내는 사람 이름
 
 
+//        EmailCode emailCode = new EmailCode(emailDto.getEmail(), ePw);
+        //DB에 인증코드 저장ㅣ
+        if(emailCodeRepository.existsByEmail(emailDto.getEmail())){
+            EmailCode emailCode = emailCodeRepository.findByEmail(emailDto.getEmail());
+            emailCode.update(emailDto.getEmail(),ePw);
+            emailCodeRepository.save(emailCode);
+
+        } else {
+            EmailCode emailCode = new EmailCode(emailDto.getEmail(), ePw);
+            emailCode = emailCodeRepository.save(emailCode);
+        }
+
+
 //        String to = emailDto.getEmail();
 //        MimeMessage message = createMessage(to);
         try{
@@ -106,5 +127,21 @@ public class EmailService {
             throw new IllegalArgumentException();
         }
         return ePw; // 메일로 보냈던 인증 코드를 서버로 리턴
+    }
+
+    public MsgResponseDto mailCheck(EmailCodeRequestDto emailCodeRequestDto) {
+        String email = emailCodeRequestDto.getEmail();
+        String code = emailCodeRequestDto.getEmailCode();
+
+
+        EmailCode emailCode = emailCodeRepository.findByEmail(email);
+
+        if(!emailCode.getEmailCode().matches(code)){
+            throw new CustomException(ErrorCode.WRONG_EMAIL_CODE);
+        } else {
+            emailCodeRepository.deleteById(emailCode.getId());
+            return MsgResponseDto.success("이메일 인증 완료");
+        }
+
     }
 }

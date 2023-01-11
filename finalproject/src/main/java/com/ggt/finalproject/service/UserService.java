@@ -63,6 +63,16 @@ public class UserService {
         return MsgResponseDto.success("사용 가능한 아이디 입니다.");
     }
 
+    @Transactional     // 닉네임 중복체크
+    public MsgResponseDto nickCheck(String nickname) {
+        Optional<User> found = userRepository.findByNickname(nickname);
+        if(found.isPresent()) {
+            throw new CustomException(ErrorCode.OVERLAPPED_NICKNAME);
+        }
+        return MsgResponseDto.success("사용 가능한 닉네임 입니다.");
+    }
+
+
     @Transactional       // 로그인
     public MsgResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String loginId = loginRequestDto.getLoginId();
@@ -83,7 +93,8 @@ public class UserService {
         TokenDto tokenDto = jwtUtil.createAllToken(loginRequestDto.getLoginId());
 
         // refresh토큰 db에서 찾기
-//        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(loginRequestDto.getEmail());
+//        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(loginRequestDt
+//        o.getEmail());
 //
 //        // refreshToken 있으면 sava, 없다면 newtoken 만들고 save
 //        if (refreshToken.isPresent()) {
@@ -103,5 +114,6 @@ public class UserService {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
+
 
 }
