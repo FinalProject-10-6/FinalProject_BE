@@ -44,6 +44,14 @@ public class WebSecurityConfig {
                 .antMatchers("/api/user/kakao/callback").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()
+
+                .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X
+                .antMatchers("/swagger-resources/**").permitAll() //스웨거 권한설정 X
+                .antMatchers("/swagger-ui.html").permitAll() //스웨거 권한설정 X
+                .antMatchers("/v2/api-docs").permitAll() //스웨거 권한설정 X
+                .antMatchers("/v3/api-docs").permitAll() //스웨거 권한설정 X
+                .antMatchers("/webjars/**").permitAll() //스웨거 권한설정 X
+
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
