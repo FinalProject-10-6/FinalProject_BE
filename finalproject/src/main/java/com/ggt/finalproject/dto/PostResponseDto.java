@@ -50,6 +50,7 @@ public class PostResponseDto {
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
+        this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
         this.imageFiles = post.getImageFiles();
         this.modifiedAt = post.getModifiedAt();
