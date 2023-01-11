@@ -21,6 +21,8 @@ public class PostResponseDto {
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
 
+    private String category;
+
     private Long likePostSum;    //  좋아요를 위해 추가 - 종열
 
     public PostResponseDto(Post post) {
@@ -28,6 +30,7 @@ public class PostResponseDto {
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
+        this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
         this.imageFiles = post.getImageFiles();
         this.modifiedAt = post.getModifiedAt();

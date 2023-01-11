@@ -11,7 +11,9 @@ import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
+import com.ggt.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,23 +47,35 @@ public class PostService {
         for (MultipartFile multipartFile : multipartFileList)
             if (!multipartFile.isEmpty()) {
                 String imageFile = null;
-                imageFile = awss3Service.upload(multipartFile, "files"); // <- 아!! 알았다
+                imageFile = awss3Service.upload(multipartFile, "files");
                 imageFiles.add(imageFile);
-            }  // 아 post id값이 없어서 그렇구나!
+            }
         postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
         return MsgResponseDto.success("게시글작성완료");
     }
-// 아니징 저거 그냥 string값인데 앞에 파일중복이름 피하려고 시간 넣으려는거임
+
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
     public List<PostResponseDto> getPosts() {
         List<PostResponseDto> postList = new ArrayList<>();
-        List<Post> posts = postRepository.findAllByOrderByModifiedAtDesc();
+        List<Post> posts = postRepository.findAllByPostStatusOrderByCreatedAtDesc(true);
         for(Post post : posts) {
             postList.add(new PostResponseDto(post));
         }
         return postList;
     }
+//
+//    // 삭제 전체 포스트 가져오기
+//    @Transactional(readOnly = true)
+//    public List<PostResponseDto> getDeletePosts(User user) {
+//
+//        List<PostResponseDto> postList = new ArrayList<>();
+//        List<Post> posts = postRepository.findAllByPostStatusAndIdOrderByCreatedAtDesc(false, user.getId());
+//        for(Post post : posts) {
+//            postList.add(new PostResponseDto(post));
+//        }
+//        return postList;
+//    }
 
     // 선택 포스트 가져오기
     @Transactional(readOnly = true)
@@ -78,8 +92,8 @@ public class PostService {
     public MsgResponseDto deletePost(Long id, User user) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("이미 존재하지 않는 포스트입니다"));
-        if(post.getUser().getLoginId() == user.getLoginId() || user.getUserRole().equals(UserRoleEnum.ADMIN) ) {
-            postRepository.delete(post);
+        if(post.getUser().getLoginId().equals(user.getLoginId()) || user.getUserRole().equals(UserRoleEnum.ADMIN) ) {
+            post.soft_delete();
             return MsgResponseDto.success("게시글 삭제 완료");
         }
         return MsgResponseDto.fail("게시글 삭제 실패");

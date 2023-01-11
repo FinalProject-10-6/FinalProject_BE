@@ -6,11 +6,8 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
-//@Where(clause = "postStatus = true")
-//@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
 @Entity
 @NoArgsConstructor
 @Getter
@@ -40,11 +37,6 @@ public class Post extends TimeStamped {
     @ElementCollection
     private List<String> imageFiles;
 
-
-    public void postStatus() {
-        this.postStatus = false;
-    }
-
     public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
@@ -57,5 +49,10 @@ public class Post extends TimeStamped {
     // 좋아요를 위해 추가 - 종열
     public void setLikePostSum(Long sum){
         this.likePostSum = sum;
+    }
+
+    // 소프트 딜리트용도
+    public void soft_delete() {
+        this.postStatus = false;
     }
 }
