@@ -44,7 +44,7 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.title = post.getTitle();
 //        this.videoFile = post.getVideoFile();
-        this.imageFile = post.getImageFile();
+        this.imageFiles = post.getImageFiles();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
