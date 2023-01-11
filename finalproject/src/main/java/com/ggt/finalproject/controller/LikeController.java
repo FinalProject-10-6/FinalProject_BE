@@ -1,6 +1,7 @@
 package com.ggt.finalproject.controller;
 
 
+import com.ggt.finalproject.dto.LikeResponseDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.LikeService;
@@ -17,7 +18,7 @@ public class LikeController {
     public final LikeService likeService;
 
     @PostMapping("/api/like/post/{postid}")
-    public MsgResponseDto likePost(@PathVariable Long postid, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public LikeResponseDto likePost(@PathVariable Long postid, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeService.likePost(postid, userDetails.getUser());
     }
 }

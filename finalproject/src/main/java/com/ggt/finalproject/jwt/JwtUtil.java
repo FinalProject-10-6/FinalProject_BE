@@ -63,7 +63,8 @@ public class JwtUtil {
 
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
-        return Jwts.builder()
+        return
+                Jwts.builder()
                 .setSubject(nickname)
                 .claim(AUTHORIZATION_KEY, type)
                 .setExpiration(new Date(date.getTime() + time))

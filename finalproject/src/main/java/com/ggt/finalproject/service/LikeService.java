@@ -1,13 +1,13 @@
 package com.ggt.finalproject.service;
 
 
+import com.ggt.finalproject.dto.LikeResponseDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.entity.LikePost;
 import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
-import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,9 @@ public class LikeService {
 
     private final LikePostRepository likePostRepository;
     private final PostRepository postRepository;
-    private final JwtUtil jwtUtil;
 
     @Transactional
-    public MsgResponseDto likePost(Long postid, User user) {
+    public LikeResponseDto likePost(Long postid, User user) {
         // 게시글이 존재하는지 확인
         Post post = postRepository.findById(postid).orElseThrow(
                 () -> new CustomException(ErrorCode.NOTFOUND_POST)
@@ -33,12 +32,12 @@ public class LikeService {
             LikePost likePost = new LikePost(post, user);
             likePostRepository.save(likePost);
             post.setLikePostSum(post.getLikePostSum() + 1);
-            return MsgResponseDto.success("좋아요 추가");
+            return LikeResponseDto.success("좋아요 추가", "true");
         } else {
             LikePost likePost = likePostRepository.findByPostAndUser(post, user);
             likePostRepository.delete(likePost);
             post.setLikePostSum(post.getLikePostSum() - 1);
-            return MsgResponseDto.success("좋아요 취소");
+            return LikeResponseDto.success("좋아요 취소","false");
         }
     }
 
