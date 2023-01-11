@@ -14,9 +14,10 @@ public class LoginResponseDto {
     private int statusCode;
     private Object nickname;
     private Object profileImg;
+    private Object email;
 
-    public static LoginResponseDto success(String msg, Object nickname, Object profileImg) {
-        return new LoginResponseDto(msg, HttpStatus.OK.value(), nickname, profileImg);
+    public static LoginResponseDto success(String msg, Object nickname, Object profileImg, Object email) {
+        return new LoginResponseDto(msg, HttpStatus.OK.value(), nickname, profileImg, email);
     }
 
 }
