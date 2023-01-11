@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -62,4 +63,14 @@ public class Post extends TimeStamped {
     public void soft_delete() {
         this.postStatus = false;
     }
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public void addComment(Comment comment){
+        this.commentList.add(comment);
+        comment.updatePost(this);
+    }
+
+
 }

@@ -1,15 +1,16 @@
 package com.ggt.finalproject.dto;
 
-import lombok.Getter;
-
-@Getter
 public class CommentRequestDto {
 
-    private String nickname;
+    private String content;
 
-    private String comment;
+    public void setContent(String content){
+        this.content = content;
+    }
 
-    private String profileIMG;
+    public String getContent(){
+        return this.content;
+    }
 
 
 
