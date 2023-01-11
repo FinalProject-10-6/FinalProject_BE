@@ -78,13 +78,23 @@ public class EmailService {
      */
     public MsgResponseDto sendSimpleMessage(EmailDto emailDto)throws MessagingException, UnsupportedEncodingException {
 
-        StringBuffer key = new StringBuffer();
-        Random rnd = new Random();
-
-        for (int i = 0; i < 6; i++) { // 인증코드 6자리
-            key.append((rnd.nextInt(10)));
+//        StringBuffer key = new StringBuffer();
+//        Random rnd = new Random();
+//
+//        for (int i = 0; i < 6; i++) { // 인증코드 6자리
+//            key.append((rnd.nextInt(10)));
+//        }
+//        String ePw = key.toString();
+//인증코드 영어 + 숫자
+        String ePw = "";
+        for(int i = 0; i < 6 ; i++) {
+            char a = (char) (Math.random() * 42 + 49);
+            if (a >= 58 && a <= 64) {
+                i--;
+            } else {
+                ePw += String.valueOf(a);
+            }
         }
-        String ePw = key.toString();
         ////////////////////////////
         log.info("보내는 대상 : "+ emailDto.getEmail());
         log.info("인증 번호 : " + ePw);
