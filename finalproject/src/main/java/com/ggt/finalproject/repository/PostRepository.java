@@ -16,4 +16,5 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
     List<Post> findAllByPostStatusOrderByCreatedAtDesc(boolean postStatus);
 
+    List<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content);
 }

@@ -34,8 +34,14 @@ public class Post extends TimeStamped {
     @Column
     private Long likePostSum;
 
+
+    @Column
+    private boolean IsLikedPost;    //좋아요를 위해 추가 - 종열
+
+
     @ElementCollection
     private List<String> imageFiles;
+
 
     public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
@@ -43,7 +49,8 @@ public class Post extends TimeStamped {
         this.imageFiles = imageFiles;
         this.category = requestDto.getCategory();
         this.user = user;
-        this.likePostSum = 0L;
+        this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
+        this.IsLikedPost = false;
     }
 
     // 좋아요를 위해 추가 - 종열

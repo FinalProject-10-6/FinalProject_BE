@@ -3,6 +3,7 @@ package com.ggt.finalproject.controller;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.PostRequestDto;
 import com.ggt.finalproject.dto.PostResponseDto;
+import com.ggt.finalproject.dto.SearchRequestDto;
 import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
@@ -50,4 +51,12 @@ public class PostController {
     public MsgResponseDto deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return postService.deletePost(postId, userDetails.getUser());
     }
+
+
+
+    @GetMapping("/search")
+    public List<PostResponseDto> searchPost(@RequestParam String keyword) {
+        return postService.searchPost(keyword);
+    }
+
 }

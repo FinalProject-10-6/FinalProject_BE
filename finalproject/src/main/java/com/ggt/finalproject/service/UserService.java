@@ -1,11 +1,7 @@
 package com.ggt.finalproject.service;
 
 
-import com.ggt.finalproject.dto.LoginRequestDto;
-import com.ggt.finalproject.dto.MsgResponseDto;
-import com.ggt.finalproject.dto.SignupRequestDto;
-import com.ggt.finalproject.dto.TokenDto;
-import com.ggt.finalproject.entity.RefreshToken;
+import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.entity.User;
 //import com.ggt.finalproject.errcode.UserErrorCode;
 import com.ggt.finalproject.exception.CustomException;
@@ -74,7 +70,7 @@ public class UserService {
 
 
     @Transactional       // 로그인
-    public MsgResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String loginId = loginRequestDto.getLoginId();
         String password = loginRequestDto.getPassword();
 
@@ -90,7 +86,7 @@ public class UserService {
 
 
         // 이메일받아와서  access, refresh 토큰 둘다생성
-        TokenDto tokenDto = jwtUtil.createAllToken(loginRequestDto.getLoginId());
+        TokenDto tokenDto = jwtUtil.createAllToken(loginRequestDto.getLoginId());      // 지금 이메일이아니라 로그인아이디받고있음 수정해야함
 
         // refresh토큰 db에서 찾기
 //        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(loginRequestDt
@@ -106,13 +102,13 @@ public class UserService {
         setHeader(response, tokenDto);
 
 
-        return MsgResponseDto.success("로그인 성공");
+        return LoginResponseDto.success("로그인 성공",user.getNickname(), user.getProfileImg());
     }
 
     // 헤더에 response 둘다 담기
     public void setHeader(HttpServletResponse response, TokenDto tokenDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
+//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getRefreshToken());
     }
 
 

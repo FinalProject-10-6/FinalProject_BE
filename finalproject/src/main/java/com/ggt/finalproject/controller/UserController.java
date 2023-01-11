@@ -2,6 +2,7 @@ package com.ggt.finalproject.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ggt.finalproject.dto.LoginResponseDto;
 import com.ggt.finalproject.dto.LoginRequestDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.SignupRequestDto;
@@ -41,7 +42,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public MsgResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public LoginResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto, response);
     }
 

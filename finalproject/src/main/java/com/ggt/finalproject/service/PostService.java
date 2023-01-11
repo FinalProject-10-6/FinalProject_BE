@@ -3,17 +3,24 @@ package com.ggt.finalproject.service;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.PostRequestDto;
 import com.ggt.finalproject.dto.PostResponseDto;
+import com.ggt.finalproject.dto.SearchRequestDto;
 import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.entity.TimeStamped;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.entity.UserRoleEnum;
+import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
-import com.ggt.finalproject.security.UserDetailsImpl;
+
+import com.ggt.finalproject.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import com.ggt.finalproject.security.UserDetailsImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +31,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
     private final PostRepository postRepository;
     private final AWSS3Service awss3Service;
@@ -83,7 +91,15 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 없습니다")
         );
-        return new PostResponseDto(post);
+
+        User user = SecurityUtil.getCurrentUser();
+        boolean IsLikedPost = false;
+
+        if (user != null) {
+            IsLikedPost = likePostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
+        }
+
+        return new PostResponseDto(post, IsLikedPost);
     }
 
 
@@ -98,4 +114,19 @@ public class PostService {
         }
         return MsgResponseDto.fail("게시글 삭제 실패");
     }
+
+
+
+    @Transactional
+    public List<PostResponseDto> searchPost(String keyword) {
+        List<PostResponseDto> postList = new ArrayList<>();
+        List<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
+        if (posts.isEmpty()) return postList;
+
+        for(Post post : posts) {
+            postList.add(new PostResponseDto(post));
+        }
+        return postList;
+    }
+
 }
