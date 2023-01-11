@@ -26,7 +26,7 @@ public class MyPageController {
 //    }
 //
 
-    @GetMapping("/update/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getMyPage(@PathVariable Long userId, @RequestBody MyPageDto myPageDto){
         return mypageService.getMyPage(userId, myPageDto);
     }
