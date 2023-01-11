@@ -3,14 +3,11 @@ package com.ggt.finalproject.entity;
 import com.ggt.finalproject.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 
 import javax.persistence.*;
+import java.util.List;
 
-//@Where(clause = "postStatus = true")
-//@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
 @Entity
 @NoArgsConstructor
 @Getter
@@ -26,8 +23,6 @@ public class Post extends TimeStamped {
     private String category;
 //    @Column
 //    private String videoFile;
-    @Column
-    private String imageFile;
     @Column(nullable = false)
     private boolean postStatus = true;    // true = 정상게시글   false = 삭제된글
 
@@ -35,15 +30,29 @@ public class Post extends TimeStamped {
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
-    public void postStatus() {
-        this.postStatus = false;
-    }
+    //좋아요를 위해 추가 - 종열
+    @Column
+    private Long likePostSum;
 
-    public Post(PostRequestDto requestDto, User user, String imageFile) {
+    @ElementCollection
+    private List<String> imageFiles;
+
+    public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.imageFile = imageFile;
+        this.imageFiles = imageFiles;
         this.category = requestDto.getCategory();
         this.user = user;
+        this.likePostSum = 0L;
+    }
+
+    // 좋아요를 위해 추가 - 종열
+    public void setLikePostSum(Long sum){
+        this.likePostSum = sum;
+    }
+
+    // 소프트 딜리트용도
+    public void soft_delete() {
+        this.postStatus = false;
     }
 }

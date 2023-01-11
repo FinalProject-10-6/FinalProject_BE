@@ -10,4 +10,10 @@ public class PostRequestDto {
     private String title;
     private String content;
     private String category;
+
+    public PostRequestDto(String title, String content, String category) {
+        this.title = title;
+        this.content = content;
+        this.category = category;
+    }
 }
