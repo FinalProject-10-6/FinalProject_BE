@@ -76,7 +76,7 @@ public class EmailService {
         MimeMessage 객체 안에 내가 전송할 메일의 내용을 담아준다.
         bean으로 등록해둔 javaMailSender 객체를 사용하여 이메일 send
      */
-    public String sendSimpleMessage(EmailDto emailDto)throws MessagingException, UnsupportedEncodingException {
+    public MsgResponseDto sendSimpleMessage(EmailDto emailDto)throws MessagingException, UnsupportedEncodingException {
 
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
@@ -126,7 +126,7 @@ public class EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw; // 메일로 보냈던 인증 코드를 서버로 리턴
+        return MsgResponseDto.success("이메일 전송 완료");
     }
 
     public MsgResponseDto mailCheck(EmailCodeRequestDto emailCodeRequestDto) {

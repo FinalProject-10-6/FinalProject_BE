@@ -20,10 +20,10 @@ public class EmailController {
 
     @PostMapping("/emailCheck")
     @ResponseBody
-    public String mailConfirm(@RequestBody @Valid EmailDto emailDto) throws Exception {
-        String code = emailService.sendSimpleMessage(emailDto);
-        log.info("인증코드 : " + code);
-        return code;
+    public MsgResponseDto mailConfirm(@RequestBody @Valid EmailDto emailDto) throws Exception {
+//        String code = emailService.sendSimpleMessage(emailDto);
+//        log.info("인증코드 : " + code);
+        return emailService.sendSimpleMessage(emailDto);
     }
 
     @PostMapping("/emailCode")
