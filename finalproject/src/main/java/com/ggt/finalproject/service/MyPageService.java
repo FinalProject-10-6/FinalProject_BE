@@ -51,18 +51,3 @@ public class MyPageService {
 
 //
 //    public ResponseEntity<?> getMyPage(MypageDto mypageDto) throws IOException{
-//
-//        Long userId = Long.valueOf(mypageDto.getNickname());
-//
-//        List<User> users = userRepository.findById(userId).get().
-//
-//    }
-//
-//        Optional<User> = userRepository.findById(userId);
-//        user.updateMyPage(mypageDto);
-//
-//        return ResponseEntity.ok(new MsgResponseDto("회원정보 수정 완료", HttpStatus.OK.value()));
-//    }
-
-
-

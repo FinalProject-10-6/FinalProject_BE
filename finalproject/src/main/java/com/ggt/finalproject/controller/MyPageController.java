@@ -46,34 +46,3 @@ public class MyPageController {
 //    @GetMapping()
 //    public ResponseEntity<?> getMyPage(MypageDto mypageDto) throws IOException{
 //        return userService.getMypage(mypageDto);
-//    }
-
-
-//    @GetMapping("/mypage")
-//    public String MypageHome(Model model, @AuthenticationPrincipal User user) throws IOException {
-//        List<Category> categoryList = categoryService.findAll();
-//
-//        MypageDto mypageDto = new MypageDto();
-//        mypageDto.setNickname(user.getNickname());
-//        mypageDto.setPassword(user.getPassword());
-//        mypageDto.setEmail(user.getEmail());
-//        mypageDto.setProfileIMG(user.getProfileImg());
-//
-//        model.addAttribute("category", categoryList);
-//        model.addAttribute("mypageDto", mypageDto);
-//    }
-
-
-//
-//    @PostMapping("/update")
-//    public String userEdit(@AuthenticationPrincipal User user, MypageDto requestDto, BindingResult result){
-//        if(result.hasErrors())){
-//            return "redirect:/mypage/update";
-//        }
-//
-//        userService.updateInfo(user.getUsername(), form.getNickname(), form.getEmail());
-//        user.setNickname(form.getNickname());
-//        user.setPassword(form.getPassword);
-//
-//        return "redirect:/mymage/update";
-//    }
