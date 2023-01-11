@@ -18,11 +18,11 @@ public class MyPageService {
 
     private final UserRepository userRepository;
 
-    private final FileProcessService fileProcessService;
+//    private final FileProcessService fileProcessService;
 
 
     @Transactional
-    public ResponseEntity<?> getMyPage(Long id) {
+    public ResponseEntity<?> getMyPage(Long id, MyPageDto myPageDto) {
         if (!userRepository.existsById(id)) {
             return ResponseEntity.ok(new MsgResponseDto("회원이 아닙니다.", HttpStatus.BAD_REQUEST.value()));
         }
@@ -30,26 +30,26 @@ public class MyPageService {
         return ResponseEntity.ok(new MyPageDto(user));
     }
 
-    @Transactional
-    public ResponseEntity<?> updateMyPage(Long id, MyPageDto myPageDto, User user) {
-
-//            User user = userRepository.findById(Id).orElseThrow();
-            String profileImg = null;
-            if (!myPageDto.getFile().isEmpty()){
-                String filename = user.getProfileImg().split(".com/")[1];
-                fileProcessService.deleteFile(filename);
-                profileImg = fileProcessService.uploadFile(myPageDto.getFile());
-            }
-            user.updateMyPage(myPageDto, profileImg);
-            return ResponseEntity.ok(new MyPageDto(user));
-    }
+//    @Transactional
+//    public ResponseEntity<?> updateMyPage(Long id, MyPageDto myPageDto, User user) {
+//
+////            User user = userRepository.findById(Id).orElseThrow();
+//        String profileImg = null;
+//        if (!myPageDto.getFile().isEmpty()){
+//            String filename = user.getProfileImg().split(".com/")[1];
+//            fileProcessService.deleteFile(filename);
+//            profileImg = fileProcessService.uploadFile(myPageDto.getFile());
+//        }
+//        user.updateMyPage(myPageDto, profileImg);
+//        return ResponseEntity.ok(new MyPageDto(user));
+//    }
 }
 
 
 
 
 
-        //
+//
 //    public ResponseEntity<?> getMyPage(MypageDto mypageDto) throws IOException{
 //
 //        Long userId = Long.valueOf(mypageDto.getNickname());
@@ -63,7 +63,6 @@ public class MyPageService {
 //
 //        return ResponseEntity.ok(new MsgResponseDto("회원정보 수정 완료", HttpStatus.OK.value()));
 //    }
-
 
 
 

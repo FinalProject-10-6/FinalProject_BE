@@ -84,4 +84,8 @@ public class User {
         this.id = getId();
     }
 
+    public String getNickname(){
+        return this.nickname;
+    }
+
 }

@@ -8,6 +8,8 @@ import org.hibernate.annotations.Where;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Where(clause = "postStatus = true")
 //@SQLDelete(sql = "UPDATE post SET postStatus = false WHERE id = ?")
@@ -46,4 +48,14 @@ public class Post extends TimeStamped {
         this.category = requestDto.getCategory();
         this.user = user;
     }
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public void addComment(Comment comment){
+        this.commentList.add(comment);
+        comment.updatePost(this);
+    }
+
+
 }
