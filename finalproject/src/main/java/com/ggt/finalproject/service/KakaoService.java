@@ -33,6 +33,8 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
+//    https://kauth.kakao.com/oauth/authorize?client_id=0a5a9b8a46f9a0836b9ff04d61ffc21c&redirect_uri=http://localhost:3000/user/kakao/callback&response_type=code
+
     public MsgResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
@@ -65,7 +67,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "0a5a9b8a46f9a0836b9ff04d61ffc21c");
-        body.add("redirect_uri", "http://localhost:3000/api/user/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/user/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -111,15 +113,17 @@ public class KakaoService {
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
+        String profileImg = jsonNode.get("properties")
+                .get("profile_image").asText();
 
-        log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
-        return new KakaoUserInfoDto(id, nickname, email);
+        log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email + ", " + profileImg);
+        return new KakaoUserInfoDto(id, nickname, email, profileImg);
     }
 
     // 3. 필요시에 회원가입
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        String loginId = kakaoUserInfo.getId().toString();
+        String loginId = "k_" + kakaoUserInfo.getId().toString();
         User kakaoUser = userRepository.findByLoginId(loginId)
                 .orElse(null);
         if (kakaoUser == null) {
@@ -136,11 +140,12 @@ public class KakaoService {
                 // password: random UUID
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
+                String profileImg = kakaoUserInfo.getProfileImg();
 
                 // email: kakao email
-                String email = kakaoUserInfo.getEmail();
+                String email = "k_" + kakaoUserInfo.getEmail();
 
-                kakaoUser = new User(loginId, encodedPassword, email, nickname);
+                kakaoUser = new User(loginId, encodedPassword, email, nickname, profileImg);
             }
 
             userRepository.save(kakaoUser);
@@ -150,8 +155,8 @@ public class KakaoService {
 
     // 헤더에 response 둘다 담기
     public void setHeader(HttpServletResponse response, TokenDto tokenDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
+//        response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
 }
 
