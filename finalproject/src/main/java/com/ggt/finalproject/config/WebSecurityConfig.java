@@ -69,7 +69,7 @@ public class WebSecurityConfig {
         // Access-Control-Allow-Origin
         config.addAllowedOrigin("http://localhost:3000");
 
-        config.addAllowedOrigin("프론트 배포주소");
+        config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
 
         // 특정 헤더를 클라이언트 측에서 꺼내어 사용할 수 있게 지정
         // 만약 지정하지 않는다면, Authorization 헤더 내의 토큰 값을 사용할 수 없음
