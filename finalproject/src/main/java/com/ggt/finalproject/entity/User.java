@@ -59,9 +59,8 @@ public class User {
 //        this.userRole = userRole;
 //    }
 
-    public User(String loginId, Long kakaoId, String password, String email, UserRoleEnum userRole) {
+    public User(String loginId, String password, String email, UserRoleEnum userRole) {
         this.loginId = loginId;
-        this.kakaoId = kakaoId;
         this.password = password;
         this.email = email;
         this.userRole = userRole;
@@ -76,8 +75,8 @@ public class User {
 
 
 
-    public User kakaoIdUpdate(Long kakaoId){
-        this.kakaoId = kakaoId;
+    public User kakaoIdUpdate(String loginId){
+        this.loginId = loginId;
         return this;
     }
     public User(Long id) {
