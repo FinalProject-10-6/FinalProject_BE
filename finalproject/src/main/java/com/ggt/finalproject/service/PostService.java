@@ -82,6 +82,8 @@ public class PostService {
                 }
             }
             post.update(requestDto, imageFiles);
+        } else {
+            throw new CustomException(ErrorCode.NOAUTH_UPDATE);
         }
         return MsgResponseDto.success("게시글 수정완료");
     }
