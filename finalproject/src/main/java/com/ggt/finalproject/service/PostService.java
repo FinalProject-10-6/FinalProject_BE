@@ -9,12 +9,14 @@ import com.ggt.finalproject.entity.TimeStamped;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.entity.UserRoleEnum;
 import com.ggt.finalproject.exception.CustomException;
+import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
 
 import com.ggt.finalproject.security.SecurityUtil;
+import com.ggt.finalproject.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,9 +56,14 @@ public class PostService {
         List<String> imageFiles = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFileList)
             if (!multipartFile.isEmpty()) {
-                String imageFile = null;
-                imageFile = awss3Service.upload(multipartFile, "files");
-                imageFiles.add(imageFile);
+                // 이미지 확장자 찾는 로직
+                if(FileUtils.validImgFile(multipartFile)) {
+                    String imageFile = null;
+                    imageFile = awss3Service.upload(multipartFile, "files");
+                    imageFiles.add(imageFile);
+                } else {
+                    throw new CustomException(ErrorCode.WRONG_FILETYPE);
+                }
             }
         postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
         return MsgResponseDto.success("게시글작성완료");

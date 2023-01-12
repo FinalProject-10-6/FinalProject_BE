@@ -28,6 +28,9 @@ public class AWSS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    //
+
+
     // MultipartFile을 전달받아 File로 전환한 후 S3에 업로드
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
