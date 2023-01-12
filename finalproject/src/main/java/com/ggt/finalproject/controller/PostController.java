@@ -51,6 +51,16 @@ public class PostController {
         return postService.getPost(postId);
     }
 
+    // 포스트 수정하기
+    @ApiOperation(value = "게시글 수정하기")
+    @PutMapping("/{postId}")
+    public MsgResponseDto updatePost(@PathVariable Long postId,
+                                     @RequestPart(value = "file") List<MultipartFile> multipartFileList,
+                                     @RequestParam("title") String title, @RequestParam("content") String content,
+                                     @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        PostRequestDto requestDto = new PostRequestDto(title, content, category);
+        return postService.updatePost(multipartFileList, requestDto, userDetails.getUser(), postId);
+    }
 
     // 소프트 딜리트
     @ApiOperation(value = "게시글 삭제")
@@ -58,8 +68,6 @@ public class PostController {
     public MsgResponseDto deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return postService.deletePost(postId, userDetails.getUser());
     }
-
-
 
     @ApiOperation(value = "검색")
     @GetMapping("/search")
