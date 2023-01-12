@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class PostResponseDto {
-    private Long num;      // id 가 아니라 num 이라 한 이유가????- 종열
+    private Long id;      // id 가 아니라 num 이라 한 이유가????- 종열
     private String nickname;
 
     private String content;
@@ -31,7 +31,7 @@ public class PostResponseDto {
     private List<CommentResponseDto> comment = new ArrayList<>();
 
     public PostResponseDto(Post post) {
-        this.num = post.getId();
+        this.id = post.getId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
@@ -46,10 +46,11 @@ public class PostResponseDto {
     }
 
     public PostResponseDto(Post post, boolean IsLikedPost) {
-        this.num = post.getId();
+        this.id = post.getId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
+        this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
         this.imageFiles = post.getImageFiles();
         this.modifiedAt = post.getModifiedAt();
