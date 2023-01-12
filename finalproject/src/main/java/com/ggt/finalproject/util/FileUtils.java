@@ -1,33 +1,23 @@
-//package com.ggt.finalproject.util;
-//
-//import org.apache.tika.Tika;
-//import org.springframework.web.multipart.MultipartFile;
-//
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.util.Arrays;
-//import java.util.List;
-//
-//public class FileUtils {
-//
-//    private static final Tika tika = new Tika();
-//
-//
-//    // 이미지 파일인지 아닌지 확인하는 유틸이며 이미지 확장자면 True 아니라면 false를 반환
-//    public static boolean validImgFile(MultipartFile multipartFile) {
-//        try {
-//            InputStream inputStream = multipartFile.getInputStream();
-//            List<String> notValidTypeList = Arrays.asList("image/jpeg", "image/png", "image/gif", "image/bmp");
-//
-//            String mimeType = tika.detect(inputStream);
-//            System.out.println("MimeType : " + mimeType);
-//
-//            boolean isValid = notValidTypeList.stream().anyMatch(notValidType -> notValidType.equalsIgnoreCase(mimeType));
-//
-//            return isValid;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//}
+package com.ggt.finalproject.util;
+
+
+import java.io.File;
+import java.io.IOException;
+
+public class FileUtils {
+
+    public static boolean imageFileCheck(File file) {
+        String fileName = file.getName();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1,
+                fileName.length());
+        final String[] IMAGE_EXTENSION = {"JPG", "jpg", "jpeg", "JPEG", "PNG", "png"};
+
+        int len = IMAGE_EXTENSION.length;
+        for (int i = 0; i < len; i++) {
+            if (ext.equals(IMAGE_EXTENSION[i])) {
+                return true; //
+            }
+        }
+        return false;
+    }
+}
