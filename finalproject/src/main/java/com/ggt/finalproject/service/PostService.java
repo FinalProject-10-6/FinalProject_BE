@@ -11,12 +11,12 @@ import com.ggt.finalproject.entity.UserRoleEnum;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.jwt.JwtUtil;
+import com.ggt.finalproject.repository.CommentRepository;
 import com.ggt.finalproject.repository.LikePostRepository;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
 
 import com.ggt.finalproject.security.SecurityUtil;
-import com.ggt.finalproject.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PostService {
+    private final CommentRepository commentRepository;
     private final PostRepository postRepository;
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
@@ -54,19 +55,33 @@ public class PostService {
     @Transactional
     public MsgResponseDto createPost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user) throws IOException {
         List<String> imageFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFileList)
+        for (MultipartFile multipartFile : multipartFileList) {
             if (!multipartFile.isEmpty()) {
-                // 이미지 확장자 찾는 로직
-                if(FileUtils.validImgFile(multipartFile)) {
                     String imageFile = null;
                     imageFile = awss3Service.upload(multipartFile, "files");
                     imageFiles.add(imageFile);
-                } else {
-                    throw new CustomException(ErrorCode.WRONG_FILETYPE);
-                }
             }
+        }
         postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
         return MsgResponseDto.success("게시글작성완료");
+    }
+    // 포스트 수정하기
+    @Transactional
+    public MsgResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 포스트입니다"));
+        if(post.getUser().getLoginId().equals(user.getLoginId()) ) {
+            List<String> imageFiles = new ArrayList<>();
+            for (MultipartFile multipartFile : multipartFileList) {
+                if (!multipartFile.isEmpty()) {
+                    String imageFile = null;
+                    imageFile = awss3Service.upload(multipartFile, "files");
+                    imageFiles.add(imageFile);
+                }
+            }
+            post.update(requestDto, imageFiles);
+        }
+        return MsgResponseDto.success("게시글 수정완료");
     }
 
     // 전체 포스트 가져오기
