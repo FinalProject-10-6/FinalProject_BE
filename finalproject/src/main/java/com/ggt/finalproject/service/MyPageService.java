@@ -1,9 +1,13 @@
 package com.ggt.finalproject.service;
 
 import com.ggt.finalproject.dto.MsgResponseDto;
+import com.ggt.finalproject.dto.MyPageDeleteDto;
 import com.ggt.finalproject.dto.MyPageDto;
 import com.ggt.finalproject.entity.User;
+import com.ggt.finalproject.exception.CustomException;
+import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.repository.UserRepository;
+import com.ggt.finalproject.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,11 +26,7 @@ public class MyPageService {
 
 
     @Transactional
-    public ResponseEntity<?> getMyPage(Long id, MyPageDto myPageDto) {
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity.ok(new MsgResponseDto("회원이 아닙니다.", HttpStatus.BAD_REQUEST.value()));
-        }
-        User user = userRepository.findById(id).orElseThrow();
+    public ResponseEntity<?> getMyPage(User user) {
         return ResponseEntity.ok(new MyPageDto(user));
     }
 
@@ -42,6 +42,13 @@ public class MyPageService {
 //        }
 //        user.updateMyPage(myPageDto, profileImg);
 //        return ResponseEntity.ok(new MyPageDto(user));
+//    }
+
+
+//    public MyPageDeleteDto deleteUser(User user){
+//        user.setStatus(false);
+//        userRepository.save(user);
+//        return new MyPageDeleteDto(true, "그동안 서비스를 이용해 주셔서 감사합니다.");
 //    }
 }
 

@@ -19,11 +19,13 @@ public enum ErrorCode {
 
     NOTFOUND_POST(HttpStatus.BAD_REQUEST.value(),"게시글을 찾을 수 없습니다."),
     NOTFOUND_AUTHENTICATION(HttpStatus.BAD_REQUEST.value(),"시큐리티 인증정보를 찾을 수 없습니다."),
+    NOAUTH_UPDATE(HttpStatus.BAD_REQUEST.value(),"작성자 본인만 수정 가능합니다."),
 
 
     WRONG_EMAIL_CODE(HttpStatus.BAD_REQUEST.value(), "잘못된 이메일 인증번호 입니다."),
 
-    ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류");
+    ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류"),
+    WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다");
 
 
 
