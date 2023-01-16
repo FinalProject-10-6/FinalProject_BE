@@ -9,6 +9,7 @@ import com.ggt.finalproject.service.MyPageService;
 import com.ggt.finalproject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,18 +23,11 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @RequestMapping("/api/mypage")
+@RequiredArgsConstructor
 public class MyPageController {
-    private final UserRepository userRepository;
 
     private final MyPageService mypageService;
 
-    private final UserService userService;
-
-    public MyPageController(MyPageService mypageService, UserRepository userRepository, UserService userService) {
-        this.mypageService = mypageService;
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
 
     @ApiOperation(value = "마이페이지")
@@ -59,7 +53,7 @@ public class MyPageController {
     }
 
 
-    @PostMapping("/pwCheck/")
+    @PostMapping("/pwCheck")
     public MsgResponseDto checkPassword(
             @RequestBody MyPageDto myPageDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
