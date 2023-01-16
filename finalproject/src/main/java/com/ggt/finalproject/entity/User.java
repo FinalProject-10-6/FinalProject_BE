@@ -2,6 +2,7 @@ package com.ggt.finalproject.entity;
 
 
 import com.ggt.finalproject.dto.MyPageDto;
+import com.ggt.finalproject.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,6 +41,10 @@ public class User {
     @Column(nullable = false)
     private boolean userStatus = true;           // true = 정상회원   false = 탈퇴회원
 
+    @Column
+    private String category;
+
+
 
     public User(String loginId, String password, String email, String nickname) {
         this.loginId = loginId;
@@ -77,8 +82,8 @@ public class User {
 
 
     public void updateMyPage(MyPageDto myPageDto, String profileImg){
-        this.password = password;
-        this.nickname = nickname;
+        this.password = myPageDto.getPassword();
+        this.nickname = myPageDto.getNickname();
         this.profileImg = profileImg;
     }
 
@@ -94,6 +99,19 @@ public class User {
 
     public String getNickname(){
         return this.nickname;
+    }
+
+    public void softDelete(){
+        this.userStatus = false;
+    }
+
+    public void socialUpdate
+    (String nickname, String email, String category, UserDetailsImpl userDetails){
+        this.nickname = nickname;
+        this.email = email;
+        this.category = category;
+        this.loginId = userDetails.getLoginId();
+        this.password = userDetails.getPassword();
     }
 
 }
