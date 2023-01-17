@@ -12,13 +12,15 @@ import org.springframework.http.HttpStatus;
 public class LoginResponseDto {
     private String msg;
     private int statusCode;
+    private Object loginId;
     private Object nickname;
     private Object profileImg;
     private Object email;
-    private Object loginId;
 
-    public static LoginResponseDto success(String msg, Object nickname, Object profileImg, Object email, Object loginId) {
-        return new LoginResponseDto(msg, HttpStatus.OK.value(), nickname, profileImg, email, loginId);
+
+    public static LoginResponseDto success(String msg, Object loginId, Object nickname, Object profileImg, Object email) {
+        return new LoginResponseDto(msg, HttpStatus.OK.value(),loginId, nickname, profileImg, email);
+
     }
 
 }

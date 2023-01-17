@@ -102,16 +102,21 @@ public class User {
         return this.nickname;
     }
 
+
     public void softDelete(){
         this.userStatus = false;
     }
 
     public void socialUpdate
-    (String nickname, String email, UserDetailsImpl userDetails){
+    (String nickname, String email, UserDetailsImpl userDetails) {
         this.nickname = nickname;
         this.email = email;
         this.loginId = userDetails.getLoginId();
         this.password = userDetails.getPassword();
+    }
+    public void updatePw(String nPw){
+        this.password = nPw;
+
     }
 
 }

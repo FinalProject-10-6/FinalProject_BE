@@ -2,11 +2,9 @@ package com.ggt.finalproject.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ggt.finalproject.dto.LoginResponseDto;
-import com.ggt.finalproject.dto.LoginRequestDto;
-import com.ggt.finalproject.dto.MsgResponseDto;
-import com.ggt.finalproject.dto.SignupRequestDto;
+import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.jwt.JwtUtil;
+import com.ggt.finalproject.service.EmailService;
 import com.ggt.finalproject.service.KakaoService;
 import com.ggt.finalproject.service.UserService;
 import io.swagger.annotations.Api;
@@ -26,6 +24,7 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
+    private final EmailService emailService;
 
     // 회원가입
     @ApiOperation(value = "회원가입")
@@ -68,4 +67,13 @@ public class UserController {
         return kakaoService.kakaoLogin(code, response);
         }
 
+    @PostMapping("/findId")
+    public FindLoginIdResponseDto findId(@RequestBody @Valid EmailDto emailDto){
+        return userService.findId(emailDto);
+    }
+
+    @PostMapping("/findPw")
+    public MsgResponseDto findPw(@RequestBody @Valid FindPwRequestDto requestDto) throws Exception {
+        return emailService.findPw(requestDto);
+    }
     }
