@@ -2,10 +2,7 @@ package com.ggt.finalproject.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ggt.finalproject.dto.LoginResponseDto;
-import com.ggt.finalproject.dto.LoginRequestDto;
-import com.ggt.finalproject.dto.MsgResponseDto;
-import com.ggt.finalproject.dto.SignupRequestDto;
+import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.service.KakaoService;
 import com.ggt.finalproject.service.UserService;
@@ -67,5 +64,10 @@ public class UserController {
 
         return kakaoService.kakaoLogin(code, response);
         }
+
+    @PostMapping("/findId")
+    public FindLoginIdResponseDto findId(@RequestBody @Valid EmailDto emailDto){
+        return userService.findId(emailDto);
+    }
 
     }

@@ -10,6 +10,7 @@ import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.RefreshTokenRepository;
 import com.ggt.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,4 +114,15 @@ public class UserService {
     }
 
 
+    public FindLoginIdResponseDto findId(EmailDto emailDto) {
+        String email = emailDto.getEmail();
+        System.out.println(email);
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new CustomException(ErrorCode.NOTFOUND_EMAIL)
+        );
+        System.out.println(user.getEmail());
+
+        return new FindLoginIdResponseDto("아이디 찾기 완료", HttpStatus.OK.value(), user.getLoginId());
+
+    }
 }

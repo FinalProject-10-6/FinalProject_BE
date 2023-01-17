@@ -23,6 +23,7 @@ public enum ErrorCode {
 
 
     WRONG_EMAIL_CODE(HttpStatus.BAD_REQUEST.value(), "잘못된 이메일 인증번호 입니다."),
+    NOTFOUND_EMAIL(HttpStatus.BAD_REQUEST.value(), "등록되지 않은 이메일 입니다"),
 
     ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류"),
     WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다");
