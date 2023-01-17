@@ -40,18 +40,18 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto updateMyPage(MultipartFile multipartFile, MyPageDto myPageDto, User user) throws IOException {
+    public ResponseEntity<?> updateMyPage(MultipartFile multipartFile, MyPageDto myPageDto, User user) throws IOException {
 
         // 프로필 사진 업로드
-        String profileImg = user.getProfileImg();
-//        String prodileImg = null;
+        String profileImg = null;
 
         if (!multipartFile.isEmpty()){
             profileImg = awss3Service.upload(multipartFile, "profile");
+            user.updateMyPage(myPageDto, profileImg);
         }
-        user.updateMyPage(myPageDto, profileImg);
-//        return ResponseEntity.ok(new MyPageDto(user));
-        return MsgResponseDto.success("정보 수정 완료");
+        user.updateMyPage(myPageDto);
+        return ResponseEntity.ok(new MyPageDto(user));
+//        return MsgResponseDto.success("정보 수정 완료");
     }
 
 

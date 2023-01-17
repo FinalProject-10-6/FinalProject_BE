@@ -88,6 +88,11 @@ public class User {
     }
 
 
+    public void updateMyPage(MyPageDto myPageDto){
+        this.password = myPageDto.getPassword();
+        this.nickname = myPageDto.getNickname();
+    }
+
 
     public User kakaoIdUpdate(String loginId){
         this.loginId = loginId;
@@ -113,5 +118,7 @@ public class User {
         this.loginId = userDetails.getLoginId();
         this.password = userDetails.getPassword();
     }
+
+
 
 }

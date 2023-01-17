@@ -33,7 +33,7 @@ public class MyPageController {
 
 
     @PatchMapping("/update")
-    public MsgResponseDto updateMyPage(
+    public ResponseEntity<?> updateMyPage(
             @RequestPart(value = "profileImg") MultipartFile multipartFile,
             @RequestParam("nickname") String nickname, @RequestParam("password") String password,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
