@@ -96,4 +96,9 @@ public class User {
         return this.nickname;
     }
 
+    public User naverIdUpdate(String loginId){
+        this.loginId = loginId;
+        return this;
+    }
+
 }

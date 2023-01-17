@@ -54,7 +54,7 @@ public class KakaoService {
         setHeader(response, tokenDto);
 
 //        return createToken;
-        return MsgResponseDto.success("로그인 완료");
+        return MsgResponseDto.success("카카오 로그인 완료");
     }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청
