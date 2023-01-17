@@ -16,7 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class MyPageDto {
 
-    @NotEmpty(message = "닉네임은 필수입니다.")
+//    @NotEmpty(message = "닉네임은 필수입니다.")
     private String nickname;
 
     @NotEmpty(message = "비밀번호는 필수입니다.")
@@ -26,21 +26,16 @@ public class MyPageDto {
     private MultipartFile file;
 
 
-    public MyPageDto(String nickname, String password){
+    public MyPageDto(String nickname, String password, String profileImg){
         this.nickname = nickname;
         this.password = password;
+        this.profileImg = profileImg;
     }
-
 
     public MyPageDto(User user){
         this.nickname = user.getNickname();
         this.password = user.getPassword();
         this.profileImg = user.getProfileImg();
     }
-
-
-//    public static MyPageDto success(String msg, String nickname, String profileImg, String password){
-//        return new MyPageDto (msg, HttpStatus.OK.value(), nickname, profileImg, password);
-//    }
 
 }

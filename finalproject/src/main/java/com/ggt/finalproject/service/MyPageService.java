@@ -40,18 +40,25 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto updateMyPage(MultipartFile multipartFile, MyPageDto myPageDto, User user) throws IOException {
+    public ResponseEntity<?> updateMyPage(MultipartFile multipartFile, String nickname, String password, User user) throws IOException {
 
         // 프로필 사진 업로드
-        String profileImg = user.getProfileImg();
-//        String prodileImg = null;
+//        String profileImg = user.getProfileImg();
+        String profileImg = null;
 
         if (!multipartFile.isEmpty()){
             profileImg = awss3Service.upload(multipartFile, "profile");
+            MyPageDto myPageDto = new MyPageDto(nickname, password, profileImg);
+            user.updateMyPage(myPageDto);
+            userRepository.save(user);
+            return ResponseEntity.ok(new MyPageDto(user));
         }
-        user.updateMyPage(myPageDto, profileImg);
-//        return ResponseEntity.ok(new MyPageDto(user));
-        return MsgResponseDto.success("정보 수정 완료");
+        profileImg = user.getProfileImg();
+        MyPageDto myPageDto = new MyPageDto(nickname, password, profileImg);
+        user.updateMyPage(myPageDto);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MyPageDto(user));
+//        return MsgResponseDto.success("정보 수정 완료");
     }
 
 
@@ -67,10 +74,11 @@ public class MyPageService {
 
     @Transactional
     public MsgResponseDto checkPW(MyPageDto myPageDto, UserDetailsImpl userDetails) {
-
+        System.out.println(myPageDto.getPassword());
         String password = myPageDto.getPassword();
+        System.out.println(password);
 
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+        if (!passwordEncoder.matches(password, userDetails.getUser().getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         } else {
             return MsgResponseDto.success("비밀번호가 확인되었습니다.");
@@ -80,10 +88,11 @@ public class MyPageService {
 
     @Transactional
     public MsgResponseDto socialSetting
-            (String nickname, String email, String category, UserDetailsImpl userDetails){
+            (String nickname, String email, UserDetailsImpl userDetails){
 
-        User user = new User(nickname, email, category, userDetails.getUsername(), userDetails.getPassword());
-        user.socialUpdate(nickname, email, category, userDetails);
+        User user = new User(nickname, email, userDetails.getLoginId(), userDetails.getPassword());
+        user.socialUpdate(nickname, email, userDetails);
+        userRepository.save(user);
         return MsgResponseDto.success("정보 업데이트 완료");
     }
 

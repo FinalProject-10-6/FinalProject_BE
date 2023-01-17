@@ -44,7 +44,9 @@ public class WebSecurityConfig {
                 .antMatchers("/api/user/kakao/callback").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
+//                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
+                .antMatchers("/api/mypage/**").permitAll()
+                .antMatchers("/api/mypage/pwCheck").permitAll()
 
                 .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X
                 .antMatchers("/swagger-resources/**").permitAll() //스웨거 권한설정 X

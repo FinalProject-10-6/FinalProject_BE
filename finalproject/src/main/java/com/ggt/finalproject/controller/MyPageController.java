@@ -38,12 +38,11 @@ public class MyPageController {
 
 
     @PatchMapping("/update")
-    public MsgResponseDto updateMyPage(
+    public ResponseEntity<?> updateMyPage(
             @RequestPart(value = "profileImg") MultipartFile multipartFile,
             @RequestParam("nickname") String nickname, @RequestParam("password") String password,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        MyPageDto myPageDto = new MyPageDto(nickname, password);
-        return mypageService.updateMyPage(multipartFile, myPageDto, userDetails.getUser());
+        return mypageService.updateMyPage(multipartFile, nickname, password, userDetails.getUser());
     }
 
 
@@ -57,16 +56,19 @@ public class MyPageController {
     public MsgResponseDto checkPassword(
             @RequestBody MyPageDto myPageDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println(myPageDto.getPassword());
+        System.out.println(userDetails.getPassword());
         return mypageService.checkPW(myPageDto, userDetails);
     }
+
+
 
     @PatchMapping("/socialSetting")
     public MsgResponseDto socialSet(
             @RequestParam("nickname") String nickname,
             @RequestParam("email") String email,
-            @RequestParam("category") String category,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return mypageService.socialSetting(nickname, email, category, userDetails);
+        return mypageService.socialSetting(nickname, email, userDetails);
     }
 
 //    @PatchMapping("/socialSetting/{loginId}")

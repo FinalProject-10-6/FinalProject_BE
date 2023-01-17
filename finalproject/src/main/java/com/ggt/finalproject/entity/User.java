@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -81,10 +82,10 @@ public class User {
     }
 
 
-    public void updateMyPage(MyPageDto myPageDto, String profileImg){
+    public void updateMyPage(MyPageDto myPageDto){
         this.password = myPageDto.getPassword();
         this.nickname = myPageDto.getNickname();
-        this.profileImg = profileImg;
+        this.profileImg = myPageDto.getProfileImg();
     }
 
 
@@ -106,10 +107,9 @@ public class User {
     }
 
     public void socialUpdate
-    (String nickname, String email, String category, UserDetailsImpl userDetails){
+    (String nickname, String email, UserDetailsImpl userDetails){
         this.nickname = nickname;
         this.email = email;
-        this.category = category;
         this.loginId = userDetails.getLoginId();
         this.password = userDetails.getPassword();
     }
