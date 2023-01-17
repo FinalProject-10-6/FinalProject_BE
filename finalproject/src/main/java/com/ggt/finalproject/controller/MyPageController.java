@@ -2,38 +2,27 @@ package com.ggt.finalproject.controller;
 
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.MyPageDto;
-import com.ggt.finalproject.entity.User;
-import com.ggt.finalproject.repository.UserRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.MyPageService;
-import com.ggt.finalproject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 
 @Api(tags = {"MyPage API"})
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/mypage")
 public class MyPageController {
-    private final UserRepository userRepository;
 
     private final MyPageService mypageService;
-
-    private final UserService userService;
-
-    public MyPageController(MyPageService mypageService, UserRepository userRepository, UserService userService) {
-        this.mypageService = mypageService;
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
 
     @ApiOperation(value = "마이페이지")
@@ -59,9 +48,9 @@ public class MyPageController {
     }
 
 
-    @PostMapping("/pwCheck/")
+    @PostMapping("/pwCheck")
     public MsgResponseDto checkPassword(
-            @RequestBody MyPageDto myPageDto,
+            @ModelAttribute MyPageDto myPageDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return mypageService.checkPW(myPageDto, userDetails);
     }
