@@ -96,4 +96,8 @@ public class User {
         return this.nickname;
     }
 
+    public void updatePw(String nPw){
+        this.password = nPw;
+    }
+
 }
