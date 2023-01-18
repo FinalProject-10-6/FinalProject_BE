@@ -48,7 +48,7 @@ public class MyPageController {
 
 
     @DeleteMapping("/{loginId}")
-    public MsgResponseDto deleteMyPage(@PathVariable Long loginId){
+    public MsgResponseDto deleteMyPage(@PathVariable String loginId){
         return mypageService.deleteUser(loginId);
     }
 

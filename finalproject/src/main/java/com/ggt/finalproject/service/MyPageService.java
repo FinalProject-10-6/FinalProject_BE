@@ -66,8 +66,10 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto deleteUser (Long loginId){
-        User user = userRepository.findById(loginId).orElseThrow();
+    public MsgResponseDto deleteUser (String loginId){
+        User user = userRepository.findByLoginId(loginId).orElseThrow(
+                () -> new CustomException(ErrorCode.WRONG_ID)
+        );
 
         userRepository.delete(user);
 
