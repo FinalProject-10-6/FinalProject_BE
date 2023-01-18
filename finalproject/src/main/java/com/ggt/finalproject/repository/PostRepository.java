@@ -19,6 +19,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
     List<Post> findAllByPostStatusOrderByCreatedAtDesc(boolean postStatus);
     List<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content);
-    Page<PostResponseDto> findAllByPostStatusOrderByCategoryOrderByCreatedAtDesc(Pageable pageable, boolean postStatus, String category);
+    Page<PostResponseDto> findAllByPostStatusAndCategoryOrderByCreatedAtDesc(Pageable pageable, boolean postStatus, String category);
 
 }

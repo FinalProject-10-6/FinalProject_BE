@@ -106,10 +106,10 @@ public class PostService {
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
     public Page<PostResponseDto> getPostsOfCategory(String category, int pageNum) {
+        System.out.println(category);
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<PostResponseDto> postList;
-
-        postList = postRepository.findAllByPostStatusOrderByCategoryOrderByCreatedAtDesc(pageable, true, category);
+        postList = postRepository.findAllByPostStatusAndCategoryOrderByCreatedAtDesc(pageable, true, category);
         return postList;
     }
 //
