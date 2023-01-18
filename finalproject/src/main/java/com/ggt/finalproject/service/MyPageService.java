@@ -48,7 +48,7 @@ public class MyPageService {
 
         String secretPw = passwordEncoder.encode(password);
 
-        if (!multipartFileList.isEmpty()){
+        if (!multipartFileList.get(0).isEmpty()){
             profileImg = awss3Service.upload(multipartFileList.get(0), "profile");
             MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
             user.updateMyPage(myPageDto);
