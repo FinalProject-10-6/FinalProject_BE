@@ -96,9 +96,14 @@ public class User {
         return this.nickname;
     }
 
+
     public User naverIdUpdate(String loginId){
         this.loginId = loginId;
         return this;
+
+    public void updatePw(String nPw){
+        this.password = nPw;
+
     }
 
 }

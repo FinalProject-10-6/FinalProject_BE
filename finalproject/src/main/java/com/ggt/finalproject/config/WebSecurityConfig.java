@@ -68,6 +68,7 @@ public class WebSecurityConfig {
         // 서버에서 응답하는 리소스에 접근 가능한 출처를 명시
         // Access-Control-Allow-Origin
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
 
         config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
 
