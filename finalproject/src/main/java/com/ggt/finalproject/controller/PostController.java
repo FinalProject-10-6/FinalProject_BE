@@ -47,7 +47,7 @@ public class PostController {
     }
     @ApiOperation(value = "게시글 전체조회")
     @GetMapping("/postList/{category}/{pageNum}")
-    public Page<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
+    public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
         return postService.getPostsOfCategory(category, pageNum-1);
     }
 
