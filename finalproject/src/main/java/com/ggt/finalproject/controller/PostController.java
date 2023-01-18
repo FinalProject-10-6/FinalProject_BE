@@ -11,8 +11,10 @@ import com.ggt.finalproject.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +44,11 @@ public class PostController {
     @GetMapping("/postList")
     public List<PostResponseDto> getPosts() {
         return postService.getPosts();
+    }
+    @ApiOperation(value = "게시글 전체조회")
+    @GetMapping("/postList/{category}/{pageNum}")
+    public Page<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
+        return postService.getPostsOfCategory(category, pageNum);
     }
 
     // 선택 포스트 가져오기

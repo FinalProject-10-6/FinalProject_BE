@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.ggt.finalproject.security.UserDetailsImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
@@ -96,6 +99,17 @@ public class PostService {
         for(Post post : posts) {
             postList.add(new PostResponseDto(post));
         }
+        return postList;
+    }
+
+    // 카테고리별 포스트 가져오기
+    // 전체 포스트 가져오기
+    @Transactional(readOnly = true)
+    public Page<PostResponseDto> getPostsOfCategory(String category, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        Page<PostResponseDto> postList;
+
+        postList = postRepository.findAllByPostStatusOrderByCategoryOrderByCreatedAtDesc(pageable, true, category);
         return postList;
     }
 //
