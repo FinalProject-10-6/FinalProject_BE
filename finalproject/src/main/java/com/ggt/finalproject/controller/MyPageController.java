@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @Api(tags = {"MyPage API"})
 @Slf4j
@@ -39,10 +40,10 @@ public class MyPageController {
 
     @PatchMapping("/update")
     public ResponseEntity<?> updateMyPage(
-            @RequestPart(value = "profileImg") MultipartFile multipartFile,
+            @RequestPart(value = "profileImg") List<MultipartFile> multipartFileList,
             @RequestParam("nickname") String nickname, @RequestParam("password") String password,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        return mypageService.updateMyPage(multipartFile, nickname, password, userDetails.getUser());
+        return mypageService.updateMyPage(multipartFileList, nickname, password, userDetails.getUser());
     }
 
 

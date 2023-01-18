@@ -3,6 +3,7 @@ package com.ggt.finalproject.controller;
 import com.ggt.finalproject.dto.CommentRequestDto;
 import com.ggt.finalproject.dto.CommentResponseDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
+import com.ggt.finalproject.entity.Comment;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.CommentService;
 import io.swagger.annotations.Api;
@@ -22,6 +23,14 @@ public class CommentController {
     public CommentController(CommentService commentService){
         this.commentService = commentService;
     }
+
+//
+//    @GetMapping("/comment/{id}")
+//    public Page<Comment> getComment(
+//            List
+//    )
+
+
 
     @ApiOperation(value = "댓글 작성")
     @PostMapping("/comment/{id}")

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,26 +41,28 @@ public class MyPageService {
 
 
     @Transactional
-    public ResponseEntity<?> updateMyPage(MultipartFile multipartFile, String nickname, String password, User user) throws IOException {
+    public ResponseEntity<?> updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password, User user) throws IOException {
 
         // 프로필 사진 업로드
-//        String profileImg = user.getProfileImg();
         String profileImg = null;
 
-        if (!multipartFile.isEmpty()){
-            profileImg = awss3Service.upload(multipartFile, "profile");
-            MyPageDto myPageDto = new MyPageDto(nickname, password, profileImg);
+        String secretPw = passwordEncoder.encode(password);
+
+        if (!multipartFileList.isEmpty()){
+            profileImg = awss3Service.upload(multipartFileList.get(0), "profile");
+            MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
             user.updateMyPage(myPageDto);
             userRepository.save(user);
             return ResponseEntity.ok(new MyPageDto(user));
         }
         profileImg = user.getProfileImg();
-        MyPageDto myPageDto = new MyPageDto(nickname, password, profileImg);
+        MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
         user.updateMyPage(myPageDto);
         userRepository.save(user);
         return ResponseEntity.ok(new MyPageDto(user));
 //        return MsgResponseDto.success("정보 수정 완료");
     }
+
 
 
     @Transactional
