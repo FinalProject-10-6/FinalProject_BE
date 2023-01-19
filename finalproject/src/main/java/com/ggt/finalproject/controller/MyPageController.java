@@ -2,6 +2,7 @@ package com.ggt.finalproject.controller;
 
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.MyPageDto;
+import com.ggt.finalproject.dto.MyPageResponseDto;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.repository.UserRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
@@ -39,7 +40,7 @@ public class MyPageController {
 
 
     @PatchMapping("/update")
-    public ResponseEntity<?> updateMyPage(
+    public MyPageResponseDto updateMyPage(
             @RequestPart(value = "profileImg") List<MultipartFile> multipartFileList,
             @RequestParam("nickname") String nickname, @RequestParam("password") String password,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -48,8 +49,10 @@ public class MyPageController {
 
 
     @DeleteMapping("/{loginId}")
-    public MsgResponseDto deleteMyPage(@PathVariable String loginId){
-        return mypageService.deleteUser(loginId);
+    public MsgResponseDto deleteMyPage(
+            @PathVariable String loginId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return mypageService.deleteUser(loginId, userDetails.getUser());
     }
 
 
@@ -67,29 +70,10 @@ public class MyPageController {
     @PatchMapping("/socialSetting")
     public MsgResponseDto socialSet(
             @RequestParam("nickname") String nickname,
-            @RequestParam("email") String email,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return mypageService.socialSetting(nickname, email, userDetails);
+        return mypageService.socialSetting(nickname, userDetails.getUser());
     }
-
-//    @PatchMapping("/socialSetting/{loginId}")
-//    public MsgResponseDto socialSet(Long loginId,
-//            @RequestParam("nickname") String nickname,
-//            @RequestParam("email") String email,
-//            @RequestParam("category") String category){
-//        return mypageService.socialSetting(loginId, nickname, email, category);
-//    }
-
 
 
     }
 
-//    @PutMapping("/{userId}")
-//    public MyPageDeleteDto deleteUser (
-//            @PathVariable Long userId,
-//            @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        User user = userRepository.findByLoginId(userDetails.getLoginId())
-//                .orElseThrow(()->new CustomException(ErrorCode.WRONG_ID));
-//
-//        return mypageService.deleteUser(user);
-//    }

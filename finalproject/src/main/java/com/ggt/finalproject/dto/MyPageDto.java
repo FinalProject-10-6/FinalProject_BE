@@ -23,7 +23,10 @@ public class MyPageDto {
     private String password;
 
     private String profileImg;
-    private MultipartFile file;
+
+    private String email;
+
+    private String loginId;
 
 
     public MyPageDto(String nickname, String password, String profileImg){
@@ -36,6 +39,15 @@ public class MyPageDto {
         this.nickname = user.getNickname();
         this.password = user.getPassword();
         this.profileImg = user.getProfileImg();
+
     }
+
+//    public MyPageDto(String nickname, User user){
+//        this.nickname = nickname;
+//        this.loginId = user.getLoginId();
+//        this.password = user.getPassword();
+//        this.email = user.getEmail();
+//    }
+
 
 }

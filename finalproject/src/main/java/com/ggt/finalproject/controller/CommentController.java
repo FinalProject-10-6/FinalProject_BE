@@ -9,8 +9,12 @@ import com.ggt.finalproject.service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Api(tags = {"Comment API"})
 @Slf4j
@@ -24,12 +28,16 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-//
-//    @GetMapping("/comment/{id}")
-//    public Page<Comment> getComment(
-//            List
-//    )
 
+    @GetMapping("/comment")
+    public List<CommentResponseDto> getComment(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc
+    ) {
+        return commentService.getComment(page-1, size, sortBy, isAsc);
+    }
 
 
     @ApiOperation(value = "댓글 작성")

@@ -2,6 +2,7 @@ package com.ggt.finalproject.entity;
 
 
 import com.ggt.finalproject.dto.MyPageDto;
+import com.ggt.finalproject.dto.SocialSetResponseDto;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -107,13 +108,16 @@ public class User {
         this.userStatus = false;
     }
 
-    public void socialUpdate
     (String nickname, String email, UserDetailsImpl userDetails) {
-        this.nickname = nickname;
         this.email = email;
         this.loginId = userDetails.getLoginId();
-        this.password = userDetails.getPassword();
+
+    public void socialUpdate(SocialSetResponseDto socialSetResponseDto){
+        this.nickname = socialSetResponseDto.getNickname();
+        this.loginId = socialSetResponseDto.getLoginId();
+        this.email = socialSetResponseDto.getEmail();
     }
+
     public void updatePw(String nPw){
         this.password = nPw;
 

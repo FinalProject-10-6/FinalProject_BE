@@ -41,7 +41,7 @@ public class MyPageService {
 
 
     @Transactional
-    public ResponseEntity<?> updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password, User user) throws IOException {
+    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password, User user) throws IOException {
 
         // 프로필 사진 업로드
         String profileImg = null;
@@ -53,25 +53,30 @@ public class MyPageService {
             MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
             user.updateMyPage(myPageDto);
             userRepository.save(user);
-            return ResponseEntity.ok(new MyPageDto(user));
+//            return ResponseEntity.ok(new MyPageDto(user));
+            return MyPageResponseDto.success("정보 수정 완료", nickname, password, profileImg);
         }
         profileImg = user.getProfileImg();
         MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
         user.updateMyPage(myPageDto);
         userRepository.save(user);
-        return ResponseEntity.ok(new MyPageDto(user));
-//        return MsgResponseDto.success("정보 수정 완료");
+//        return ResponseEntity.ok(new MyPageDto(user));
+        return MyPageResponseDto.success("정보 수정 완료", nickname, password, profileImg);
     }
 
 
 
     @Transactional
-    public MsgResponseDto deleteUser (String loginId){
-        User user = userRepository.findByLoginId(loginId).orElseThrow(
-                () -> new CustomException(ErrorCode.WRONG_ID)
-        );
+    public MsgResponseDto deleteUser (String loginId, User user) {
+//        userRepository.findByLoginId(loginId).orElseThrow(
+//                () -> new CustomException(ErrorCode.WRONG_ID)
+//        );
 
-        userRepository.delete(user);
+        if (user.getId().toString().equals(loginId)) {
+            userRepository.delete(user);
+        } else {
+            throw new CustomException(ErrorCode.WRONG_ID);
+        }
 
         return MsgResponseDto.success("그동안 서비스를 이용해 주셔서 감사합니다.");
     }
@@ -79,9 +84,7 @@ public class MyPageService {
 
     @Transactional
     public MsgResponseDto checkPW(MyPageDto myPageDto, UserDetailsImpl userDetails) {
-        System.out.println(myPageDto.getPassword());
         String password = myPageDto.getPassword();
-        System.out.println(password);
 
         if (!passwordEncoder.matches(password, userDetails.getUser().getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
@@ -93,10 +96,13 @@ public class MyPageService {
 
     @Transactional
     public MsgResponseDto socialSetting
-            (String nickname, String email, UserDetailsImpl userDetails){
+            (String nickname, User user){
 
-        User user = new User(nickname, email, userDetails.getLoginId(), userDetails.getPassword());
-        user.socialUpdate(nickname, email, userDetails);
+//        MyPageDto myPageDto = new MyPageDto(nickname, user.getLoginId(), user.getPassword());
+////        User user = new User(nickname, loginId, password, email);
+//        user.socialUpdate(myPageDto);
+        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
+        user.socialUpdate(socialSetResponseDto);
         userRepository.save(user);
         return MsgResponseDto.success("정보 업데이트 완료");
     }
