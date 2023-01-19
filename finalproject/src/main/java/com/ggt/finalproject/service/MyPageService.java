@@ -98,8 +98,8 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto checkPW(MyPageDto myPageDto, UserDetailsImpl userDetails) {
-        String password = myPageDto.getPassword();
+    public MsgResponseDto checkPW(PasswordRequestDto requestDto, UserDetailsImpl userDetails) {
+        String password = requestDto.getPassword();
 
         if (!passwordEncoder.matches(password, userDetails.getUser().getPassword())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
