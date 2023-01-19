@@ -110,7 +110,9 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto changePW(String password, User user){
+    public MsgResponseDto changePW(PasswordRequestDto requestDto, User user){
+
+        String password = requestDto.getPassword();
 
         String secretPw = passwordEncoder.encode(password);
         user.changePassword(secretPw);

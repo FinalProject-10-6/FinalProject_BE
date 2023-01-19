@@ -3,6 +3,7 @@ package com.ggt.finalproject.controller;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.MyPageDto;
 import com.ggt.finalproject.dto.MyPageResponseDto;
+import com.ggt.finalproject.dto.PasswordRequestDto;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.repository.UserRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
@@ -67,9 +68,9 @@ public class MyPageController {
 
     @PatchMapping("/pwChange")
     public MsgResponseDto changePassword(
-            @RequestParam("password") String password,
+            @RequestBody PasswordRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return mypageService.changePW(password, userDetails.getUser());
+        return mypageService.changePW(requestDto, userDetails.getUser());
     }
 
 
