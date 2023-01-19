@@ -45,17 +45,17 @@ public class CommentService {
 
     }
 
-    @Transactional
-    public List<CommentResponseDto> getComment(int page, int size, String sortBy, boolean isAsc){
-
-        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return commentRepository.findAllByOrderByCreatedAtDesc(pageable).stream()
-                .map(CommentResponseDto::new)
-                .collect(Collectors.toList());
-    }
+//    @Transactional
+//    public List<CommentResponseDto> getComment(int page, int size, String sortBy, boolean isAsc){
+//
+//        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Sort sort = Sort.by(direction, sortBy);
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        return commentRepository.findAllByOrderByCreatedAtDesc(pageable).stream()
+//                .map(CommentResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
 
 
 

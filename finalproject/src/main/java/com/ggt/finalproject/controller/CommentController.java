@@ -29,15 +29,15 @@ public class CommentController {
     }
 
 
-    @GetMapping("/comment")
-    public List<CommentResponseDto> getComment(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size,
-            @RequestParam("sortBy") String sortBy,
-            @RequestParam("isAsc") boolean isAsc
-    ) {
-        return commentService.getComment(page-1, size, sortBy, isAsc);
-    }
+//    @GetMapping("/comment")
+//    public List<CommentResponseDto> getComment(
+//            @RequestParam("page") int page,
+//            @RequestParam("size") int size,
+//            @RequestParam("sortBy") String sortBy,
+//            @RequestParam("isAsc") boolean isAsc
+//    ) {
+//        return commentService.getComment(page-1, size, sortBy, isAsc);
+//    }
 
 
     @ApiOperation(value = "댓글 작성")

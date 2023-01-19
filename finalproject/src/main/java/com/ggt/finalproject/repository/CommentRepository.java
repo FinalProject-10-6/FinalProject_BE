@@ -13,7 +13,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Optional<Comment> findAllByPostId(Long id);
 
-    List<Comment> findAllByOrderByCreatedAtDesc(Pageable pageable);
+//    List<Comment> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
 ////    void deleteAllByUsername(String nickname);
 
