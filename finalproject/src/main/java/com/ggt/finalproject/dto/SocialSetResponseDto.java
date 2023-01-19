@@ -16,8 +16,7 @@ public class SocialSetResponseDto {
 
     private String email;
 
-
-    public SocialSetResponseDto(String nickname, User user){
+    public SocialSetResponseDto (String nickname, User user){
         this.nickname = nickname;
         this.loginId = user.getLoginId();
         this.email = user.getEmail();

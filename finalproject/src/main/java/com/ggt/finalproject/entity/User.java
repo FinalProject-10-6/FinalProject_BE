@@ -114,10 +114,8 @@ public class User {
     }
 
 
-    public void socialUpdate(SocialSetResponseDto socialSetResponseDto){
-        this.nickname = socialSetResponseDto.getNickname();
-        this.loginId = socialSetResponseDto.getLoginId();
-        this.email = socialSetResponseDto.getEmail();
+    public void socialUpdate(String nickname){
+        this.nickname = nickname;
     }
 
     public void updatePw(String nPw){

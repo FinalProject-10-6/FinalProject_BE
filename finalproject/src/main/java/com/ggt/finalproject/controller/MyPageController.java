@@ -42,9 +42,9 @@ public class MyPageController {
     @PatchMapping("/update")
     public MyPageResponseDto updateMyPage(
             @RequestPart(value = "profileImg") List<MultipartFile> multipartFileList,
-            @RequestParam("nickname") String nickname, @RequestParam("password") String password,
+            @RequestParam("nickname") String nickname,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        return mypageService.updateMyPage(multipartFileList, nickname, password, userDetails.getUser());
+        return mypageService.updateMyPage(multipartFileList, nickname, userDetails.getUser());
     }
 
 
@@ -65,14 +65,12 @@ public class MyPageController {
         return mypageService.checkPW(myPageDto, userDetails);
     }
 
-//    @PatchMapping("/pwChange")
-//    public MyPageResponseDto changePassword(
-//            @RequestParam("password") String password,
-//            @AuthenticationPrincipal UserDetailsImpl userDetails){
-//        return mypageService.changePW(password, userDetails.getUser());
-//    }
-
-
+    @PatchMapping("/pwChange")
+    public MsgResponseDto changePassword(
+            @RequestParam("password") String password,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return mypageService.changePW(password, userDetails.getUser());
+    }
 
 
 
@@ -82,7 +80,6 @@ public class MyPageController {
             @AuthenticationPrincipal UserDetailsImpl userDetails){
         return mypageService.socialSetting(nickname, userDetails.getUser());
     }
-
 
     }
 

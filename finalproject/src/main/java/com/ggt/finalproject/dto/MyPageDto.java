@@ -29,15 +29,13 @@ public class MyPageDto {
     private String loginId;
 
 
-    public MyPageDto(String nickname, String password, String profileImg){
+    public MyPageDto(String nickname, String profileImg){
         this.nickname = nickname;
-        this.password = password;
         this.profileImg = profileImg;
     }
 
     public MyPageDto(User user){
         this.nickname = user.getNickname();
-        this.password = user.getPassword();
         this.profileImg = user.getProfileImg();
 
     }

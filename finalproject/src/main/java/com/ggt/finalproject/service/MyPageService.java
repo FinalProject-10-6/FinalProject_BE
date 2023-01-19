@@ -41,27 +41,26 @@ public class MyPageService {
 
 
     @Transactional
-    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password,User user) throws IOException {
+    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, User user) throws IOException {
 
         // 프로필 사진 업로드
         String profileImg = null;
 
-        String secretPw = passwordEncoder.encode(password);
 
         if (!multipartFileList.get(0).isEmpty()){
             profileImg = awss3Service.upload(multipartFileList.get(0), "profile");
-            MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
+            MyPageDto myPageDto = new MyPageDto(nickname, profileImg);
             user.updateMyPage(myPageDto);
             userRepository.save(user);
 //            return ResponseEntity.ok(new MyPageDto(user));
-            return MyPageResponseDto.success("정보 수정 완료", nickname, password, profileImg);
+            return MyPageResponseDto.success("정보 수정 완료", nickname, profileImg);
         }
         profileImg = user.getProfileImg();
-        MyPageDto myPageDto = new MyPageDto(nickname, secretPw, profileImg);
+        MyPageDto myPageDto = new MyPageDto(nickname, profileImg);
         user.updateMyPage(myPageDto);
         userRepository.save(user);
 //        return ResponseEntity.ok(new MyPageDto(user));
-        return MyPageResponseDto.success("정보 수정 완료", nickname, password, profileImg);
+        return MyPageResponseDto.success("정보 수정 완료", nickname, profileImg);
     }
 
 
@@ -110,14 +109,14 @@ public class MyPageService {
     }
 
 
-//    @Transactional
-//    public MyPageResponseDto changePW(String password, User user){
-//
-//        String secretPw = passwordEncoder.encode(password);
-//        user.changePassword(secretPw);
-//        userRepository.save(user);
-//        return MyPageResponseDto.change("변경 성공", password);
-//    }
+    @Transactional
+    public MsgResponseDto changePW(String password, User user){
+
+        String secretPw = passwordEncoder.encode(password);
+        user.changePassword(secretPw);
+        userRepository.save(user);
+        return MsgResponseDto.success("변경 성공");
+    }
 
 
 
@@ -128,8 +127,9 @@ public class MyPageService {
 //        MyPageDto myPageDto = new MyPageDto(nickname, user.getLoginId(), user.getPassword());
 ////        User user = new User(nickname, loginId, password, email);
 //        user.socialUpdate(myPageDto);
-        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
-        user.socialUpdate(socialSetResponseDto);
+//        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
+
+        user.socialUpdate(nickname);
         userRepository.save(user);
         return MsgResponseDto.success("정보 업데이트 완료");
     }
