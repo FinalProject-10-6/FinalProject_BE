@@ -84,7 +84,6 @@ public class User {
 
 
     public void updateMyPage(MyPageDto myPageDto){
-        this.password = myPageDto.getPassword();
         this.nickname = myPageDto.getNickname();
         this.profileImg = myPageDto.getProfileImg();
     }

@@ -59,11 +59,10 @@ public class MyPageController {
 
     @PostMapping("/pwCheck")
     public MsgResponseDto checkPassword(
-            @RequestBody MyPageDto myPageDto,
+            @RequestBody PasswordRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println(myPageDto.getPassword());
         System.out.println(userDetails.getPassword());
-        return mypageService.checkPW(myPageDto, userDetails);
+        return mypageService.checkPW(requestDto, userDetails);
     }
 
     @PatchMapping("/pwChange")
