@@ -42,6 +42,7 @@ public class MyPageDto {
 
     }
 
+
 //    public MyPageDto(String nickname, User user){
 //        this.nickname = nickname;
 //        this.loginId = user.getLoginId();

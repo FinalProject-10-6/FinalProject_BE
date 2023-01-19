@@ -1,5 +1,6 @@
 package com.ggt.finalproject.dto;
 
+import com.ggt.finalproject.service.MyPageService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,14 @@ public class MyPageResponseDto {
     private int statusCode;
 
 
-    public static MyPageResponseDto success(String nickname, String password, String profileImg, String msg) {
+    public static MyPageResponseDto success(String msg, String nickname, String password, String profileImg) {
         return new MyPageResponseDto(nickname, password, profileImg, msg, HttpStatus.OK.value());
 
     }
 
-
+//    private static MyPageResponseDto change(String msg, String password){
+//        return new MyPageResponseDto(password, msg, HttpStatus.OK.value());
+//    }
 
 
 }

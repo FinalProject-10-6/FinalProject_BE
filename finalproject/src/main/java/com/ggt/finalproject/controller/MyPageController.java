@@ -65,6 +65,15 @@ public class MyPageController {
         return mypageService.checkPW(myPageDto, userDetails);
     }
 
+//    @PatchMapping("/pwChange")
+//    public MyPageResponseDto changePassword(
+//            @RequestParam("password") String password,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return mypageService.changePW(password, userDetails.getUser());
+//    }
+
+
+
 
 
     @PatchMapping("/socialSetting")

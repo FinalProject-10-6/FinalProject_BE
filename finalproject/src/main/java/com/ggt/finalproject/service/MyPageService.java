@@ -41,7 +41,7 @@ public class MyPageService {
 
 
     @Transactional
-    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password, User user) throws IOException {
+    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, String password,User user) throws IOException {
 
         // 프로필 사진 업로드
         String profileImg = null;
@@ -66,13 +66,29 @@ public class MyPageService {
 
 
 
+//    @Transactional
+//    public MsgResponseDto deleteUser (String loginId, User user) {
+////        userRepository.findByLoginId(loginId).orElseThrow(
+////                () -> new CustomException(ErrorCode.WRONG_ID)
+////        );
+//
+//        if (user.getId().toString().equals(loginId)) {
+//            userRepository.delete(user);
+//        } else {
+//            throw new CustomException(ErrorCode.WRONG_ID);
+//        }
+//
+//        return MsgResponseDto.success("그동안 서비스를 이용해 주셔서 감사합니다.");
+//    }
+
+
     @Transactional
     public MsgResponseDto deleteUser (String loginId, User user) {
 //        userRepository.findByLoginId(loginId).orElseThrow(
 //                () -> new CustomException(ErrorCode.WRONG_ID)
 //        );
 
-        if (user.getId().toString().equals(loginId)) {
+        if (user.getLoginId().equals(loginId)) {
             userRepository.delete(user);
         } else {
             throw new CustomException(ErrorCode.WRONG_ID);
@@ -94,9 +110,20 @@ public class MyPageService {
     }
 
 
+//    @Transactional
+//    public MyPageResponseDto changePW(String password, User user){
+//
+//        String secretPw = passwordEncoder.encode(password);
+//        user.changePassword(secretPw);
+//        userRepository.save(user);
+//        return MyPageResponseDto.change("변경 성공", password);
+//    }
+
+
+
+
     @Transactional
-    public MsgResponseDto socialSetting
-            (String nickname, User user){
+    public MsgResponseDto socialSetting (String nickname, User user){
 
 //        MyPageDto myPageDto = new MyPageDto(nickname, user.getLoginId(), user.getPassword());
 ////        User user = new User(nickname, loginId, password, email);

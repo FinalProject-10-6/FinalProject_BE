@@ -90,6 +90,11 @@ public class User {
     }
 
 
+    public void changePassword(String password){
+        this.password = password;
+    }
+
+
 
     public User kakaoIdUpdate(String loginId){
         this.loginId = loginId;
