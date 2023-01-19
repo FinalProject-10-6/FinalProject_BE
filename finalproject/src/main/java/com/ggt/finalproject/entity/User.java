@@ -108,9 +108,6 @@ public class User {
         this.userStatus = false;
     }
 
-    (String nickname, String email, UserDetailsImpl userDetails) {
-        this.email = email;
-        this.loginId = userDetails.getLoginId();
 
     public void socialUpdate(SocialSetResponseDto socialSetResponseDto){
         this.nickname = socialSetResponseDto.getNickname();
