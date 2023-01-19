@@ -61,6 +61,7 @@ public class Post extends TimeStamped {
     public void soft_delete() {
         this.postStatus = false;
     }
+
     public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();

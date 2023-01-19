@@ -15,9 +15,16 @@ import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.repository.UserRepository;
 import com.ggt.finalproject.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,6 +44,21 @@ public class CommentService {
         this.jwtUtil = jwtUtil;
 
     }
+
+//    @Transactional
+//    public List<CommentResponseDto> getComment(int page, int size, String sortBy, boolean isAsc){
+//
+//        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Sort sort = Sort.by(direction, sortBy);
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        return commentRepository.findAllByOrderByCreatedAtDesc(pageable).stream()
+//                .map(CommentResponseDto::new)
+//                .collect(Collectors.toList());
+//    }
+
+
+
 
 
     @Transactional

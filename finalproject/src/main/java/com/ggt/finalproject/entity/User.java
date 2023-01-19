@@ -2,10 +2,13 @@ package com.ggt.finalproject.entity;
 
 
 import com.ggt.finalproject.dto.MyPageDto;
+import com.ggt.finalproject.dto.SocialSetResponseDto;
+import com.ggt.finalproject.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
 
 @Entity
 @Getter
@@ -39,6 +42,10 @@ public class User {
 
     @Column(nullable = false)
     private boolean userStatus = true;           // true = 정상회원   false = 탈퇴회원
+
+    @Column
+    private String category;
+
 
 
     public User(String loginId, String password, String email, String nickname) {
@@ -76,10 +83,15 @@ public class User {
     }
 
 
-    public void updateMyPage(MyPageDto myPageDto, String profileImg){
+    public void updateMyPage(MyPageDto myPageDto){
+        this.password = myPageDto.getPassword();
+        this.nickname = myPageDto.getNickname();
+        this.profileImg = myPageDto.getProfileImg();
+    }
+
+
+    public void changePassword(String password){
         this.password = password;
-        this.nickname = nickname;
-        this.profileImg = profileImg;
     }
 
 
@@ -96,8 +108,19 @@ public class User {
         return this.nickname;
     }
 
+
+    public void softDelete(){
+        this.userStatus = false;
+    }
+
+
+    public void socialUpdate(String nickname){
+        this.nickname = nickname;
+    }
+
     public void updatePw(String nPw){
         this.password = nPw;
+
     }
 
 }

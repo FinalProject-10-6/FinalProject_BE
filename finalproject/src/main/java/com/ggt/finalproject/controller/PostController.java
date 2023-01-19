@@ -34,6 +34,7 @@ public class PostController {
                                      @RequestParam("title") String title, @RequestParam("content") String content,
                                      @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
+        System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
     }
 
