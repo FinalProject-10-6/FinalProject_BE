@@ -11,10 +11,13 @@ import com.ggt.finalproject.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -30,9 +33,11 @@ public class PostController {
 
     @ApiOperation(value = "게시글 작성")
     @PostMapping("/create")
-    public MsgResponseDto createPost(@RequestPart(value = "file") List<MultipartFile> multipartFileList,
-                                     @RequestParam("title") String title, @RequestParam("content") String content,
-                                     @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public MsgResponseDto createPost(MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        List<MultipartFile> multipartFileList = request.getFiles("file");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
         System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
@@ -43,6 +48,11 @@ public class PostController {
     @GetMapping("/postList")
     public List<PostResponseDto> getPosts() {
         return postService.getPosts();
+    }
+    @ApiOperation(value = "게시글 전체조회")
+    @GetMapping("/postList/{category}/{pageNum}")
+    public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
+        return postService.getPostsOfCategory(category, pageNum-1);
     }
 
     // 선택 포스트 가져오기
@@ -56,9 +66,11 @@ public class PostController {
     @ApiOperation(value = "게시글 수정하기")
     @PutMapping("/{postId}")
     public MsgResponseDto updatePost(@PathVariable Long postId,
-                                     @RequestPart(value = "file") List<MultipartFile> multipartFileList,
-                                     @RequestParam("title") String title, @RequestParam("content") String content,
-                                     @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+                                     MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        List<MultipartFile> multipartFileList = request.getFiles("file");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
         return postService.updatePost(multipartFileList, requestDto, userDetails.getUser(), postId);
     }
