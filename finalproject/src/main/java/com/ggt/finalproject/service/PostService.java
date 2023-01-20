@@ -70,6 +70,13 @@ public class PostService {
         postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
         return MsgResponseDto.success("게시글작성완료");
     }
+    // 포스팅할때 파일 없을경우
+    @Transactional
+    public MsgResponseDto createPostWithoutFile(PostRequestDto requestDto, User user) throws IOException {
+        postRepository.saveAndFlush(new Post(requestDto, user));
+        return MsgResponseDto.success("게시글작성완료");
+    }
+
     // 포스트 수정하기
     @Transactional
     public MsgResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {

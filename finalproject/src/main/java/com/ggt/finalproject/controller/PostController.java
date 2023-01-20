@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -32,9 +33,11 @@ public class PostController {
 
     @ApiOperation(value = "게시글 작성")
     @PostMapping("/create")
-    public MsgResponseDto createPost(@RequestPart(value = "file") List<MultipartFile> multipartFileList,
-                                     @RequestParam("title") String title, @RequestParam("content") String content,
-                                     @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public MsgResponseDto createPost(MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        List<MultipartFile> multipartFileList = request.getFiles("file");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
         return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
     }

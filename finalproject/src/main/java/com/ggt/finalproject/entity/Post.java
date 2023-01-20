@@ -71,4 +71,13 @@ public class Post extends TimeStamped {
         this.IsLikedPost = false;
     }
 
+    public Post(PostRequestDto requestDto, User user) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.category = requestDto.getCategory();
+        this.user = user;
+        this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
+        this.IsLikedPost = false;
+    }
+
 }
