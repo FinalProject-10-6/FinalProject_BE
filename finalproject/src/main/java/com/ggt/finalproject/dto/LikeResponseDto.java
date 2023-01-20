@@ -13,8 +13,9 @@ public class LikeResponseDto {
     private String msg;
     private int statusCode;
     private Object status;
+    private Long likePostSum;
 
-    public static LikeResponseDto success(String msg, Object status) {
-        return new LikeResponseDto(msg, HttpStatus.OK.value(), status);
+    public static LikeResponseDto success(String msg, Object status, Long likePostSum) {
+        return new LikeResponseDto(msg, HttpStatus.OK.value(), status, likePostSum);
     }
 }

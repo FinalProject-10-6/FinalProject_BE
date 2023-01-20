@@ -32,12 +32,12 @@ public class LikeService {
             LikePost likePost = new LikePost(post, user);
             likePostRepository.save(likePost);
             post.setLikePostSum(post.getLikePostSum() + 1);
-            return LikeResponseDto.success("좋아요 추가", "true");
+            return LikeResponseDto.success("좋아요 추가", "true",post.getLikePostSum());
         } else {
             LikePost likePost = likePostRepository.findByPostAndUser(post, user);
             likePostRepository.delete(likePost);
             post.setLikePostSum(post.getLikePostSum() - 1);
-            return LikeResponseDto.success("좋아요 취소","false");
+            return LikeResponseDto.success("좋아요 취소","false",post.getLikePostSum());
         }
     }
 
