@@ -33,23 +33,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (accessToken != null) {
             if (!jwtUtil.validateToken(accessToken)) {
-                jwtExceptionHandler(response, "토큰이 만료되었습니다", HttpStatus.BAD_REQUEST.value());
+                jwtExceptionHandler(response, "Access 토큰이 만료되었습니다", HttpStatus.BAD_REQUEST.value());
                 return;
             }
-            setAuthentication(jwtUtil.getEmailFromToken(accessToken));
+            setAuthentication(jwtUtil.getloginIdFromToken(accessToken));
         } else if (refreshToken != null) {
             if (!jwtUtil.refreshTokenValidation(refreshToken)) {
-                jwtExceptionHandler(response, "리프레쉬 토큰이 만료되었습니다.", HttpStatus.BAD_REQUEST.value());
+                jwtExceptionHandler(response, "Refresh 토큰이 만료되었습니다.", HttpStatus.BAD_REQUEST.value());
                 return;
             }
-            setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
+            setAuthentication(jwtUtil.getloginIdFromToken(refreshToken));
         }
 
         filterChain.doFilter(request, response);
     }
 
-    public void setAuthentication(String email) {
-        Authentication authentication = jwtUtil.createAuthentication(email);
+    public void setAuthentication(String loginId) {
+        Authentication authentication = jwtUtil.createAuthentication(loginId);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

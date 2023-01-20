@@ -3,13 +3,15 @@ package com.ggt.finalproject.entity;
 import com.ggt.finalproject.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comment {
+public class Comment extends TimeStamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +35,9 @@ public class Comment {
         this.post = post;
     }
 
-    public Comment(CommentRequestDto requestDto, String nickname) {
-        this.nickname = nickname;
+    public Comment(CommentRequestDto requestDto, User user) {
+        this.nickname = user.getNickname();
+        this.profileImg = user.getProfileImg();
         this.content = requestDto.getContent();
     }
 

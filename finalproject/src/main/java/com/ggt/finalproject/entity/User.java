@@ -108,6 +108,12 @@ public class User {
     }
 
 
+
+    public User naverIdUpdate(String loginId) {
+        this.loginId = loginId;
+        return this;
+    }
+
     public void softDelete(){
         this.userStatus = false;
     }
@@ -116,6 +122,7 @@ public class User {
     public void socialUpdate(String nickname){
         this.nickname = nickname;
     }
+
 
     public void updatePw(String nPw){
         this.password = nPw;

@@ -41,7 +41,7 @@ public class MyPageController {
 
 
     @PatchMapping("/update")
-    public MyPageResponseDto updateMyPage(
+    public MsgResponseDto updateMyPage(
             @RequestPart(value = "profileImg") List<MultipartFile> multipartFileList,
             @RequestParam("nickname") String nickname,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
