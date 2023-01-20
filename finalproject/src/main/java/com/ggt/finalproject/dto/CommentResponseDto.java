@@ -1,6 +1,7 @@
 package com.ggt.finalproject.dto;
 
 import com.ggt.finalproject.entity.Comment;
+import com.ggt.finalproject.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,13 +18,16 @@ public class CommentResponseDto {
 
     private String content;
 
+    private String profileImg;
+
 
     public CommentResponseDto(Comment comment){
         this.id = comment.getId();
-//        this.createdAt = comment.getCreatedAt();
-//        this.modifiedAt = comment.getModifiedAt();
+        this.createdAt = comment.getCreatedAt();
+        this.modifiedAt = comment.getModifiedAt();
         this.nickname = comment.getNickname();
         this.content = comment.getContent();
+        this.profileImg = comment.getProfileImg();
     }
 
     public Long getId(){return this.id;}
