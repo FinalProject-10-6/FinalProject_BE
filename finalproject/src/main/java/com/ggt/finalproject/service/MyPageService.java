@@ -41,7 +41,7 @@ public class MyPageService {
 
 
     @Transactional
-    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, User user) throws IOException {
+    public MsgResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, User user) throws IOException {
 
         // 프로필 사진 업로드
         String profileImg = null;
@@ -53,32 +53,15 @@ public class MyPageService {
             user.updateMyPage(myPageDto);
             userRepository.save(user);
 //            return ResponseEntity.ok(new MyPageDto(user));
-            return MyPageResponseDto.success("정보 수정 완료", nickname, profileImg);
+            return MsgResponseDto.success("정보 수정 완료");
         }
         profileImg = user.getProfileImg();
         MyPageDto myPageDto = new MyPageDto(nickname, profileImg);
         user.updateMyPage(myPageDto);
         userRepository.save(user);
 //        return ResponseEntity.ok(new MyPageDto(user));
-        return MyPageResponseDto.success("정보 수정 완료", nickname, profileImg);
+        return MsgResponseDto.success("정보 수정 완료");
     }
-
-
-
-//    @Transactional
-//    public MsgResponseDto deleteUser (String loginId, User user) {
-////        userRepository.findByLoginId(loginId).orElseThrow(
-////                () -> new CustomException(ErrorCode.WRONG_ID)
-////        );
-//
-//        if (user.getId().toString().equals(loginId)) {
-//            userRepository.delete(user);
-//        } else {
-//            throw new CustomException(ErrorCode.WRONG_ID);
-//        }
-//
-//        return MsgResponseDto.success("그동안 서비스를 이용해 주셔서 감사합니다.");
-//    }
 
 
     @Transactional
