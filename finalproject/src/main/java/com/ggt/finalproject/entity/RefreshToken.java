@@ -24,7 +24,7 @@ public class RefreshToken {
     @NotBlank
     private String refreshToken;
     @NotBlank
-    private String accountEmail;
+    private String loginId;
 
     public RefreshToken updateToken(String token) {
         this.refreshToken = token;
@@ -32,8 +32,8 @@ public class RefreshToken {
     }
 
     @Builder
-    public RefreshToken(String refreshToken, String accountEmail) {
+    public RefreshToken(String refreshToken, String loginId) {
         this.refreshToken = refreshToken;
-        this.accountEmail = accountEmail;
+        this.loginId = loginId;
     }
 }

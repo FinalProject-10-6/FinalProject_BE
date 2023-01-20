@@ -2,6 +2,7 @@ package com.ggt.finalproject.service;
 
 
 import com.ggt.finalproject.dto.*;
+import com.ggt.finalproject.entity.RefreshToken;
 import com.ggt.finalproject.entity.User;
 //import com.ggt.finalproject.errcode.UserErrorCode;
 import com.ggt.finalproject.exception.CustomException;
@@ -89,17 +90,16 @@ public class UserService {
         // 이메일받아와서  access, refresh 토큰 둘다생성
         TokenDto tokenDto = jwtUtil.createAllToken(loginRequestDto.getLoginId());      // 지금 이메일이아니라 로그인아이디받고있음 수정해야함
 
-        // refresh토큰 db에서 찾기
-//        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByAccountEmail(loginRequestDt
-//        o.getEmail());
-//
-//        // refreshToken 있으면 sava, 없다면 newtoken 만들고 save
-//        if (refreshToken.isPresent()) {
-//            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
-//        } else {
-//            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginRequestDto.getEmail());
-//            refreshTokenRepository.save(newToken);
-//        }
+         //refresh토큰 db에서 찾기
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByLoginId(loginRequestDto.getLoginId());
+
+        // refreshToken 있으면 sava, 없다면 newtoken 만들고 save
+        if (refreshToken.isPresent()) {
+            refreshTokenRepository.save(refreshToken.get().updateToken(tokenDto.getRefreshToken()));
+        } else {
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), loginRequestDto.getLoginId());
+            refreshTokenRepository.save(newToken);
+        }
         setHeader(response, tokenDto);
 
 
