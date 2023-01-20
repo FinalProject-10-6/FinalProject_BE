@@ -141,6 +141,7 @@ public class KakaoService {
                 // 신규 회원가입
                 // password: random UUID
                 String password = UUID.randomUUID().toString();
+                nickname = "tlsrbrkdlqwk";
                 String encodedPassword = passwordEncoder.encode(password);
                 String profileImg = kakaoUserInfo.getProfileImg();
 
