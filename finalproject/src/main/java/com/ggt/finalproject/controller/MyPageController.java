@@ -74,9 +74,8 @@ public class MyPageController {
 
 
 
-    @PatchMapping("/socialSetting")
-    public MsgResponseDto socialSet(
-            @RequestParam("nickname") String nickname,
+    @PatchMapping("/socialSetting/{nickname}")
+    public MsgResponseDto socialSet(@PathVariable String nickname,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
         return mypageService.socialSetting(nickname, userDetails.getUser());
     }
