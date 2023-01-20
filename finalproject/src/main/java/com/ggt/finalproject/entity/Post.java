@@ -51,6 +51,11 @@ public class Post extends TimeStamped {
         this.content = requestDto.getContent();
         this.category = requestDto.getCategory();
     }
+    public void update(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.category = requestDto.getCategory();
+    }
 
     // 좋아요를 위해 추가 - 종열
     public void setLikePostSum(Long sum){

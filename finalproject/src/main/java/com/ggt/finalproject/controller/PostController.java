@@ -65,9 +65,11 @@ public class PostController {
     @ApiOperation(value = "게시글 수정하기")
     @PutMapping("/{postId}")
     public MsgResponseDto updatePost(@PathVariable Long postId,
-                                     @RequestPart(value = "file") List<MultipartFile> multipartFileList,
-                                     @RequestParam("title") String title, @RequestParam("content") String content,
-                                     @RequestParam("category") String category, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+                                     MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        List<MultipartFile> multipartFileList = request.getFiles("file");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
         return postService.updatePost(multipartFileList, requestDto, userDetails.getUser(), postId);
     }

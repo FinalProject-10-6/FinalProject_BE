@@ -89,6 +89,8 @@ public class PostService {
                     String imageFile = null;
                     imageFile = awss3Service.upload(multipartFile, "files");
                     imageFiles.add(imageFile);
+                } else {
+                    post.update(requestDto);
                 }
             }
             post.update(requestDto, imageFiles);
