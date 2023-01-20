@@ -2,10 +2,13 @@ package com.ggt.finalproject.dto;
 
 import com.ggt.finalproject.entity.Comment;
 import com.ggt.finalproject.entity.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 public class CommentResponseDto {
 
     private Long id;
@@ -29,11 +32,4 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.profileImg = comment.getProfileImg();
     }
-
-    public Long getId(){return this.id;}
-
-    public String getNickname(){return this.nickname;}
-
-    public String getContent(){return this.content;}
-
 }
