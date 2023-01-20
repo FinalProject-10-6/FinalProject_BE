@@ -103,7 +103,10 @@ public class UserService {
         setHeader(response, tokenDto);
 
 
+
+
         return LoginResponseDto.success("로그인 성공",user.getLoginId(), user.getNickname(), user.getProfileImg(), user.getEmail());
+
     }
 
     // 헤더에 response 둘다 담기

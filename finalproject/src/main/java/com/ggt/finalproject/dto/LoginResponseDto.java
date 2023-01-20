@@ -17,8 +17,11 @@ public class LoginResponseDto {
     private Object profileImg;
     private Object email;
 
+
     public static LoginResponseDto success(String msg, Object loginId, Object nickname, Object profileImg, Object email) {
         return new LoginResponseDto(msg, HttpStatus.OK.value(),loginId, nickname, profileImg, email);
+
     }
+
 
 }

@@ -39,6 +39,7 @@ public class PostController {
         String content = request.getParameter("content");
         String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
+        System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
     }
 

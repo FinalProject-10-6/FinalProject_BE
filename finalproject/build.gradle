@@ -18,6 +18,11 @@ repositories {
     mavenCentral()
 }
 
+//cicd 관련 설정
+jar {
+    enabled = false
+}
+
 dependencies {
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
