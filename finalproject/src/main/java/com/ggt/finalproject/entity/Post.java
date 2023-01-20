@@ -51,6 +51,11 @@ public class Post extends TimeStamped {
         this.content = requestDto.getContent();
         this.category = requestDto.getCategory();
     }
+    public void update(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.category = requestDto.getCategory();
+    }
 
     // 좋아요를 위해 추가 - 종열
     public void setLikePostSum(Long sum){
@@ -61,10 +66,20 @@ public class Post extends TimeStamped {
     public void soft_delete() {
         this.postStatus = false;
     }
+
     public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.imageFiles = imageFiles;
+        this.category = requestDto.getCategory();
+        this.user = user;
+        this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
+        this.IsLikedPost = false;
+    }
+
+    public Post(PostRequestDto requestDto, User user) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
         this.category = requestDto.getCategory();
         this.user = user;
         this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열

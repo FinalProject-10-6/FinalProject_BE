@@ -60,7 +60,7 @@ public class UserController {
     //카카오로그인
     @ApiOperation(value = "카카오 로그인")
     @GetMapping("/kakao/callback")
-    public MsgResponseDto kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
+    public LoginResponseDto kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // code: 카카오 서버로부터 받은 인가 코드
 //        String createToken = kakaoService.kakaoLogin(code, response);
 //

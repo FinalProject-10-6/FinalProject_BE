@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ggt.finalproject.dto.KakaoUserInfoDto;
+import com.ggt.finalproject.dto.LoginResponseDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.TokenDto;
 import com.ggt.finalproject.entity.User;
@@ -35,7 +36,7 @@ public class KakaoService {
 
 //    https://kauth.kakao.com/oauth/authorize?client_id=0a5a9b8a46f9a0836b9ff04d61ffc21c&redirect_uri=https://dev.d134m2xe6xydy2.amplifyapp.com/user/kakao/callback&response_type=code
 
-    public MsgResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public LoginResponseDto kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
 
@@ -54,7 +55,7 @@ public class KakaoService {
         setHeader(response, tokenDto);
 
 //        return createToken;
-        return MsgResponseDto.success("카카오 로그인 완료");
+        return LoginResponseDto.success("로그인 완료",kakaoUser.getLoginId().substring(2), kakaoUser.getNickname(),kakaoUser.getProfileImg(),kakaoUser.getEmail().substring(2));
     }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청

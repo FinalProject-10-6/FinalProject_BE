@@ -22,7 +22,8 @@ public class Comment {
     private String content;
 
     @Column
-    private String profileIMG;
+    private String profileImg;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

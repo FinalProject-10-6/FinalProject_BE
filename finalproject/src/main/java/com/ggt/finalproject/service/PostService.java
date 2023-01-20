@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import com.ggt.finalproject.security.UserDetailsImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
@@ -67,6 +70,13 @@ public class PostService {
         postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
         return MsgResponseDto.success("게시글작성완료");
     }
+    // 포스팅할때 파일 없을경우
+    @Transactional
+    public MsgResponseDto createPostWithoutFile(PostRequestDto requestDto, User user) throws IOException {
+        postRepository.saveAndFlush(new Post(requestDto, user));
+        return MsgResponseDto.success("게시글작성완료");
+    }
+
     // 포스트 수정하기
     @Transactional
     public MsgResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {
@@ -79,6 +89,8 @@ public class PostService {
                     String imageFile = null;
                     imageFile = awss3Service.upload(multipartFile, "files");
                     imageFiles.add(imageFile);
+                } else {
+                    post.update(requestDto);
                 }
             }
             post.update(requestDto, imageFiles);
@@ -93,6 +105,20 @@ public class PostService {
     public List<PostResponseDto> getPosts() {
         List<PostResponseDto> postList = new ArrayList<>();
         List<Post> posts = postRepository.findAllByPostStatusOrderByCreatedAtDesc(true);
+        for(Post post : posts) {
+            postList.add(new PostResponseDto(post));
+        }
+        return postList;
+    }
+
+    // 카테고리별 포스트 가져오기
+    // 전체 포스트 가져오기
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> getPostsOfCategory(String category, int pageNum) {
+        System.out.println(category);
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        List<PostResponseDto> postList = new ArrayList<>();
+        Page<Post> posts = postRepository.findAllByPostStatusAndCategoryOrderByCreatedAtDesc(pageable, true, category);
         for(Post post : posts) {
             postList.add(new PostResponseDto(post));
         }
