@@ -97,10 +97,10 @@ public class User {
     }
 
 
-    public User naverIdUpdate(String loginId){
+    public User naverIdUpdate(String loginId) {
         this.loginId = loginId;
         return this;
-
+    }
     public void updatePw(String nPw){
         this.password = nPw;
 
