@@ -39,14 +39,16 @@ public class WebSecurityConfig {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/post/search").permitAll()
-                .antMatchers("/api/user/kakao/callback").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()
+
+        http.authorizeRequests().antMatchers("/api/user/**").permitAll()     //로그인,회원가입 관련
+                .antMatchers("/api/post/search").permitAll()               // 검색
+                .antMatchers("/api/user/kakao/callback").permitAll()         // 소셜로그인
+                .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()        // 상세게시글 조회
+                .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()    // 전체게시글 조회
 //                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
+
 
                 .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X
                 .antMatchers("/swagger-resources/**").permitAll() //스웨거 권한설정 X

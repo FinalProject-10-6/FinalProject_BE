@@ -6,6 +6,7 @@ import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.service.EmailService;
 import com.ggt.finalproject.service.KakaoService;
+import com.ggt.finalproject.service.NaverService;
 import com.ggt.finalproject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,11 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
+
+    private final NaverService naverService;
+
     private final EmailService emailService;
+
 
     // 회원가입
     @ApiOperation(value = "회원가입")
@@ -67,6 +72,13 @@ public class UserController {
         return kakaoService.kakaoLogin(code, response);
         }
 
+
+    @GetMapping("/naver/callback")
+    public MsgResponseDto naverLogin(@RequestParam String code, @RequestParam String state, HttpServletResponse response) throws JsonProcessingException {
+        return naverService.naverLogin(code, state, response);
+    }
+
+
     @PostMapping("/findId")
     public FindLoginIdResponseDto findId(@RequestBody @Valid EmailDto emailDto){
         return userService.findId(emailDto);
@@ -76,4 +88,5 @@ public class UserController {
     public MsgResponseDto findPw(@RequestBody @Valid FindPwRequestDto requestDto) throws Exception {
         return emailService.findPw(requestDto);
     }
+
     }
