@@ -32,8 +32,9 @@ public class NaverService {
     private final UserRepository userRepository;
 
 
+//    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=8PCgO32YgjQK0j2o2102&state=state&redirect_uri=https://dev.d134m2xe6xydy2.amplifyapp.com/user/naver/callback
 //    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=CLIENT_ID&state=STATE_STRING&redirect_uri=CALLBACK_URL
-//    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=CLIENT_ID&state=STATE_STRING&redirect_uri=CALLBACK_URL
+//    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=8PCgO32YgjQK0j2o2102&redirect_uri=http://43.201.7.130:8080/api/user/naver/callback&state=state
 
     public MsgResponseDto naverLogin(String code, String state, HttpServletResponse response) throws JsonProcessingException {
         // 인가코드, state 로 네이버한테 access_token 요청
@@ -46,7 +47,7 @@ public class NaverService {
         User naverUser = registerNaverUser(naverUserInfoDto);
 
         // 토큰 헤더에 담기
-        TokenDto tokenDto = jwtUtil.createAllToken(naverUser.getEmail());
+        TokenDto tokenDto = jwtUtil.createAllToken(naverUser.getLoginId());
         setHeader(response, tokenDto);
 
         return MsgResponseDto.success("네이버 로그인 완료");

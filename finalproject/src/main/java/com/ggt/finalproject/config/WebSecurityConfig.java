@@ -48,6 +48,7 @@ public class WebSecurityConfig {
 //                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
+                .antMatchers("/api/user/naver/callback").permitAll()          // 소셜로그인
 
 
                 .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X
