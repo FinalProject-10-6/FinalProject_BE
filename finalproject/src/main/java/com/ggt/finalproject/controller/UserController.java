@@ -73,8 +73,9 @@ public class UserController {
         }
 
 
+    // 네이버 로그인
     @GetMapping("/naver/callback")
-    public MsgResponseDto naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletResponse response) throws JsonProcessingException {
+    public LoginResponseDto naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletResponse response) throws JsonProcessingException {
         System.out.println(code);
         System.out.println(state);
         return naverService.naverLogin(code, state, response);
