@@ -11,6 +11,7 @@ import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NaverService {
@@ -104,6 +106,7 @@ public class NaverService {
         String email = jsonNode2.get("response").get("email").asText();
         String nickname = jsonNode2.get("response").get("nickname").asText();
 
+        log.info("네이버 사용자 정보: " + id + ", " + nickname + ", " + email + ", ");
         return new NaverUserInfoDto(id, nickname, email, profileImage);
     }
 

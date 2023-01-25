@@ -74,7 +74,9 @@ public class UserController {
 
 
     @GetMapping("/naver/callback")
-    public MsgResponseDto naverLogin(@RequestParam String code, @RequestParam String state, HttpServletResponse response) throws JsonProcessingException {
+    public MsgResponseDto naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletResponse response) throws JsonProcessingException {
+        System.out.println(code);
+        System.out.println(state);
         return naverService.naverLogin(code, state, response);
     }
 
