@@ -116,7 +116,7 @@ public class NaverService {
                 .orElse(null);
 
         if (naverUser == null) {
-            String nickname = naverUserInfoDto.getNickname();
+            String nickname = "tlsrbrkdlqwk";
             String naverEmail = naverUserInfoDto.getEmail();
             User sameEmailUser = userRepository.findByEmail(naverEmail).orElse(null);
             if (sameEmailUser != null) {
