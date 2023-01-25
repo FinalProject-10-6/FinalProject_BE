@@ -4,6 +4,7 @@ package com.ggt.finalproject.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ggt.finalproject.dto.LoginResponseDto;
 import com.ggt.finalproject.dto.MsgResponseDto;
 import com.ggt.finalproject.dto.NaverUserInfoDto;
 import com.ggt.finalproject.dto.TokenDto;
@@ -38,7 +39,7 @@ public class NaverService {
 //    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=CLIENT_ID&state=STATE_STRING&redirect_uri=CALLBACK_URL
 //    https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=8PCgO32YgjQK0j2o2102&redirect_uri=http://43.201.7.130:8080/api/user/naver/callback&state=state
 
-    public MsgResponseDto naverLogin(String code, String state, HttpServletResponse response) throws JsonProcessingException {
+    public LoginResponseDto naverLogin(String code, String state, HttpServletResponse response) throws JsonProcessingException {
         // 인가코드, state 로 네이버한테 access_token 요청
         String accessToken = getToken(code, state);
 
@@ -52,7 +53,7 @@ public class NaverService {
         TokenDto tokenDto = jwtUtil.createAllToken(naverUser.getLoginId());
         setHeader(response, tokenDto);
 
-        return MsgResponseDto.success("네이버 로그인 완료");
+        return LoginResponseDto.success("네이버 로그인 완료",naverUser.getLoginId().substring(2), naverUser.getNickname(),naverUser.getProfileImg(),naverUser.getEmail().substring(2));
     }
 
     private String getToken(String code, String state) throws JsonProcessingException {
