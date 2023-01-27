@@ -1,9 +1,6 @@
 package com.ggt.finalproject.service;
 
-import com.ggt.finalproject.dto.MsgResponseDto;
-import com.ggt.finalproject.dto.PostRequestDto;
-import com.ggt.finalproject.dto.PostResponseDto;
-import com.ggt.finalproject.dto.SearchRequestDto;
+import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.entity.TimeStamped;
 import com.ggt.finalproject.entity.User;
@@ -58,7 +55,7 @@ public class PostService {
 
     // 다중 포스트 생성
     @Transactional
-    public MsgResponseDto createPost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user) throws IOException {
+    public PostCreateResponseDto createPost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user) throws IOException {
         List<String> imageFiles = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFileList) {
             if (!multipartFile.isEmpty()) {
@@ -67,19 +64,13 @@ public class PostService {
                     imageFiles.add(imageFile);
             }
         }
-        postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
-        return MsgResponseDto.success("게시글작성완료");
-    }
-    // 포스팅할때 파일 없을경우
-    @Transactional
-    public MsgResponseDto createPostWithoutFile(PostRequestDto requestDto, User user) throws IOException {
-        postRepository.saveAndFlush(new Post(requestDto, user));
-        return MsgResponseDto.success("게시글작성완료");
+        Post post = postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
+        return new PostCreateResponseDto(post, user, "게시글 작성 완료");
     }
 
     // 포스트 수정하기
     @Transactional
-    public MsgResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {
+    public PostCreateResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 포스트입니다"));
         if(post.getUser().getLoginId().equals(user.getLoginId()) ) {
@@ -94,10 +85,10 @@ public class PostService {
                 }
             }
             post.update(requestDto, imageFiles);
+            return new PostCreateResponseDto(post, user, "게시글 수정 완료");
         } else {
             throw new CustomException(ErrorCode.NOAUTH_UPDATE);
         }
-        return MsgResponseDto.success("게시글 수정완료");
     }
 
     // 전체 포스트 가져오기

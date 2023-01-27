@@ -1,9 +1,6 @@
 package com.ggt.finalproject.controller;
 
-import com.ggt.finalproject.dto.MsgResponseDto;
-import com.ggt.finalproject.dto.PostRequestDto;
-import com.ggt.finalproject.dto.PostResponseDto;
-import com.ggt.finalproject.dto.SearchRequestDto;
+import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.entity.Post;
 import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
@@ -33,7 +30,7 @@ public class PostController {
 
     @ApiOperation(value = "게시글 작성")
     @PostMapping("/create")
-    public MsgResponseDto createPost(MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public PostCreateResponseDto createPost(MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         List<MultipartFile> multipartFileList = request.getFiles("file");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -65,7 +62,7 @@ public class PostController {
     // 포스트 수정하기
     @ApiOperation(value = "게시글 수정하기")
     @PutMapping("/{postId}")
-    public MsgResponseDto updatePost(@PathVariable Long postId,
+    public PostCreateResponseDto updatePost(@PathVariable Long postId,
                                      MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         List<MultipartFile> multipartFileList = request.getFiles("file");
         String title = request.getParameter("title");
