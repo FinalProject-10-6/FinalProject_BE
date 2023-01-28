@@ -42,16 +42,20 @@ public class PostService {
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
 
-    // 포스트 생성
-//    @Transactional
-//    public MsgResponseDto createPost(MultipartFile file, PostRequestDto requestDto, User user) throws IOException {
-//        String imageFile = null;
-//        if (!file.isEmpty()) {
-//            imageFile = awss3Service.upload(file, "files");
-//        }
-//        postRepository.saveAndFlush(new Post(requestDto, user, imageFile));
-//        return MsgResponseDto.success("게시글작성완료");
-//    }
+//     포스트 이미지 url 리턴용
+    @Transactional
+    public List<String> imageUrlReturn(List<MultipartFile> multipartFileList) throws IOException {
+        List<String> imageUrl = new ArrayList<>();
+        for (MultipartFile multipartFile : multipartFileList) {
+            if (!multipartFile.isEmpty()) {
+                String imageFile = null;
+                imageFile = awss3Service.upload(multipartFile, "files");
+                System.out.println(imageFile);
+                imageUrl.add(imageFile);
+            }
+        }
+        return imageUrl;
+    }
 
     // 다중 포스트 생성
     @Transactional
