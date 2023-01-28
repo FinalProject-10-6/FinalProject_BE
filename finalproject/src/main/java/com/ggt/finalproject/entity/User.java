@@ -34,7 +34,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String profileImg = "/*기본프로필url*/";        // 추후에 기본프로필로 교체
+    private String profileImg = "https://ggultong.s3.ap-northeast-2.amazonaws.com/defalut.png";
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
