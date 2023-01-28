@@ -41,8 +41,8 @@ public class PostController {
     }
     @ApiOperation(value = "게시글 url 리턴")
     @PostMapping("/imageUrlReturn")
-    public List<String> createPost(MultipartHttpServletRequest request) throws IOException {
-        List<MultipartFile> multipartFileList = request.getFiles("urlFile");
+    public List<String> createPost(@RequestPart(value="file",required = false) List<MultipartFile> multipartFileList) throws IOException {
+//        List<MultipartFile> multipartFileList = request.getFiles("file");
         System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.imageUrlReturn(multipartFileList);
     }

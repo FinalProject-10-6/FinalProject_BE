@@ -50,6 +50,7 @@ public class PostService {
             if (!multipartFile.isEmpty()) {
                 String imageFile = null;
                 imageFile = awss3Service.upload(multipartFile, "files");
+                System.out.println(imageFile);
                 imageUrl.add(imageFile);
             }
         }

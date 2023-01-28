@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/user/kakao/callback").permitAll()         // 소셜로그인
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()        // 상세게시글 조회
                 .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()    // 전체게시글 조회
+                .antMatchers("/api/post/imageUrlReturn").permitAll()
 //                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
