@@ -22,15 +22,23 @@ public class AWSS3config {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    @Bean
-    public AmazonS3 amazonS3Client() {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-
-        return AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+    @Bean //아래 있는 로직과 차이점은 어떤건지..?
+    public AmazonS3Client amazonS3Client() {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+        return (AmazonS3Client) AmazonS3ClientBuilder.standard()
                 .withRegion(region)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .build();
     }
-
 }
+
+//    @Bean
+//    public AmazonS3 amazonS3Client() {
+//        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+//
+//        return AmazonS3ClientBuilder
+//                .standard()
+//                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+//                .withRegion(region)
+//                .build();
+
