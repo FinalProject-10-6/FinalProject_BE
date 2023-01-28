@@ -31,18 +31,17 @@ public class PostController {
     @ApiOperation(value = "게시글 작성")
     @PostMapping("/create")
     public PostCreateResponseDto createPost(MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        List<MultipartFile> multipartFileList = request.getFiles("file");
+        MultipartFile multipartFile = request.getFile("file");
+        System.out.println("멀티파트파일" + multipartFile);
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
-        System.out.println("multipartFileList = " + multipartFileList.size());
-        return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
+        return postService.createPost(multipartFile, requestDto, userDetails.getUser());
     }
     @ApiOperation(value = "게시글 url 리턴")
     @PostMapping("/imageUrlReturn")
     public List<String> createPost(@RequestPart(value="file",required = false) List<MultipartFile> multipartFileList) throws IOException {
-//        List<MultipartFile> multipartFileList = request.getFiles("file");
         System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.imageUrlReturn(multipartFileList);
     }
@@ -71,12 +70,12 @@ public class PostController {
     @PutMapping("/{postId}")
     public PostCreateResponseDto updatePost(@PathVariable Long postId,
                                      MultipartHttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        List<MultipartFile> multipartFileList = request.getFiles("file");
+        MultipartFile multipartFile = request.getFile("file");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String category = request.getParameter("category");
         PostRequestDto requestDto = new PostRequestDto(title, content, category);
-        return postService.updatePost(multipartFileList, requestDto, userDetails.getUser(), postId);
+        return postService.updatePost(multipartFile, requestDto, userDetails.getUser(), postId);
     }
 
     // 소프트 딜리트

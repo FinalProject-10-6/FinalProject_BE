@@ -18,7 +18,7 @@ public class PostResponseDto {
 
 //    private String videoFile;
 
-    private List<String> imageFiles;
+    private String imageFile;
 
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
@@ -37,7 +37,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
-        this.imageFiles = post.getImageFiles();
+        this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
@@ -52,7 +52,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
-        this.imageFiles = post.getImageFiles();
+        this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열

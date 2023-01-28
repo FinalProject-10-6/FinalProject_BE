@@ -18,7 +18,7 @@ public class PostCreateResponseDto {
     private String nickname;
     private String content;
     private String title;
-    private List<String> imageFiles;
+    private String imageFile;
     private LocalDateTime modifiedAt;
     private LocalDateTime createdAt;
     private String category;
@@ -30,7 +30,7 @@ public class PostCreateResponseDto {
         this.nickname = user.getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
-        this.imageFiles = post.getImageFiles();
+        this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.category = post.getCategory();

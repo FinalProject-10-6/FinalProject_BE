@@ -59,36 +59,32 @@ public class PostService {
 
     // 다중 포스트 생성
     @Transactional
-    public PostCreateResponseDto createPost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user) throws IOException {
-        List<String> imageFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFileList) {
-            if (!multipartFile.isEmpty()) {
-                    String imageFile = null;
-                    imageFile = awss3Service.upload(multipartFile, "files");
-                    imageFiles.add(imageFile);
-            }
-        }
-        Post post = postRepository.saveAndFlush(new Post(requestDto, user, imageFiles));
-        return new PostCreateResponseDto(post, user, "게시글 작성 완료");
+    public PostCreateResponseDto createPost(MultipartFile multipartFile, PostRequestDto requestDto, User user) throws IOException {
+
+        if (!(multipartFile == null)) {
+            String imageFile = null;
+            imageFile = awss3Service.upload(multipartFile, "files");
+            Post post = postRepository.saveAndFlush(new Post(requestDto, user, imageFile));
+            return new PostCreateResponseDto(post, user, "게시글 작성 완료");
+        } else {
+            Post post = postRepository.saveAndFlush(new Post(requestDto, user));
+            return new PostCreateResponseDto(post, user, "게시글 작성 완료");
+    }
     }
 
     // 포스트 수정하기
     @Transactional
-    public PostCreateResponseDto updatePost(List<MultipartFile> multipartFileList, PostRequestDto requestDto, User user, Long id) throws IOException {
+    public PostCreateResponseDto updatePost(MultipartFile multipartFile, PostRequestDto requestDto, User user, Long id) throws IOException {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 포스트입니다"));
-        if(post.getUser().getLoginId().equals(user.getLoginId()) ) {
-            List<String> imageFiles = new ArrayList<>();
-            for (MultipartFile multipartFile : multipartFileList) {
-                if (!multipartFile.isEmpty()) {
-                    String imageFile = null;
-                    imageFile = awss3Service.upload(multipartFile, "files");
-                    imageFiles.add(imageFile);
-                } else {
-                    post.update(requestDto);
-                }
+        if (post.getUser().getLoginId().equals(user.getLoginId())) {
+            if (!(multipartFile == null)) {
+                String imageFile = null;
+                imageFile = awss3Service.upload(multipartFile, "files");
+                post.update(requestDto, imageFile);
+            } else {
+                post.update(requestDto);
             }
-            post.update(requestDto, imageFiles);
             return new PostCreateResponseDto(post, user, "게시글 수정 완료");
         } else {
             throw new CustomException(ErrorCode.NOAUTH_UPDATE);
