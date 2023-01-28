@@ -39,6 +39,13 @@ public class PostController {
         System.out.println("multipartFileList = " + multipartFileList.size());
         return postService.createPost(multipartFileList, requestDto, userDetails.getUser());
     }
+    @ApiOperation(value = "게시글 url 리턴")
+    @PostMapping("/imageUrlReturn")
+    public List<String> createPost(MultipartHttpServletRequest request) throws IOException {
+        List<MultipartFile> multipartFileList = request.getFiles("urlFile");
+        System.out.println("multipartFileList = " + multipartFileList.size());
+        return postService.imageUrlReturn(multipartFileList);
+    }
 
     // 전체 포스트 가져오기
     @ApiOperation(value = "게시글 전체조회")
