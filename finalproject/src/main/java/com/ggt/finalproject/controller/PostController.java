@@ -92,9 +92,18 @@ public class PostController {
         return postService.searchPost(keyword);
     }
 
+
+
+    // 이 이후는 음식월드컵 용
     @ApiOperation(value = "좋아요 상위 사진 가져오기")
-    @GetMapping("getWorldcupImage/")
-    public List<PostResponseDto> getWorldcupImage(@PathVariable int count, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.getWorldcupImage(count, userDetails.getUser());
+    @GetMapping("/getWorldcupImage")
+    public List<WorldCupImageDto> getWorldcupImage() {
+        System.out.println("컨트롤러단");
+        return postService.getWorldcupImage();
+    }
+    @ApiOperation(value = "랭크별 이미지 5개 돌려주기")
+    @PostMapping("getWorldcupImage/{postId}")
+    public List<WorldCupImageDto> worldcupImageRank(@PathVariable Long postId) {
+        return postService.worldcupImageRank(postId);
     }
 }

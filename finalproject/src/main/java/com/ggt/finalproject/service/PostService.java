@@ -1,17 +1,11 @@
 package com.ggt.finalproject.service;
 
 import com.ggt.finalproject.dto.*;
-import com.ggt.finalproject.entity.Post;
-import com.ggt.finalproject.entity.TimeStamped;
-import com.ggt.finalproject.entity.User;
-import com.ggt.finalproject.entity.UserRoleEnum;
+import com.ggt.finalproject.entity.*;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
 import com.ggt.finalproject.jwt.JwtUtil;
-import com.ggt.finalproject.repository.CommentRepository;
-import com.ggt.finalproject.repository.LikePostRepository;
-import com.ggt.finalproject.repository.PostRepository;
-import com.ggt.finalproject.repository.UserRepository;
+import com.ggt.finalproject.repository.*;
 
 import com.ggt.finalproject.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -41,6 +36,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
+    private final WorldCupRepository worldCupRepository;
 
 //     포스트 이미지 url 리턴용
     @Transactional
@@ -174,17 +170,33 @@ public class PostService {
 
     // 이미지 월드컵 용 사진 가져오기
     @Transactional
-    public List<PostResponseDto> getWorldcupImage(int count, User user) {
-        if(!(user.getUserRole().equals(UserRoleEnum.ADMIN))) {
-            throw new CustomException(ErrorCode.WRONG_USERROLE);
-        }
-        List<PostResponseDto> postList = new ArrayList<>();
+    public List<WorldCupImageDto> getWorldcupImage() {
+        System.out.println("서비스단");
+        List<WorldCupImageDto> imageList = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 16);
         Page<Post> posts = postRepository.findAllByPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
         for (Post post : posts) {
-            postList.add(new PostResponseDto(post));
-            System.out.println(post);
+            imageList.add(new WorldCupImageDto(post));
         }
-        return postList;
+        System.out.println("서비스단2");
+        Collections.shuffle(imageList);
+        System.out.println("서비스단3");
+        return imageList;
+    }
+    @Transactional
+    public List<WorldCupImageDto> worldcupImageRank(Long id) {
+        if(worldCupRepository.existsByPostId(id)) {
+            FoodWorldCup foodWorldCup = worldCupRepository.findByPostId(id);
+            foodWorldCup.point();
+        } else {
+            FoodWorldCup foodWorldCup = worldCupRepository.saveAndFlush(new FoodWorldCup(1, id, 1));
+        }
+        List<WorldCupImageDto> topRank = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<FoodWorldCup> WorldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        for (FoodWorldCup worldCup : WorldCupRank) {
+            topRank.add(new WorldCupImageDto(worldCup));
+        }
+        return topRank;
     }
 }
