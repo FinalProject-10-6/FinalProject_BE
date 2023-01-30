@@ -8,6 +8,7 @@ import com.ggt.finalproject.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -91,4 +92,9 @@ public class PostController {
         return postService.searchPost(keyword);
     }
 
+    @ApiOperation(value = "좋아요 상위 사진 가져오기")
+    @GetMapping("getWorldcupImage/")
+    public List<PostResponseDto> getWorldcupImage(@PathVariable int count, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.getWorldcupImage(count, userDetails.getUser());
+    }
 }

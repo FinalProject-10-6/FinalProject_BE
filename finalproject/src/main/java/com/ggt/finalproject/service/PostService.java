@@ -172,4 +172,19 @@ public class PostService {
         return postList;
     }
 
+    // 이미지 월드컵 용 사진 가져오기
+    @Transactional
+    public List<PostResponseDto> getWorldcupImage(int count, User user) {
+        if(!(user.getUserRole().equals(UserRoleEnum.ADMIN))) {
+            throw new CustomException(ErrorCode.WRONG_USERROLE);
+        }
+        List<PostResponseDto> postList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 16);
+        Page<Post> posts = postRepository.findAllByPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
+        for (Post post : posts) {
+            postList.add(new PostResponseDto(post));
+            System.out.println(post);
+        }
+        return postList;
+    }
 }
