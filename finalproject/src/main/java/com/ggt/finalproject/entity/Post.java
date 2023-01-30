@@ -34,8 +34,8 @@ public class Post extends TimeStamped {
     private Long likePostSum;
     @Column
     private boolean IsLikedPost;    //좋아요를 위해 추가 - 종열
-    @ElementCollection
-    private List<String> imageFiles;
+    @Column
+    private String imageFile = "";
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
@@ -45,8 +45,8 @@ public class Post extends TimeStamped {
     }
 
     // 파일 수정 용도
-    public void update(PostRequestDto requestDto, List<String> imageFiles) {
-        this.imageFiles = imageFiles;
+    public void update(PostRequestDto requestDto, String imageFile) {
+        this.imageFile = imageFile;
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.category = requestDto.getCategory();
@@ -67,10 +67,10 @@ public class Post extends TimeStamped {
         this.postStatus = false;
     }
 
-    public Post(PostRequestDto requestDto, User user,  List<String> imageFiles) {
+    public Post(PostRequestDto requestDto, User user,  String imageFile) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.imageFiles = imageFiles;
+        this.imageFile = imageFile ;
         this.category = requestDto.getCategory();
         this.user = user;
         this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
