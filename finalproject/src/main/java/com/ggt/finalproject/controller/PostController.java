@@ -1,23 +1,16 @@
 package com.ggt.finalproject.controller;
 
 import com.ggt.finalproject.dto.*;
-import com.ggt.finalproject.entity.Post;
-import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -97,13 +90,12 @@ public class PostController {
     // 이 이후는 음식월드컵 용
     @ApiOperation(value = "좋아요 상위 사진 가져오기")
     @GetMapping("/getWorldcupImage")
-    public List<WorldCupImageDto> getWorldcupImage() {
-        System.out.println("컨트롤러단");
+    public List<FoodWorldcupResponseDto> getWorldcupImage() {
         return postService.getWorldcupImage();
     }
     @ApiOperation(value = "랭크별 이미지 5개 돌려주기")
     @PostMapping("getWorldcupImage/{postId}")
-    public List<WorldCupImageDto> worldcupImageRank(@PathVariable Long postId) {
+    public List<FoodWorldcupResponseDto> worldcupImageRank(@PathVariable Long postId) {
         return postService.worldcupImageRank(postId);
     }
 }

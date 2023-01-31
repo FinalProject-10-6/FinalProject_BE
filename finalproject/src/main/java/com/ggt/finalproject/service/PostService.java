@@ -4,26 +4,21 @@ import com.ggt.finalproject.dto.*;
 import com.ggt.finalproject.entity.*;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
-import com.ggt.finalproject.jwt.JwtUtil;
 import com.ggt.finalproject.repository.*;
 
 import com.ggt.finalproject.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.ggt.finalproject.security.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -170,32 +165,33 @@ public class PostService {
 
     // 이미지 월드컵 용 사진 가져오기
     @Transactional
-    public List<WorldCupImageDto> getWorldcupImage() {
-        System.out.println("서비스단");
-        List<WorldCupImageDto> imageList = new ArrayList<>();
+    public List<FoodWorldcupResponseDto> getWorldcupImage() {
+        List<FoodWorldcupResponseDto> imageList = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 16);
         Page<Post> posts = postRepository.findAllByPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
         for (Post post : posts) {
-            imageList.add(new WorldCupImageDto(post));
+            imageList.add(new FoodWorldcupResponseDto(post));
         }
-        System.out.println("서비스단2");
         Collections.shuffle(imageList);
-        System.out.println("서비스단3");
         return imageList;
     }
     @Transactional
-    public List<WorldCupImageDto> worldcupImageRank(Long id) {
+    public List<FoodWorldcupResponseDto> worldcupImageRank(Long id) {
+
         if(worldCupRepository.existsByPostId(id)) {
             FoodWorldCup foodWorldCup = worldCupRepository.findByPostId(id);
             foodWorldCup.point();
         } else {
-            FoodWorldCup foodWorldCup = worldCupRepository.saveAndFlush(new FoodWorldCup(1, id, 1));
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new CustomException(ErrorCode.NOTFOUND_POST)
+            );
+            worldCupRepository.saveAndFlush(new FoodWorldCup(1, id, 1, post));
         }
-        List<WorldCupImageDto> topRank = new ArrayList<>();
+        List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 5);
-        Page<FoodWorldCup> WorldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
-        for (FoodWorldCup worldCup : WorldCupRank) {
-            topRank.add(new WorldCupImageDto(worldCup));
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        for (FoodWorldCup worldCup : worldCupRank) {
+            topRank.add(new FoodWorldcupResponseDto(worldCup));
         }
         return topRank;
     }
