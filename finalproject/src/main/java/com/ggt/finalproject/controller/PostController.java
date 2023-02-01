@@ -1,22 +1,16 @@
 package com.ggt.finalproject.controller;
 
 import com.ggt.finalproject.dto.*;
-import com.ggt.finalproject.entity.Post;
-import com.ggt.finalproject.repository.PostRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -91,4 +85,20 @@ public class PostController {
         return postService.searchPost(keyword);
     }
 
+    // 이 이후는 음식월드컵 용
+    @ApiOperation(value = "좋아요 상위 사진 가져오기")
+    @GetMapping("/getWorldcupImage")
+    public List<FoodWorldcupResponseDto> getWorldcupImage() {
+        return postService.getWorldcupImage();
+    }
+    @ApiOperation(value = "랭크별 이미지 5개 돌려주기")
+    @PostMapping("/getWorldcupImage/{postId}/2")
+    public List<FoodWorldcupResponseDto> worldcupImageRank(@PathVariable Long postId) {
+        return postService.worldcupImageRank(postId);
+    }
+    @ApiOperation(value = "랭크별 이미지 5개 돌려주기 조회")
+    @GetMapping("/getWorldcupTop5")
+    public List<FoodWorldcupResponseDto> getWorldcupTop5() {
+        return postService.getWorldcupTop5();
+    }
 }

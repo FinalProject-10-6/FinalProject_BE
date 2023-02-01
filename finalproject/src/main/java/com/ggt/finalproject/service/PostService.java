@@ -1,36 +1,26 @@
 package com.ggt.finalproject.service;
 
 import com.ggt.finalproject.dto.*;
-import com.ggt.finalproject.entity.Post;
-import com.ggt.finalproject.entity.TimeStamped;
-import com.ggt.finalproject.entity.User;
-import com.ggt.finalproject.entity.UserRoleEnum;
+import com.ggt.finalproject.entity.*;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
-import com.ggt.finalproject.jwt.JwtUtil;
-import com.ggt.finalproject.repository.CommentRepository;
-import com.ggt.finalproject.repository.LikePostRepository;
-import com.ggt.finalproject.repository.PostRepository;
-import com.ggt.finalproject.repository.UserRepository;
+import com.ggt.finalproject.repository.*;
 
 import com.ggt.finalproject.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.ggt.finalproject.security.UserDetailsImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -41,6 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
+    private final WorldCupRepository worldCupRepository;
 
 //     포스트 이미지 url 리턴용
     @Transactional
@@ -115,18 +106,6 @@ public class PostService {
         }
         return postList;
     }
-//
-//    // 삭제 전체 포스트 가져오기
-//    @Transactional(readOnly = true)
-//    public List<PostResponseDto> getDeletePosts(User user) {
-//
-//        List<PostResponseDto> postList = new ArrayList<>();
-//        List<Post> posts = postRepository.findAllByPostStatusAndIdOrderByCreatedAtDesc(false, user.getId());
-//        for(Post post : posts) {
-//            postList.add(new PostResponseDto(post));
-//        }
-//        return postList;
-//    }
 
     // 선택 포스트 가져오기
     @Transactional(readOnly = true)
@@ -170,6 +149,49 @@ public class PostService {
             postList.add(new PostResponseDto(post));
         }
         return postList;
+    }
+
+    // 이미지 월드컵 용 사진 가져오기
+    @Transactional
+    public List<FoodWorldcupResponseDto> getWorldcupImage() {
+        List<FoodWorldcupResponseDto> imageList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 16);
+        Page<Post> posts = postRepository.findAllByPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
+        for (Post post : posts) {
+            imageList.add(new FoodWorldcupResponseDto(post));
+        }
+        Collections.shuffle(imageList);
+        return imageList;
+    }
+    @Transactional
+    public List<FoodWorldcupResponseDto> worldcupImageRank(Long id) {
+
+        if(worldCupRepository.existsByPostId(id)) {
+            FoodWorldCup foodWorldCup = worldCupRepository.findByPostId(id);
+            foodWorldCup.point();
+        } else {
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new CustomException(ErrorCode.NOTFOUND_POST)
+            );
+            worldCupRepository.saveAndFlush(new FoodWorldCup(1, id, 1, post));
+        }
+        List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        for (FoodWorldCup worldCup : worldCupRank) {
+            topRank.add(new FoodWorldcupResponseDto(worldCup));
+        }
+        return topRank;
+    }
+    @Transactional
+    public List<FoodWorldcupResponseDto> getWorldcupTop5() {
+        List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        for (FoodWorldCup worldCup : worldCupRank) {
+            topRank.add(new FoodWorldcupResponseDto(worldCup));
+        }
+        return topRank;
     }
 
 }
