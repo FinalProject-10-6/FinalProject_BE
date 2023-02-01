@@ -92,7 +92,7 @@ public class PostController {
         return postService.getWorldcupImage();
     }
     @ApiOperation(value = "랭크별 이미지 5개 돌려주기")
-    @PostMapping("/getWorldcupImage/{postId}/2")
+    @PostMapping("/getWorldcupImage/{postId}")
     public List<FoodWorldcupResponseDto> worldcupImageRank(@PathVariable Long postId) {
         return postService.worldcupImageRank(postId);
     }

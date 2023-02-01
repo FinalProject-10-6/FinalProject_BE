@@ -16,4 +16,5 @@ public interface WorldCupRepository extends JpaRepository<FoodWorldCup, Long> {
     boolean existsByPostIdAndNum(Long postId, int num);
     FoodWorldCup findByPostId(Long postId);
     Page<FoodWorldCup> findAllByNumOrderByPointDesc(Pageable pageable, int num);
+    FoodWorldCup findFirstByNum();
 }

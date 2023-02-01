@@ -18,8 +18,9 @@ public class Scheduler {
 
 
     // 초, 분, 시, 일, 월, 주 순서
-    @Scheduled(cron = "0 1 * * * *")
-    public void worldcupNum() throws InterruptedException {
+    @Scheduled(cron = "0 4 * * * *")
+    public void worldcupNum() {
+        System.out.println("되긴함?");
         log.info("음식월드컵 다음회차 변경");
         postService.worldcupNum();
     }

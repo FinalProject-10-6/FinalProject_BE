@@ -153,9 +153,10 @@ public class PostService {
 
 
     // 제 num회차
-    int num = 2;
+    int num;
     public void worldcupNum() {
-        num += 1;
+        num = worldCupRepository.find;
+        System.out.println(num + "업데이트 완료");
     }
     // 이미지 월드컵 용 사진 가져오기
     @Transactional
@@ -193,7 +194,7 @@ public class PostService {
     public List<FoodWorldcupResponseDto> getWorldcupTop5() {
         List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 5);
-        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 2);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, num);
         for (FoodWorldCup worldCup : worldCupRank) {
             topRank.add(new FoodWorldcupResponseDto(worldCup));
         }
