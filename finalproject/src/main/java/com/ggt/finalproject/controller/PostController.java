@@ -101,4 +101,11 @@ public class PostController {
     public List<FoodWorldcupResponseDto> getWorldcupTop5() {
         return postService.getWorldcupTop5();
     }
+
+    @ApiOperation(value = "월 별 우승 준우승 2개 보내주기")
+    @GetMapping("/getWorldcupMonth")
+    public FoodWorldcupResponseDto[][] getWorldcupMonth() {
+        return postService.getWorldcupMonth();
+    }
+
 }
