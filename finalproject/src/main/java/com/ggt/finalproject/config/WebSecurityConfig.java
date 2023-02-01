@@ -50,6 +50,10 @@ public class WebSecurityConfig {
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
                 .antMatchers("/api/user/naver/callback").permitAll()          // 소셜로그인
+                .antMatchers("/api/post/getWorldcupImage").permitAll()          // 이상형 월드컵
+                .antMatchers("/api/post/getWorldcupImage/**").permitAll()       // 이상형 월드컵
+                .antMatchers("/api/post/getWorldcupTop5").permitAll()           // 이상형 월드컵
+
 
 
                 .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X

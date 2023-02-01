@@ -195,4 +195,15 @@ public class PostService {
         }
         return topRank;
     }
+    @Transactional
+    public List<FoodWorldcupResponseDto> getWorldcupTop5() {
+        List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        for (FoodWorldCup worldCup : worldCupRank) {
+            topRank.add(new FoodWorldcupResponseDto(worldCup));
+        }
+        return topRank;
+    }
+
 }
