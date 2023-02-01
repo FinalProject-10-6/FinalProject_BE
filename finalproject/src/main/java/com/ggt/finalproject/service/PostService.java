@@ -106,18 +106,6 @@ public class PostService {
         }
         return postList;
     }
-//
-//    // 삭제 전체 포스트 가져오기
-//    @Transactional(readOnly = true)
-//    public List<PostResponseDto> getDeletePosts(User user) {
-//
-//        List<PostResponseDto> postList = new ArrayList<>();
-//        List<Post> posts = postRepository.findAllByPostStatusAndIdOrderByCreatedAtDesc(false, user.getId());
-//        for(Post post : posts) {
-//            postList.add(new PostResponseDto(post));
-//        }
-//        return postList;
-//    }
 
     // 선택 포스트 가져오기
     @Transactional(readOnly = true)
