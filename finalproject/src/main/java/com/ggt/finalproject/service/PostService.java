@@ -151,6 +151,12 @@ public class PostService {
         return postList;
     }
 
+
+    // 제 num회차
+    int num = 2;
+    public void worldcupNum() {
+        num += 1;
+    }
     // 이미지 월드컵 용 사진 가져오기
     @Transactional
     public List<FoodWorldcupResponseDto> getWorldcupImage() {
@@ -166,18 +172,18 @@ public class PostService {
     @Transactional
     public List<FoodWorldcupResponseDto> worldcupImageRank(Long id) {
 
-        if(worldCupRepository.existsByPostId(id)) {
+        if(worldCupRepository.existsByPostIdAndNum(id, num)) {
             FoodWorldCup foodWorldCup = worldCupRepository.findByPostId(id);
             foodWorldCup.point();
         } else {
             Post post = postRepository.findById(id).orElseThrow(
                     () -> new CustomException(ErrorCode.NOTFOUND_POST)
             );
-            worldCupRepository.saveAndFlush(new FoodWorldCup(1, id, 1, post));
+            worldCupRepository.saveAndFlush(new FoodWorldCup(num, id, 1, post));
         }
         List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 5);
-        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, num);
         for (FoodWorldCup worldCup : worldCupRank) {
             topRank.add(new FoodWorldcupResponseDto(worldCup));
         }
@@ -187,7 +193,7 @@ public class PostService {
     public List<FoodWorldcupResponseDto> getWorldcupTop5() {
         List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 5);
-        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 1);
+        Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, 2);
         for (FoodWorldCup worldCup : worldCupRank) {
             topRank.add(new FoodWorldcupResponseDto(worldCup));
         }

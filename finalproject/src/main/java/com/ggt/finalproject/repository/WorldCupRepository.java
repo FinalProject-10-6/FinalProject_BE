@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface WorldCupRepository extends JpaRepository<FoodWorldCup, Long> {
-    boolean existsByPostId(Long postId);
+    boolean existsByPostIdAndNum(Long postId, int num);
     FoodWorldCup findByPostId(Long postId);
     Page<FoodWorldCup> findAllByNumOrderByPointDesc(Pageable pageable, int num);
 }
