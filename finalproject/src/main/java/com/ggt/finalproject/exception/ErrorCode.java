@@ -27,7 +27,12 @@ public enum ErrorCode {
     WRONG_EMAIL(HttpStatus.BAD_REQUEST.value(), "이메일이 일치하지 않습니다."),
     WRONG_USERROLE(HttpStatus.BAD_REQUEST.value(),"관리자만 가능한 기능입니다"),
     ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류"),
-    WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다");
+    WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다"),
+
+    NOT_VALIDURL(HttpStatus.BAD_REQUEST.value(), "알림 url에러 아무튼"),
+
+    NOT_EXIST_NOTIFICATION(HttpStatus.BAD_REQUEST.value(), "알림 아이디를 찾을수 없음"),
+    NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST.value(), "알림 메세지에러 아무튼");
 
 
 
