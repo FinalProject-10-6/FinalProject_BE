@@ -161,8 +161,6 @@ public class PostService {
 
 
     // 월드컵용 매서드
-
-
     LocalDateTime today = LocalDateTime.now();
     String num = today.format(DateTimeFormatter.ofPattern("YYYY.MM"));
     LocalDateTime monthAgo = LocalDateTime.of(LocalDate.now().minusDays(30), LocalTime.of(0, 0, 0));
