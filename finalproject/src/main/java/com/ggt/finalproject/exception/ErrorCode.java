@@ -29,10 +29,10 @@ public enum ErrorCode {
     ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류"),
     WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다"),
 
-    NOT_VALIDURL(HttpStatus.BAD_REQUEST.value(), "알림 url에러 아무튼"),
+    NOT_VALIDURL(HttpStatus.BAD_REQUEST.value(), "알림 url에러"),
 
     NOT_EXIST_NOTIFICATION(HttpStatus.BAD_REQUEST.value(), "알림 아이디를 찾을수 없음"),
-    NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST.value(), "알림 메세지에러 아무튼");
+    NOT_VALIDCONTENT(HttpStatus.BAD_REQUEST.value(), "알림 메세지에러");
 
 
 
