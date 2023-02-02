@@ -92,7 +92,7 @@ public class PostController {
         return postService.getWorldcupImage();
     }
     @ApiOperation(value = "랭크별 이미지 5개 돌려주기")
-    @PostMapping("/getWorldcupImage/{postId}/2")
+    @PostMapping("/getWorldcupImage/{postId}")
     public List<FoodWorldcupResponseDto> worldcupImageRank(@PathVariable Long postId) {
         return postService.worldcupImageRank(postId);
     }
@@ -101,4 +101,11 @@ public class PostController {
     public List<FoodWorldcupResponseDto> getWorldcupTop5() {
         return postService.getWorldcupTop5();
     }
+
+    @ApiOperation(value = "월 별 우승 준우승 2개 보내주기")
+    @GetMapping("/getWorldcupMonth")
+    public FoodWorldcupResponseDto[][] getWorldcupMonth() {
+        return postService.getWorldcupMonth();
+    }
+
 }

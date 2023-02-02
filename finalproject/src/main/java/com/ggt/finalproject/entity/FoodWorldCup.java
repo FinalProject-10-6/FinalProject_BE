@@ -14,7 +14,7 @@ public class FoodWorldCup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private int num;
+    private String num;
     @Column
     private Long postId;
     @Column
@@ -27,7 +27,7 @@ public class FoodWorldCup {
         this.point += 1;
     }
 
-    public FoodWorldCup(int num, Long postId, int point, Post post) {
+    public FoodWorldCup(String num, Long postId, int point, Post post) {
         this.num = num;
         this.postId = postId;
         this.point = point;
