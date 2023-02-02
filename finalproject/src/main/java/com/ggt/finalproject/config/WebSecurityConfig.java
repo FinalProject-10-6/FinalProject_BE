@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화 -> 유저 권한에따라 나누
 public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
 
@@ -50,9 +50,7 @@ public class WebSecurityConfig {
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
                 .antMatchers("/api/user/naver/callback").permitAll()          // 소셜로그인
-                .antMatchers("/api/post/getWorldcupImage").permitAll()          // 이상형 월드컵
                 .antMatchers("/api/post/getWorldcupImage/**").permitAll()       // 이상형 월드컵
-                .antMatchers("/api/post/getWorldcupTop5").permitAll()           // 이상형 월드컵
 
 
 
