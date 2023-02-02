@@ -170,7 +170,7 @@ public class PostService {
     public List<FoodWorldcupResponseDto> getWorldcupImage() {
         List<FoodWorldcupResponseDto> imageList = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 16);
-        Page<Post> posts = postRepository.findAllByCreatedAtBetweenAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, today, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
+        Page<Post> posts = postRepository.findAllByCreatedAtBetweenAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, today, true, "meal", "https://ggultong.s3");
         for (Post post : posts) {
             imageList.add(new FoodWorldcupResponseDto(post));
         }
@@ -241,11 +241,13 @@ public class PostService {
                     for (int j = 0; j < 2; j++) {
                         monthRank[i - 1][j] = topRank.get(j);
                     }
-                } else {
+                } else if (topRank.size() == 1) {
                     monthRank[i-1][0] = topRank.get(0);
+                    monthRank[i-1][1] = new FoodWorldcupResponseDto();
                 }
             } else {
-                break;
+                monthRank[i-1][0] = new FoodWorldcupResponseDto();
+                monthRank[i-1][1] = new FoodWorldcupResponseDto();
             }
             topRank.clear();
         }

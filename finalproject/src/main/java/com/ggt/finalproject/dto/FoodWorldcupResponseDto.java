@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@RequiredArgsConstructor
 public class FoodWorldcupResponseDto {
     private Long id;
     private String title;
@@ -36,6 +35,14 @@ public class FoodWorldcupResponseDto {
         this.point = foodWorldCup.getPoint();
         this.month = month(foodWorldCup);
         this.percent = percent;
+    }
+    public FoodWorldcupResponseDto() {
+        this.id = 0L;
+        this.title = "기본값";
+        this.imageUrl = "https://ggultong.s3.ap-northeast-2.amazonaws.com/defalutTest.png";
+        this.point = 0;
+        this.month = "기본값";
+        this.percent = 0;
     }
     public String month(FoodWorldCup foodWorldCup) {
         String date = foodWorldCup.getNum();
