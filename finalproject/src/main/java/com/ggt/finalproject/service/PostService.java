@@ -114,6 +114,15 @@ public class PostService {
         }
         return postList;
     }
+    // 카테고리별 총 게시글 갯수 보내주기
+    @Transactional
+    public CategoryDto getCountOfCategory() {
+        Long meal = postRepository.countByCategoryAndPostStatus("meal", true);
+        Long drink = postRepository.countByCategoryAndPostStatus("drink", true);
+        Long recycle = postRepository.countByCategoryAndPostStatus("recycle", true);
+        CategoryDto categoryDto = new CategoryDto(meal, drink, recycle);
+        return categoryDto;
+    }
 
     // 선택 포스트 가져오기
     @Transactional(readOnly = true)

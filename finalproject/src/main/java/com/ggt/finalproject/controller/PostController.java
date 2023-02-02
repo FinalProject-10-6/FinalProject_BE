@@ -51,6 +51,11 @@ public class PostController {
     public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
         return postService.getPostsOfCategory(category, pageNum-1);
     }
+    @ApiOperation(value = "카테고리별 총 게시글 수")
+    @GetMapping("/postList/count")
+    public CategoryDto getCountOfCategory() {
+        return postService.getCountOfCategory();
+    }
 
     // 선택 포스트 가져오기
     @ApiOperation(value = "게시글 상세조회")
