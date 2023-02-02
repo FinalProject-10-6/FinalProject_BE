@@ -240,9 +240,9 @@ public class PostService {
         for(int i = 1; i <= 12; i ++) {
             List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
             String num = today.minusMonths(i - 1).format(DateTimeFormatter.ofPattern("YYYY.MM"));
-            Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, num);
-            System.out.println(num);
-            if(worldCupRepository.existsByNum(num)) {
+            String defalut = today.withYear(2023).withMonth(i).format(DateTimeFormatter.ofPattern("YYYY.MM"));
+            Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, defalut);
+            if(worldCupRepository.existsByNum(defalut)) {
                 for (FoodWorldCup worldCup : worldCupRank) {
                     topRank.add(new FoodWorldcupResponseDto(worldCup));
                 }
