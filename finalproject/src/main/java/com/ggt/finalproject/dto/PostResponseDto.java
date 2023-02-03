@@ -32,6 +32,8 @@ public class PostResponseDto {
 
     private List<CommentResponseDto> comment = new ArrayList<>();
 
+    private int searchPostSum;
+
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
@@ -64,5 +66,21 @@ public class PostResponseDto {
         this.comment = post.getCommentList().stream()
                 .map(CommentResponseDto::new).collect(Collectors.toList());
 
+    }
+
+    public PostResponseDto(Post post, int searchPostSum) {
+        this.id = post.getId();
+        this.nickname = post.getUser().getNickname();
+        this.content = post.getContent();
+        this.title = post.getTitle();
+        this.category = post.getCategory();
+//        this.videoFile = post.getVideoFile();
+        this.imageFile = post.getImageFile();
+        this.modifiedAt = post.getModifiedAt();
+        this.createdAt = post.getCreatedAt();
+        this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
+        this.comment = post.getCommentList().stream()
+                .map(CommentResponseDto::new).collect(Collectors.toList());
+        this.searchPostSum = searchPostSum;
     }
 }

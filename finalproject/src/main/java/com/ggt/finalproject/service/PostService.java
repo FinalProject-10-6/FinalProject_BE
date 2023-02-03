@@ -26,10 +26,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -169,11 +166,12 @@ public class PostService {
     public List<PostResponseDto> searchPost(String keyword, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
         List<PostResponseDto> postList = new ArrayList<>();
+        int searchPostSum = postRepository.countByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
         Page<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(pageable, keyword, keyword);
         if (posts.isEmpty()) return postList;
 
         for(Post post : posts) {
-            postList.add(new PostResponseDto(post));
+            postList.add(new PostResponseDto(post, searchPostSum));
         }
         return postList;
     }
