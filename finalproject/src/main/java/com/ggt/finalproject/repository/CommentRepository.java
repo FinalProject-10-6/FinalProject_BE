@@ -16,6 +16,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
+    // 코멘트 갯수 세기 위한 코드 -> 상정
+    Long countByPost(Post post);
+
 ////    void deleteAllByUsername(String nickname);
 
 }
