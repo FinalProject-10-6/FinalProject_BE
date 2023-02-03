@@ -35,6 +35,10 @@ public class Post extends TimeStamped {
     @Column
     private boolean IsLikedPost;    //좋아요를 위해 추가 - 종열
     @Column
+    private Long scrapPostSum;
+    @Column
+    private boolean IsScrapPost;    //좋아요를 위해 추가 - 종열
+    @Column
     private String imageFile = "";
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
