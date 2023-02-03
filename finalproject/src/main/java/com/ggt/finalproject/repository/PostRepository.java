@@ -20,6 +20,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
     List<Post> findAllByPostStatusOrderByCreatedAtDesc(boolean postStatus);
     Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(Pageable pageable, String title, String content);
+    int countByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content);
+
     // 페이지 카테고리별
     Page<Post> findAllByPostStatusAndCategoryOrderByCreatedAtDesc(Pageable pageable, boolean postStatus, String category);
     // 현재날짜 - 오늘 기점으로 이전 한달간 삭제되지 않은 포스트 중 meal 카테고리의 이미지 있는 게시글 중 좋아요 높은 순 16개 가져오기
