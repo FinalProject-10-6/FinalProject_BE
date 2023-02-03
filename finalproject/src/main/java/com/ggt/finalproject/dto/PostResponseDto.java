@@ -27,6 +27,8 @@ public class PostResponseDto {
 
     private Long likePostSum;    //  좋아요를 위해 추가 - 종열
     private boolean IsLikedPost;
+    private Long scrapPostSum;    //  스크랩 기능
+    private boolean IsScrapPost;
 
     private List<CommentResponseDto> comment = new ArrayList<>();
 
@@ -41,22 +43,24 @@ public class PostResponseDto {
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
+        this.scrapPostSum = post.getScrapPostSum();
         this.comment = post.getCommentList().stream()
                 .map(CommentResponseDto::new).collect(Collectors.toList());
     }
 
-    public PostResponseDto(Post post, boolean IsLikedPost) {
+    public PostResponseDto(Post post, boolean IsLikedPost, boolean IsScrapPost) {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
         this.category = post.getCategory();
-//        this.videoFile = post.getVideoFile();
         this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
         this.IsLikedPost = IsLikedPost;
+        this.scrapPostSum = post.getScrapPostSum();  // 스크랩
+        this.IsScrapPost = IsScrapPost;
         this.comment = post.getCommentList().stream()
                 .map(CommentResponseDto::new).collect(Collectors.toList());
 

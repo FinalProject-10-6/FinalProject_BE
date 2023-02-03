@@ -65,6 +65,13 @@ public class Post extends TimeStamped {
     public void setLikePostSum(Long sum){
         this.likePostSum = sum;
     }
+    // 포스트 스크랩 수
+    public void plusScrapPostSum(){
+        this.scrapPostSum += 1;
+    }
+    public void minusScrapPostSum(){
+        this.scrapPostSum -= 1;
+    }
 
     // 소프트 딜리트용도
     public void soft_delete() {
@@ -79,6 +86,8 @@ public class Post extends TimeStamped {
         this.user = user;
         this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
         this.IsLikedPost = false;
+        this.scrapPostSum = 0L;
+        this.IsScrapPost = false;
     }
 
     public Post(PostRequestDto requestDto, User user) {
@@ -88,6 +97,7 @@ public class Post extends TimeStamped {
         this.user = user;
         this.likePostSum = 0L;    //좋아요를 위해 추가 - 종열
         this.IsLikedPost = false;
+        this.scrapPostSum = 0L;
+        this.IsScrapPost = false;
     }
-
 }

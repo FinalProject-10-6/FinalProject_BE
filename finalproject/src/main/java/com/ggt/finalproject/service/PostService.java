@@ -40,6 +40,7 @@ public class PostService {
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
     private final WorldCupRepository worldCupRepository;
+    private final ScrapPostRepository scrapPostRepository;
 
 //     포스트 이미지 url 리턴용
     @Transactional
@@ -90,17 +91,6 @@ public class PostService {
         }
     }
 
-    // 전체 포스트 가져오기
-    @Transactional(readOnly = true)
-    public List<PostResponseDto> getPosts() {
-        List<PostResponseDto> postList = new ArrayList<>();
-        List<Post> posts = postRepository.findAllByPostStatusOrderByCreatedAtDesc(true);
-        for(Post post : posts) {
-            postList.add(new PostResponseDto(post));
-        }
-        return postList;
-    }
-
     // 카테고리별 포스트 가져오기
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
@@ -133,12 +123,32 @@ public class PostService {
 
         User user = SecurityUtil.getCurrentUser();
         boolean IsLikedPost = false;
+        boolean IsScrapPost = false;
 
         if (user != null) {
             IsLikedPost = likePostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
+            IsScrapPost = scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
         }
 
-        return new PostResponseDto(post, IsLikedPost);
+        return new PostResponseDto(post, IsLikedPost, IsScrapPost);
+    }
+    // 선택포스트 스크랩하기
+    @Transactional(readOnly = false)
+    public MsgResponseDto scrapPost(User user, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.NOTFOUND_POST)
+        );
+        if(scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId())) {
+            ScrapPost scrapPost = scrapPostRepository.findByUserAndPost(user, post);
+            scrapPostRepository.deleteById(scrapPost.getId());
+            post.minusScrapPostSum();
+            return MsgResponseDto.success("스크랩을 삭제하였습니다");
+        } else {
+            scrapPostRepository.saveAndFlush(new ScrapPost(post, user));
+            post.plusScrapPostSum();
+            return MsgResponseDto.success("스크랩 하였습니다.");
+        }
+
     }
 
 
