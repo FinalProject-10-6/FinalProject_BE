@@ -95,7 +95,6 @@ public class PostService {
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
     public List<PostResponseDto> getPostsOfCategory(String category, int pageNum) {
-        System.out.println(category);
         Pageable pageable = PageRequest.of(pageNum, 10);
         List<PostResponseDto> postList = new ArrayList<>();
         Page<Post> posts = postRepository.findAllByPostStatusAndCategoryOrderByCreatedAtDesc(pageable, true, category);
@@ -190,7 +189,7 @@ public class PostService {
     public List<FoodWorldcupResponseDto> getWorldcupImage() {
         List<FoodWorldcupResponseDto> imageList = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 16);
-        Page<Post> posts = postRepository.findAllByCreatedAtBetweenAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, today, true, "meal", "https://ggultong.s3");
+        Page<Post> posts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "meal", "https://ggultong.s3");
         for (Post post : posts) {
             imageList.add(new FoodWorldcupResponseDto(post));
         }
