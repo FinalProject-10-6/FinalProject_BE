@@ -15,11 +15,13 @@ public class FoodWorldcupResponseDto {
     private int point;
     private String month;
     private int percent;
+    private String category;
 
     public FoodWorldcupResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.imageUrl = post.getImageFile();
+        this.category = post.getCategory();
     }
     public FoodWorldcupResponseDto(FoodWorldCup foodWorldCup) {
         this.id = foodWorldCup.getPostId();
@@ -27,6 +29,7 @@ public class FoodWorldcupResponseDto {
         this.imageUrl = foodWorldCup.getPost().getImageFile();
         this.point = foodWorldCup.getPoint();
         this.month = month(foodWorldCup);
+        this.category = foodWorldCup.getPost().getCategory();
     }
     public FoodWorldcupResponseDto(FoodWorldCup foodWorldCup, int percent) {
         this.id = foodWorldCup.getPostId();
@@ -35,6 +38,7 @@ public class FoodWorldcupResponseDto {
         this.point = foodWorldCup.getPoint();
         this.month = month(foodWorldCup);
         this.percent = percent;
+        this.category = foodWorldCup.getPost().getCategory();
     }
     public FoodWorldcupResponseDto() {
         this.id = 0L;
@@ -43,6 +47,7 @@ public class FoodWorldcupResponseDto {
         this.point = 0;
         this.month = "기본값";
         this.percent = 0;
+        this.category = "기본값";
     }
     public String month(FoodWorldCup foodWorldCup) {
         String date = foodWorldCup.getNum();
