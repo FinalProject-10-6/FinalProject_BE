@@ -113,7 +113,11 @@ public class MyPageService {
 ////        User user = new User(nickname, loginId, password, email);
 //        user.socialUpdate(myPageDto);
 //        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
+        Optional<User> found = userRepository.findByNickname(nickname);
+        if(found.isPresent()) {
+            throw new CustomException(ErrorCode.NOT_CHECK_NICKNAME);
 
+        }
         user.socialUpdate(nickname);
         userRepository.save(user);
         return MsgResponseDto.success("정보 업데이트 완료");

@@ -13,6 +13,7 @@ public enum ErrorCode {
     OVERLAPPED_LOGINID(HttpStatus.BAD_REQUEST.value(),"중복된 loginID 입니다."),
     OVERLAPPED_EMAIL(HttpStatus.BAD_REQUEST.value(),"중복된 email 입니다."),
     OVERLAPPED_NICKNAME(HttpStatus.BAD_REQUEST.value(),"중복된 nickname 입니다."),
+    NOT_CHECK_NICKNAME(HttpStatus.BAD_REQUEST.value(),"닉네임 체크를 다시해주세요."),
 
     WRONG_POST(HttpStatus.NOT_FOUND.value(),"해당 글을 찾을 수 없습니다."),
     NO_COMMENT(HttpStatus.NOT_FOUND.value(), "해당 댓글을 찾을 수 없습니다."),

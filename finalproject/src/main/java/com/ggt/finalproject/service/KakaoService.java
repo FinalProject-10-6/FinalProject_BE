@@ -55,7 +55,7 @@ public class KakaoService {
         setHeader(response, tokenDto);
 
 //        return createToken;
-        return LoginResponseDto.success("로그인 완료",kakaoUser.getLoginId().substring(2), kakaoUser.getNickname(),kakaoUser.getProfileImg(),kakaoUser.getEmail().substring(2));
+        return LoginResponseDto.success("로그인 완료",kakaoUser.getLoginId().substring(2), kakaoUser.getNickname(),kakaoUser.getProfileImg(),kakaoUser.getEmail());
     }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청
