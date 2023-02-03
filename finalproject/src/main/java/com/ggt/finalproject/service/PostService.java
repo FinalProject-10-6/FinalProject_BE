@@ -148,9 +148,10 @@ public class PostService {
 
 
     @Transactional
-    public List<PostResponseDto> searchPost(String keyword) {
+    public List<PostResponseDto> searchPost(String keyword, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
         List<PostResponseDto> postList = new ArrayList<>();
-        List<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
+        Page<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(pageable, keyword, keyword);
         if (posts.isEmpty()) return postList;
 
         for(Post post : posts) {
