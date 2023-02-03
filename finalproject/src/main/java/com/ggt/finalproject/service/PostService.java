@@ -40,6 +40,7 @@ public class PostService {
     private final AWSS3Service awss3Service;
     private final LikePostRepository likePostRepository;
     private final WorldCupRepository worldCupRepository;
+    private final ScrapPostRepository scrapPostRepository;
 
 //     포스트 이미지 url 리턴용
     @Transactional
@@ -90,17 +91,6 @@ public class PostService {
         }
     }
 
-    // 전체 포스트 가져오기
-    @Transactional(readOnly = true)
-    public List<PostResponseDto> getPosts() {
-        List<PostResponseDto> postList = new ArrayList<>();
-        List<Post> posts = postRepository.findAllByPostStatusOrderByCreatedAtDesc(true);
-        for(Post post : posts) {
-            postList.add(new PostResponseDto(post));
-        }
-        return postList;
-    }
-
     // 카테고리별 포스트 가져오기
     // 전체 포스트 가져오기
     @Transactional(readOnly = true)
@@ -114,6 +104,15 @@ public class PostService {
         }
         return postList;
     }
+    // 카테고리별 총 게시글 갯수 보내주기
+    @Transactional
+    public CategoryDto getCountOfCategory() {
+        Long meal = postRepository.countByCategoryAndPostStatus("meal", true);
+        Long drink = postRepository.countByCategoryAndPostStatus("drink", true);
+        Long recycle = postRepository.countByCategoryAndPostStatus("recycle", true);
+        CategoryDto categoryDto = new CategoryDto(meal, drink, recycle);
+        return categoryDto;
+    }
 
     // 선택 포스트 가져오기
     @Transactional(readOnly = true)
@@ -124,12 +123,32 @@ public class PostService {
 
         User user = SecurityUtil.getCurrentUser();
         boolean IsLikedPost = false;
+        boolean IsScrapPost = false;
 
         if (user != null) {
             IsLikedPost = likePostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
+            IsScrapPost = scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
         }
 
-        return new PostResponseDto(post, IsLikedPost);
+        return new PostResponseDto(post, IsLikedPost, IsScrapPost);
+    }
+    // 선택포스트 스크랩하기
+    @Transactional(readOnly = false)
+    public MsgResponseDto scrapPost(User user, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.NOTFOUND_POST)
+        );
+        if(scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId())) {
+            ScrapPost scrapPost = scrapPostRepository.findByUserAndPost(user, post);
+            scrapPostRepository.deleteById(scrapPost.getId());
+            post.minusScrapPostSum();
+            return MsgResponseDto.success("스크랩을 삭제하였습니다");
+        } else {
+            scrapPostRepository.saveAndFlush(new ScrapPost(post, user));
+            post.plusScrapPostSum();
+            return MsgResponseDto.success("스크랩 하였습니다.");
+        }
+
     }
 
 
@@ -171,7 +190,7 @@ public class PostService {
     public List<FoodWorldcupResponseDto> getWorldcupImage() {
         List<FoodWorldcupResponseDto> imageList = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 16);
-        Page<Post> posts = postRepository.findAllByCreatedAtBetweenAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, today, true, "meal", "https://ggultong.s3.ap-northeast-2.amazonaws.com/");
+        Page<Post> posts = postRepository.findAllByCreatedAtBetweenAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, today, true, "meal", "https://ggultong.s3");
         for (Post post : posts) {
             imageList.add(new FoodWorldcupResponseDto(post));
         }
@@ -232,9 +251,9 @@ public class PostService {
         for(int i = 1; i <= 12; i ++) {
             List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
             String num = today.minusMonths(i - 1).format(DateTimeFormatter.ofPattern("YYYY.MM"));
-            Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, num);
-            System.out.println(num);
-            if(worldCupRepository.existsByNum(num)) {
+            String defalut = today.withYear(2023).withMonth(i).format(DateTimeFormatter.ofPattern("YYYY.MM"));
+            Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, defalut);
+            if(worldCupRepository.existsByNum(defalut)) {
                 for (FoodWorldCup worldCup : worldCupRank) {
                     topRank.add(new FoodWorldcupResponseDto(worldCup));
                 }
@@ -242,11 +261,13 @@ public class PostService {
                     for (int j = 0; j < 2; j++) {
                         monthRank[i - 1][j] = topRank.get(j);
                     }
-                } else {
+                } else if (topRank.size() == 1) {
                     monthRank[i-1][0] = topRank.get(0);
+                    monthRank[i-1][1] = new FoodWorldcupResponseDto();
                 }
             } else {
-                break;
+                monthRank[i-1][0] = new FoodWorldcupResponseDto();
+                monthRank[i-1][1] = new FoodWorldcupResponseDto();
             }
             topRank.clear();
         }

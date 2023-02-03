@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipal;
+import java.security.Principal;
 import java.util.List;
 
 @Api(tags = {"Post API"})
@@ -40,16 +42,15 @@ public class PostController {
         return postService.imageUrlReturn(multipartFileList);
     }
 
-    // 전체 포스트 가져오기
-    @ApiOperation(value = "게시글 전체조회")
-    @GetMapping("/postList")
-    public List<PostResponseDto> getPosts() {
-        return postService.getPosts();
-    }
     @ApiOperation(value = "게시글 전체조회")
     @GetMapping("/postList/{category}/{pageNum}")
     public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
         return postService.getPostsOfCategory(category, pageNum-1);
+    }
+    @ApiOperation(value = "카테고리별 총 게시글 수")
+    @GetMapping("/postList/count")
+    public CategoryDto getCountOfCategory() {
+        return postService.getCountOfCategory();
     }
 
     // 선택 포스트 가져오기
@@ -57,6 +58,13 @@ public class PostController {
     @GetMapping("/{postId}")
     public PostResponseDto getPost(@PathVariable Long postId) {
         return postService.getPost(postId);
+    }
+
+    // 선택 포스트 스크랩하기
+    @ApiOperation(value = "게시글 스크랩하기")
+    @PostMapping("/scrap/{postId}")
+    public MsgResponseDto scrapPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        return postService.scrapPost(userDetails.getUser(), postId);
     }
 
     // 포스트 수정하기

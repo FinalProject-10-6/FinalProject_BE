@@ -1,9 +1,13 @@
 package com.ggt.finalproject.service;
 
 import com.ggt.finalproject.dto.*;
+import com.ggt.finalproject.entity.Post;
+import com.ggt.finalproject.entity.ScrapPost;
 import com.ggt.finalproject.entity.User;
 import com.ggt.finalproject.exception.CustomException;
 import com.ggt.finalproject.exception.ErrorCode;
+import com.ggt.finalproject.repository.PostRepository;
+import com.ggt.finalproject.repository.ScrapPostRepository;
 import com.ggt.finalproject.repository.UserRepository;
 import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.util.Util;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +36,10 @@ public class MyPageService {
     private final AWSS3Service awss3Service;
 
     private final PasswordEncoder passwordEncoder;
+
+    // 마이페이지 포스트 가져오기위해 의존성 주입
+    private final PostRepository postRepository;
+    private final ScrapPostRepository scrapPostRepository;
 
 
 
@@ -119,5 +128,26 @@ public class MyPageService {
         return MsgResponseDto.success("정보 업데이트 완료");
     }
 
+    //  상정 마이페이지 내 포스트 가져오기
+    @Transactional
+    public List<MyPostRepsonseDto> myPost (User user) {
+        List<Post> posts = postRepository.findByUserAndPostStatusOrderByCreatedAtDesc(user, true);
+        List<MyPostRepsonseDto> myPostList = new ArrayList<>();
+        for(Post post : posts) {
+            myPostList.add(new MyPostRepsonseDto(post));
+        }
+        return myPostList;
+    }
+
+    // 상정 마이페이지 내 스크랩 가져오기
+    @Transactional
+    public List<MyPostRepsonseDto> myScrap (User user) {
+        List<ScrapPost> posts = scrapPostRepository.findByUser(user);
+        List<MyPostRepsonseDto> myScrapList = new ArrayList<>();
+        for(ScrapPost scrapPost : posts) {
+            myScrapList.add(new MyPostRepsonseDto(scrapPost));
+        }
+        return myScrapList;
+    }
 
 }
