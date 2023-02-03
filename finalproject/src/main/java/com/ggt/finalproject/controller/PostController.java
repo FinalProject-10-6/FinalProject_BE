@@ -80,10 +80,17 @@ public class PostController {
     }
 
     @ApiOperation(value = "검색")
-    @GetMapping("/search")
-    public List<PostResponseDto> searchPost(@RequestParam String keyword) {
-        return postService.searchPost(keyword);
+    @GetMapping("/search/{pageNum}")
+    public List<PostResponseDto> searchPost(@RequestParam String keyword, @PathVariable int pageNum) {
+        return postService.searchPost(keyword, pageNum -1);
     }
+
+//    @ApiOperation(value = "검색")
+//    @GetMapping("/search")
+//    public List<PostResponseDto> searchPost(@RequestParam String keyword) {
+//        return postService.searchPost(keyword);
+//    }
+
 
     // 이 이후는 음식월드컵 용
     @ApiOperation(value = "좋아요 상위 사진 가져오기")
