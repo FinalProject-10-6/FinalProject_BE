@@ -81,5 +81,11 @@ public class MyPageController {
     public List<MyPostRepsonseDto> myScrap(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return mypageService.myScrap(userDetails.getUser());
     }
+    // 마이페이지 내 스크랩, 내 게시글 총 갯수 가져오기
+    @Transactional
+    @GetMapping("/myPostCount")
+    public MypageCountDto mypageCount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return mypageService.mypageCount(userDetails.getUser());
+    }
 }
 

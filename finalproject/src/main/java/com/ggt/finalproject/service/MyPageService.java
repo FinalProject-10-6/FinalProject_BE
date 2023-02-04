@@ -154,4 +154,13 @@ public class MyPageService {
         return myScrapList;
     }
 
+    // 상정 마이페이지 내 게시글, 스크랩 총 갯수 반환하기
+    @Transactional
+    public MypageCountDto mypageCount (User user) {
+        Long myScrap = scrapPostRepository.countByUser(user);
+        Long myPost = postRepository.countByUserAndPostStatus(user, true);
+        MypageCountDto mypageCountDto = new MypageCountDto(myPost, myScrap);
+        System.out.println(mypageCountDto);
+        return mypageCountDto;
+    }
 }
