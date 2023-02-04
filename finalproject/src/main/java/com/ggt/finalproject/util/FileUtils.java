@@ -10,7 +10,7 @@ public class FileUtils {
         String fileName = file.getName();
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1,
                 fileName.length());
-        final String[] IMAGE_EXTENSION = {"JPG", "jpg", "jpeg", "JPEG", "PNG", "png"};
+        final String[] IMAGE_EXTENSION = {"JPG", "jpg", "jpeg", "JPEG", "PNG", "png", "gif", "GIF"};
 
         int len = IMAGE_EXTENSION.length;
         for (int i = 0; i < len; i++) {

@@ -27,7 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     // 현재기점 이전 한달간 삭제되지 않은 포스트 중 meal 카테고리의 이미지 있는 게시글 중 좋아요 높은 순 16개 가져오기
     Page<Post> findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(Pageable pageable, LocalDateTime start, boolean postStatus, String category, String starting);
     Long countByCategoryAndPostStatus(String category, boolean postStatus);
-
-    List<Post> findByUserAndPostStatusOrderByCreatedAtDesc(User user, boolean postStatus);
+    Long countByUserAndPostStatus(User user, boolean postStatus);
+    Page<Post> findAllByUserAndPostStatusOrderByCreatedAtDesc(Pageable pageable, User user, boolean postStatus);
 
 }

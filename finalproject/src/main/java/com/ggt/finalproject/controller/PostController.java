@@ -63,7 +63,7 @@ public class PostController {
     // 선택 포스트 스크랩하기
     @ApiOperation(value = "게시글 스크랩하기")
     @PostMapping("/scrap/{postId}")
-    public MsgResponseDto scrapPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+    public ScrapButtonResponseDto scrapPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return postService.scrapPost(userDetails.getUser(), postId);
     }
 
@@ -123,4 +123,11 @@ public class PostController {
         return postService.getWorldcupMonth();
     }
 
+
+    // 메인페이지
+    @ApiOperation(value = "메인페이지 카테고리별 탑6")
+    @GetMapping("/likeTop6")
+    public MainPagePostResponseDto[][] getLikeTop6() {
+        return postService.getLikeTop6();
+    }
 }

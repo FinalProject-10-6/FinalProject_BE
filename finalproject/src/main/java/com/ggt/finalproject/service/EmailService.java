@@ -89,6 +89,10 @@ public class EmailService {
      */
     public MsgResponseDto sendSimpleMessage(EmailDto emailDto)throws MessagingException, UnsupportedEncodingException {
 
+        // 이메일 중복체크 추가
+        if (userRepository.existsByEmail(emailDto.getEmail()))
+            throw new CustomException(ErrorCode.OVERLAPPED_EMAIL);
+
 //        StringBuffer key = new StringBuffer();
 //        Random rnd = new Random();
 //
