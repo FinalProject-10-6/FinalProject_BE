@@ -123,4 +123,11 @@ public class PostController {
         return postService.getWorldcupMonth();
     }
 
+
+    // 메인페이지
+    @ApiOperation(value = "메인페이지 카테고리별 탑6")
+    @GetMapping("/likeTop6")
+    public MainPagePostResponseDto[][] getLikeTop6() {
+        return postService.getLikeTop6();
+    }
 }

@@ -271,4 +271,47 @@ public class PostService {
         }
         return monthRank;
     }
+
+    // 메인페이지 top6
+    @Transactional
+    public MainPagePostResponseDto[][] getLikeTop6() {
+        MainPagePostResponseDto[][] top6 = new MainPagePostResponseDto[3][6];
+        List<MainPagePostResponseDto> categoryTop6 = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 6);
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+                case 0:
+                    Page<Post> drinkPosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "drink", "https://ggultong.s3");
+                    for (Post drinkPost : drinkPosts) {
+                        categoryTop6.add(new MainPagePostResponseDto(drinkPost));
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        top6[i][j] = categoryTop6.get(j);
+                    }
+                    categoryTop6.clear();
+                    break;
+                case 1:
+                    Page<Post> mealPosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "meal", "https://ggultong.s3");
+                    for (Post mealPost : mealPosts) {
+                        categoryTop6.add(new MainPagePostResponseDto(mealPost));
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        top6[i][j] = categoryTop6.get(j);
+                    }
+                    categoryTop6.clear();
+                    break;
+                case 2:
+                    Page<Post> recyclePosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "recycle", "https://ggultong.s3");
+                    for (Post recyclePost : recyclePosts) {
+                        categoryTop6.add(new MainPagePostResponseDto(recyclePost));
+                    }
+                    for (int j = 0; j <= 5; j++) {
+                        top6[i][j] = categoryTop6.get(j);
+                    }
+                    categoryTop6.clear();
+                    break;
+            }
+        }
+        return top6;
+    }
 }
