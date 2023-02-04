@@ -249,7 +249,6 @@ public class PostService {
         Pageable pageable = PageRequest.of(0, 2);
         for(int i = 1; i <= 12; i ++) {
             List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
-            String num = today.minusMonths(i - 1).format(DateTimeFormatter.ofPattern("YYYY.MM"));
             String defalut = today.withYear(2023).withMonth(i).format(DateTimeFormatter.ofPattern("YYYY.MM"));
             Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, defalut);
             if(worldCupRepository.existsByNum(defalut)) {

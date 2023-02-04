@@ -26,7 +26,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     Page<Post> findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(Pageable pageable, LocalDateTime start, boolean postStatus, String category, String starting);
     Long countByCategoryAndPostStatus(String category, boolean postStatus);
     Long countByUserAndPostStatus(User user, boolean postStatus);
-
-    List<Post> findByUserAndPostStatusOrderByCreatedAtDesc(User user, boolean postStatus);
+    Page<Post> findAllByUserAndPostStatusOrderByCreatedAtDesc(Pageable pageable, User user, boolean postStatus);
 
 }

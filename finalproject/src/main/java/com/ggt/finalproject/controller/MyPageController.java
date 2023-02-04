@@ -71,15 +71,15 @@ public class MyPageController {
 
     // 상정 마이페이지 내 게시글 가져오기
     @Transactional
-    @GetMapping("/myPost")
-    public List<MyPostRepsonseDto> myPost(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return mypageService.myPost(userDetails.getUser());
+    @GetMapping("/myPost/{pageNum}")
+    public List<MyPostRepsonseDto> myPost(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int pageNum) {
+        return mypageService.myPost(userDetails.getUser(), pageNum - 1 );
     }
     // 마이페이지 내 스크랩 가져오기
     @Transactional
-    @GetMapping("/myScrap")
-    public List<MyPostRepsonseDto> myScrap(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return mypageService.myScrap(userDetails.getUser());
+    @GetMapping("/myScrap/{pageNum}")
+    public List<MyPostRepsonseDto> myScrap(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int pageNum) {
+        return mypageService.myScrap(userDetails.getUser() , pageNum - 1 );
     }
     // 마이페이지 내 스크랩, 내 게시글 총 갯수 가져오기
     @Transactional

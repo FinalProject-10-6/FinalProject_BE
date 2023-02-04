@@ -13,6 +13,9 @@ import com.ggt.finalproject.security.UserDetailsImpl;
 import com.ggt.finalproject.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -134,8 +137,9 @@ public class MyPageService {
 
     //  상정 마이페이지 내 포스트 가져오기
     @Transactional
-    public List<MyPostRepsonseDto> myPost (User user) {
-        List<Post> posts = postRepository.findByUserAndPostStatusOrderByCreatedAtDesc(user, true);
+    public List<MyPostRepsonseDto> myPost (User user, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        Page<Post> posts = postRepository.findAllByUserAndPostStatusOrderByCreatedAtDesc(pageable, user, true);
         List<MyPostRepsonseDto> myPostList = new ArrayList<>();
         for(Post post : posts) {
             myPostList.add(new MyPostRepsonseDto(post));
@@ -145,8 +149,9 @@ public class MyPageService {
 
     // 상정 마이페이지 내 스크랩 가져오기
     @Transactional
-    public List<MyPostRepsonseDto> myScrap (User user) {
-        List<ScrapPost> posts = scrapPostRepository.findByUser(user);
+    public List<MyPostRepsonseDto> myScrap (User user, int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        Page<ScrapPost> posts = scrapPostRepository.findAllByUser(pageable, user);
         List<MyPostRepsonseDto> myScrapList = new ArrayList<>();
         for(ScrapPost scrapPost : posts) {
             myScrapList.add(new MyPostRepsonseDto(scrapPost));
