@@ -133,7 +133,7 @@ public class PostService {
     }
     // 선택포스트 스크랩하기
     @Transactional(readOnly = false)
-    public MsgResponseDto scrapPost(User user, Long id) {
+    public ScrapButtonResponseDto scrapPost(User user, Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.NOTFOUND_POST)
         );
@@ -141,11 +141,13 @@ public class PostService {
             ScrapPost scrapPost = scrapPostRepository.findByUserAndPost(user, post);
             scrapPostRepository.deleteById(scrapPost.getId());
             post.minusScrapPostSum();
-            return MsgResponseDto.success("스크랩을 삭제하였습니다");
+            Long count = scrapPostRepository.countByPost(post);
+            return new ScrapButtonResponseDto(false, count, "스크랩을 삭제하였습니다");
         } else {
             scrapPostRepository.saveAndFlush(new ScrapPost(post, user));
             post.plusScrapPostSum();
-            return MsgResponseDto.success("스크랩 하였습니다.");
+            Long count = scrapPostRepository.countByPost(post);
+            return new ScrapButtonResponseDto(true, count, "스크랩을 추가하였습니다");
         }
 
     }

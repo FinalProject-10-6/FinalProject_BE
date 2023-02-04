@@ -14,5 +14,6 @@ public interface ScrapPostRepository extends JpaRepository<ScrapPost, Long> {
     boolean existsByUserIdAndPostId(Long userId, Long postId);
     ScrapPost findByUserAndPost(User user, Post post);
     Long countByUser(User user);
+    Long countByPost(Post post);
     Page<ScrapPost> findAllByUser(Pageable pageable, User user);
 }
