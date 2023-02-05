@@ -26,10 +26,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -149,7 +146,6 @@ public class PostService {
             Long count = scrapPostRepository.countByPost(post);
             return new ScrapButtonResponseDto(true, count, "스크랩을 추가하였습니다");
         }
-
     }
 
 
@@ -273,45 +269,18 @@ public class PostService {
         }
         return monthRank;
     }
-
     // 메인페이지 top6
     @Transactional
     public MainPagePostResponseDto[][] getLikeTop6() {
         MainPagePostResponseDto[][] top6 = new MainPagePostResponseDto[3][6];
-        List<MainPagePostResponseDto> categoryTop6 = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 6);
+        List<String> categories = Arrays.asList("drink", "meal", "recycle");
+
         for (int i = 0; i < 3; i++) {
-            switch (i) {
-                case 0:
-                    Page<Post> drinkPosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "drink", "https://ggultong.s3");
-                    for (Post drinkPost : drinkPosts) {
-                        categoryTop6.add(new MainPagePostResponseDto(drinkPost));
-                    }
-                    for (int j = 0; j <= 5; j++) {
-                        top6[i][j] = categoryTop6.get(j);
-                    }
-                    categoryTop6.clear();
-                    break;
-                case 1:
-                    Page<Post> mealPosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "meal", "https://ggultong.s3");
-                    for (Post mealPost : mealPosts) {
-                        categoryTop6.add(new MainPagePostResponseDto(mealPost));
-                    }
-                    for (int j = 0; j <= 5; j++) {
-                        top6[i][j] = categoryTop6.get(j);
-                    }
-                    categoryTop6.clear();
-                    break;
-                case 2:
-                    Page<Post> recyclePosts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, "recycle", "https://ggultong.s3");
-                    for (Post recyclePost : recyclePosts) {
-                        categoryTop6.add(new MainPagePostResponseDto(recyclePost));
-                    }
-                    for (int j = 0; j <= 5; j++) {
-                        top6[i][j] = categoryTop6.get(j);
-                    }
-                    categoryTop6.clear();
-                    break;
+            Page<Post> posts = postRepository.findAllByCreatedAtIsAfterAndPostStatusAndCategoryAndImageFileStartingWithOrderByLikePostSumDesc(pageable, monthAgo, true, categories.get(i), "https://ggultong.s3");
+            int j = 0;
+            for (Post post : posts) {
+                top6[i][j++] = new MainPagePostResponseDto(post);
             }
         }
         return top6;

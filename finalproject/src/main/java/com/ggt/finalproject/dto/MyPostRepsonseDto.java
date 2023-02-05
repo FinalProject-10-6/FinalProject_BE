@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class MyPostRepsonseDto {
 
     private Long postId;
+    private String category;
     private String title;
     private String nickname;
     private Long likeSum;
@@ -22,6 +23,7 @@ public class MyPostRepsonseDto {
 
     public MyPostRepsonseDto(Post post) {
         this.postId = post.getId();
+        this.category = post.getCategory();
         this.title = post.getTitle();
         this.nickname = post.getUser().getNickname();
         this.likeSum = post.getLikePostSum();
@@ -34,13 +36,14 @@ public class MyPostRepsonseDto {
 
     public MyPostRepsonseDto(ScrapPost scrapPost) {
         this.postId = scrapPost.getPost().getId();
+        this.category = scrapPost.getPost().getCategory();
         this.title = scrapPost.getPost().getTitle();
-        this.nickname = scrapPost.getUser().getNickname();
+        this.nickname = scrapPost.getPost().getUser().getNickname();
         this.likeSum = scrapPost.getPost().getLikePostSum();
         this.scrapSum = scrapPost.getPost().getScrapPostSum();
         this.createdAt = scrapPost.getPost().getCreatedAt();
         this.imageFile = scrapPost.getPost().getImageFile();
-        this.profileImage = scrapPost.getUser().getProfileImg();
+        this.profileImage = scrapPost.getPost().getUser().getProfileImg();
         this.commentCount = scrapPost.getPost().getCommentList().size();
     }
 }

@@ -27,5 +27,4 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     Long countByCategoryAndPostStatus(String category, boolean postStatus);
     Long countByUserAndPostStatus(User user, boolean postStatus);
     Page<Post> findAllByUserAndPostStatusOrderByCreatedAtDesc(Pageable pageable, User user, boolean postStatus);
-
 }
