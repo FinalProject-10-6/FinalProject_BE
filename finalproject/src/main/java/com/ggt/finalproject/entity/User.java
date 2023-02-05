@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String loginId;
     private Long kakaoId;
 
@@ -126,7 +126,7 @@ public class User {
 
     public void updatePw(String nPw){
         this.password = nPw;
-
     }
+
 
 }

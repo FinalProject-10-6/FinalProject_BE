@@ -81,13 +81,12 @@ public class MyPageService {
 //        userRepository.findByLoginId(loginId).orElseThrow(
 //                () -> new CustomException(ErrorCode.WRONG_ID)
 //        );
-
         if (user.getLoginId().equals(loginId)) {
-            userRepository.delete(user);
+            user.softDelete();
+            userRepository.save(user);
         } else {
             throw new CustomException(ErrorCode.WRONG_ID);
         }
-
         return MsgResponseDto.success("그동안 서비스를 이용해 주셔서 감사합니다.");
     }
 
@@ -125,7 +124,7 @@ public class MyPageService {
 ////        User user = new User(nickname, loginId, password, email);
 //        user.socialUpdate(myPageDto);
 //        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
-        Optional<User> found = userRepository.findByNickname(nickname);
+        Optional<User> found = userRepository.findByNicknameAndUserStatus(nickname, true);
         if(found.isPresent()) {
             throw new CustomException(ErrorCode.NOT_CHECK_NICKNAME);
 
