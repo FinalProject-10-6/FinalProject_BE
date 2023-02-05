@@ -27,6 +27,7 @@ public enum ErrorCode {
     WRONG_EMAIL_CODE(HttpStatus.BAD_REQUEST.value(), "잘못된 이메일 인증번호 입니다."),
     NOTFOUND_EMAIL(HttpStatus.BAD_REQUEST.value(), "등록되지 않은 이메일 입니다"),
     WRONG_EMAIL(HttpStatus.BAD_REQUEST.value(), "이메일이 일치하지 않습니다."),
+    OVERTIME_EMAIL(HttpStatus.BAD_REQUEST.value(), "인증번호 제한시간 초과."),
     WRONG_USERROLE(HttpStatus.BAD_REQUEST.value(),"관리자만 가능한 기능입니다"),
     ERROR(HttpStatus.NO_CONTENT.value(),"알수업는오류"),
     WRONG_FILETYPE(HttpStatus.BAD_REQUEST.value(),"잘못된 파일 확장자입니다"),

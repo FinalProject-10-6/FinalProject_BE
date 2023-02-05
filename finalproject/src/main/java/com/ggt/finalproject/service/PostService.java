@@ -167,11 +167,12 @@ public class PostService {
     public List<PostResponseDto> searchPost(String keyword, int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
         List<PostResponseDto> postList = new ArrayList<>();
+        int searchPostSum = postRepository.countByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
         Page<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(pageable, keyword, keyword);
         if (posts.isEmpty()) return postList;
 
         for(Post post : posts) {
-            postList.add(new PostResponseDto(post));
+            postList.add(new PostResponseDto(post, searchPostSum));
         }
         return postList;
     }

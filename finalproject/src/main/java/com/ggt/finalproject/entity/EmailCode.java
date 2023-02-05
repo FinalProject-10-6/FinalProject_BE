@@ -12,9 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class EmailCode {
+public class EmailCode extends TimeStamped {
 
-    private static final Long MAX_EXPIRE_TIME = 5L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
