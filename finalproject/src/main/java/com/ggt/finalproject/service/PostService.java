@@ -195,6 +195,7 @@ public class PostService {
         Collections.shuffle(imageList);
         return imageList;
     }
+    // 해당 회차에 월드컵 이미지 순위 5개 넣어주는 코드
     @Transactional
     public List<FoodWorldcupResponseDto> worldcupImageRank(Long id) {
         if(worldCupRepository.existsByPostIdAndNum(id, num)) {
@@ -242,6 +243,8 @@ public class PostService {
 
         return topRank;
     }
+
+    // 일년치 월별 우승, 준우승 가져오는 2차원 배열
     @Transactional
     public FoodWorldcupResponseDto[][] getWorldcupMonth() {
         FoodWorldcupResponseDto[][] monthRank = new FoodWorldcupResponseDto[12][2];
@@ -271,6 +274,7 @@ public class PostService {
         return monthRank;
     }
     // 메인페이지 top6
+    // 카테고리별 인기순 6개씩 가져오는 페이지
     @Transactional
     public MainPagePostResponseDto[][] getLikeTop6() {
         MainPagePostResponseDto[][] top6 = new MainPagePostResponseDto[3][6];
