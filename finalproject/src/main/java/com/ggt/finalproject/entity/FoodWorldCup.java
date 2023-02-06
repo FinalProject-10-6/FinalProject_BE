@@ -19,6 +19,8 @@ public class FoodWorldCup {
     private Long postId;
     @Column
     private int point;
+
+    // ManyToOne으로 Post를 JoinColumn해오는데 Post쪽에서는 사용할 일이 없어 여기에만 작성함
     @ManyToOne
     @JoinColumn(name = "post_originalId",nullable = false)
     private Post post;
