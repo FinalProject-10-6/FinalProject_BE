@@ -137,11 +137,13 @@ public class MyPageService {
     //  상정 마이페이지 내 포스트 가져오기
     @Transactional
     public List<MyPostRepsonseDto> myPost (User user, int pageNum) {
+        Long myPostCount = postRepository.countByUserAndPostStatus(user, true);
+        Long myScrapCount = scrapPostRepository.countByUser(user);
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<Post> posts = postRepository.findAllByUserAndPostStatusOrderByCreatedAtDesc(pageable, user, true);
         List<MyPostRepsonseDto> myPostList = new ArrayList<>();
         for(Post post : posts) {
-            myPostList.add(new MyPostRepsonseDto(post));
+            myPostList.add(new MyPostRepsonseDto(post, myPostCount, myScrapCount));
         }
         return myPostList;
     }
@@ -149,11 +151,13 @@ public class MyPageService {
     // 상정 마이페이지 내 스크랩 가져오기
     @Transactional
     public List<MyPostRepsonseDto> myScrap (User user, int pageNum) {
+        Long myPostCount = postRepository.countByUserAndPostStatus(user, true);
+        Long myScrapCount = scrapPostRepository.countByUser(user);
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<ScrapPost> posts = scrapPostRepository.findAllByUser(pageable, user);
         List<MyPostRepsonseDto> myScrapList = new ArrayList<>();
         for(ScrapPost scrapPost : posts) {
-            myScrapList.add(new MyPostRepsonseDto(scrapPost));
+            myScrapList.add(new MyPostRepsonseDto(scrapPost, myPostCount, myScrapCount));
         }
         return myScrapList;
     }
