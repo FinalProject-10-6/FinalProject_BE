@@ -19,6 +19,8 @@ public class Comment extends TimeStamped{
 
     @Column
     private String nickname;
+    @Column
+    private String loginId;
 
     @Column
     private String content;
@@ -37,6 +39,7 @@ public class Comment extends TimeStamped{
 
     public Comment(CommentRequestDto requestDto, User user) {
         this.nickname = user.getNickname();
+        this.loginId = user.getLoginId();
         this.profileImg = user.getProfileImg();
         this.content = requestDto.getContent();
     }
