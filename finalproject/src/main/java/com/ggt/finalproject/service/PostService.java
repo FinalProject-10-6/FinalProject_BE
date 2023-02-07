@@ -126,7 +126,13 @@ public class PostService {
             IsScrapPost = scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId());
         }
 
-        return new PostResponseDto(post, IsLikedPost, IsScrapPost);
+        List<CommentResponseDto> commentList = new ArrayList<>();
+        for (Comment comment : post.getComments()) {
+            commentList.add(new CommentResponseDto(comment));
+        }
+
+
+        return new PostResponseDto(post,commentList, IsLikedPost, IsScrapPost);
     }
     // 선택포스트 스크랩하기
     @Transactional(readOnly = false)

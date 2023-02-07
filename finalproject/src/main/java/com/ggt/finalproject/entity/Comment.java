@@ -17,28 +17,26 @@ public class Comment extends TimeStamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String nickname;
 
     @Column
     private String content;
-
-    @Column
-    private String profileImg;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public void updatePost(Post post){
         this.post = post;
     }
 
     public Comment(CommentRequestDto requestDto, User user) {
-        this.nickname = user.getNickname();
-        this.profileImg = user.getProfileImg();
         this.content = requestDto.getContent();
+        this.user = user;
     }
 
     public void update(CommentRequestDto requestDto) {

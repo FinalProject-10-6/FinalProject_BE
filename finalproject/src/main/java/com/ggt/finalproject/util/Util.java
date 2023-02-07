@@ -23,7 +23,7 @@ public class Util {
 
 
     public static void checkCommentNicknameByUser(User user, Comment comment) {
-        if (!comment.getNickname().equals(user.getNickname())) {
+        if (!comment.getUser().getNickname().equals(user.getNickname())) {
             throw new CustomException(ErrorCode.WRONG_ID);
         }
     }

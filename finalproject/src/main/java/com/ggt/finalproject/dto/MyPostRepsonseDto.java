@@ -29,7 +29,7 @@ public class MyPostRepsonseDto {
         this.createdAt = post.getCreatedAt();
         this.imageFile = post.getImageFile();
         this.profileImage = post.getUser().getProfileImg();
-        this.commentCount = post.getCommentList().size();
+        this.commentCount = post.getComments().size();
     }
 
     public MyPostRepsonseDto(ScrapPost scrapPost) {
@@ -41,6 +41,6 @@ public class MyPostRepsonseDto {
         this.createdAt = scrapPost.getPost().getCreatedAt();
         this.imageFile = scrapPost.getPost().getImageFile();
         this.profileImage = scrapPost.getUser().getProfileImg();
-        this.commentCount = scrapPost.getPost().getCommentList().size();
+        this.commentCount = scrapPost.getPost().getComments().size();
     }
 }

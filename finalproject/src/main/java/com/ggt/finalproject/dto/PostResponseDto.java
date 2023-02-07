@@ -30,7 +30,7 @@ public class PostResponseDto {
     private Long scrapPostSum;    //  스크랩 기능
     private boolean IsScrapPost;
 
-    private List<CommentResponseDto> comment = new ArrayList<>();
+    private List<CommentResponseDto> commentList = new ArrayList<>();
 
     private int searchPostSum;
 
@@ -46,11 +46,11 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
         this.scrapPostSum = post.getScrapPostSum();
-        this.comment = post.getCommentList().stream()
-                .map(CommentResponseDto::new).collect(Collectors.toList());
+//        this.comment = post.getCommentList().stream()
+//                .map(CommentResponseDto::new).collect(Collectors.toList());
     }
 
-    public PostResponseDto(Post post, boolean IsLikedPost, boolean IsScrapPost) {
+    public PostResponseDto(Post post,List<CommentResponseDto> comment, boolean IsLikedPost, boolean IsScrapPost) {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
@@ -63,8 +63,7 @@ public class PostResponseDto {
         this.IsLikedPost = IsLikedPost;
         this.scrapPostSum = post.getScrapPostSum();  // 스크랩
         this.IsScrapPost = IsScrapPost;
-        this.comment = post.getCommentList().stream()
-                .map(CommentResponseDto::new).collect(Collectors.toList());
+        this.commentList = comment;
 
     }
 
@@ -79,8 +78,8 @@ public class PostResponseDto {
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
         this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
-        this.comment = post.getCommentList().stream()
-                .map(CommentResponseDto::new).collect(Collectors.toList());
+//        this.commentList = post.getCommentList().stream()
+//                .map(CommentResponseDto::new).collect(Collectors.toList());
         this.searchPostSum = searchPostSum;
     }
 }

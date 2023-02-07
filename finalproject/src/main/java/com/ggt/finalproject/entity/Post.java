@@ -41,10 +41,10 @@ public class Post extends TimeStamped {
     @Column
     private String imageFile = "";
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public void addComment(Comment comment){
-        this.commentList.add(comment);
+        this.comments.add(comment);
         comment.updatePost(this);
     }
 
