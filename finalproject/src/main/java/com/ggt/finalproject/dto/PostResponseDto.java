@@ -35,6 +35,8 @@ public class PostResponseDto {
 
     private int searchPostSum;
 
+    private Long commentCount;
+
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
@@ -87,4 +89,23 @@ public class PostResponseDto {
 //                .map(CommentResponseDto::new).collect(Collectors.toList());
         this.searchPostSum = searchPostSum;
     }
+
+    public PostResponseDto(Post post, Long commentCount) {
+        this.id = post.getId();
+        this.nickname = post.getUser().getNickname();
+        this.content = post.getContent();
+        this.title = post.getTitle();
+        this.category = post.getCategory();
+        this.userProfile = post.getUser().getProfileImg();
+//        this.videoFile = post.getVideoFile();
+        this.scrapPostSum = post.getScrapPostSum();
+        this.imageFile = post.getImageFile();
+        this.modifiedAt = post.getModifiedAt();
+        this.createdAt = post.getCreatedAt();
+        this.likePostSum = post.getLikePostSum();  // 좋아요를위해 추가 - 종열
+//        this.commentList = post.getCommentList().stream()
+//                .map(CommentResponseDto::new).collect(Collectors.toList());
+        this.commentCount = commentCount;
+    }
+
 }

@@ -96,7 +96,8 @@ public class PostService {
         List<PostResponseDto> postList = new ArrayList<>();
         Page<Post> posts = postRepository.findAllByPostStatusAndCategoryOrderByCreatedAtDesc(pageable, true, category);
         for(Post post : posts) {
-            postList.add(new PostResponseDto(post));
+            Long commentCount = commentRepository.countByPost(post);
+            postList.add(new PostResponseDto(post, commentCount));
         }
         return postList;
     }
