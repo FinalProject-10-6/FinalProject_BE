@@ -79,6 +79,7 @@ public class PostResponseDto {
         this.category = post.getCategory();
         this.userProfile = post.getUser().getProfileImg();
 //        this.videoFile = post.getVideoFile();
+        this.scrapPostSum = post.getScrapPostSum();
         this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
