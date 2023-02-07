@@ -18,6 +18,7 @@ public class CommentResponseDto {
     private LocalDateTime modifiedAt;
 
     private String nickname;
+    private String loginId;
 
     private String content;
 
@@ -29,6 +30,7 @@ public class CommentResponseDto {
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
         this.nickname = comment.getNickname();
+        this.loginId = comment.getLoginId();
         this.content = comment.getContent();
         this.profileImg = comment.getProfileImg();
     }

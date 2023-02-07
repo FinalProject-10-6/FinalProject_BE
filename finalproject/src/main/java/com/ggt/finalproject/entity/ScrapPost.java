@@ -15,9 +15,12 @@ public class ScrapPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 사실상 필요없는 Column
     @Column(nullable = false)
     private boolean status;
 
+
+    // 스크랩할때 단방향 User, Post를 받아온다
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

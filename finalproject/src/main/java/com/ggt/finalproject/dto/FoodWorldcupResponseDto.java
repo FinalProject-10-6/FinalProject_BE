@@ -43,7 +43,7 @@ public class FoodWorldcupResponseDto {
     public FoodWorldcupResponseDto() {
         this.id = 0L;
         this.title = "기본값";
-        this.imageUrl = "https://ggultong.s3.ap-northeast-2.amazonaws.com/defalutTest.png";
+        this.imageUrl = "https://ggultong.s3.ap-northeast-2.amazonaws.com/defalutWorldcup.jpg";
         this.point = 0;
         this.month = "기본값";
         this.percent = 0;

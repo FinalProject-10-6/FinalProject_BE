@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class MyPostRepsonseDto {
 
     private Long postId;
+    private String category;
     private String title;
     private String nickname;
     private Long likeSum;
@@ -18,10 +19,13 @@ public class MyPostRepsonseDto {
     private LocalDateTime createdAt;
     private String imageFile;
     private String profileImage;
+    private Long myPostCount;
+    private Long myScrapCount;
 
 
-    public MyPostRepsonseDto(Post post) {
+    public MyPostRepsonseDto(Post post, Long myPostCount, Long myScrapCount) {
         this.postId = post.getId();
+        this.category = post.getCategory();
         this.title = post.getTitle();
         this.nickname = post.getUser().getNickname();
         this.likeSum = post.getLikePostSum();
@@ -30,17 +34,23 @@ public class MyPostRepsonseDto {
         this.imageFile = post.getImageFile();
         this.profileImage = post.getUser().getProfileImg();
         this.commentCount = post.getCommentList().size();
+        this.myPostCount = myPostCount;
+        this.myScrapCount = myScrapCount;
     }
 
-    public MyPostRepsonseDto(ScrapPost scrapPost) {
+    public MyPostRepsonseDto(ScrapPost scrapPost, Long myPostCount, Long myScrapCount) {
         this.postId = scrapPost.getPost().getId();
+        this.category = scrapPost.getPost().getCategory();
         this.title = scrapPost.getPost().getTitle();
-        this.nickname = scrapPost.getUser().getNickname();
+        this.nickname = scrapPost.getPost().getUser().getNickname();
         this.likeSum = scrapPost.getPost().getLikePostSum();
         this.scrapSum = scrapPost.getPost().getScrapPostSum();
         this.createdAt = scrapPost.getPost().getCreatedAt();
         this.imageFile = scrapPost.getPost().getImageFile();
-        this.profileImage = scrapPost.getUser().getProfileImg();
+        this.profileImage = scrapPost.getPost().getUser().getProfileImg();
         this.commentCount = scrapPost.getPost().getCommentList().size();
+        this.myPostCount = myPostCount;
+        this.myScrapCount = myScrapCount;
+
     }
 }

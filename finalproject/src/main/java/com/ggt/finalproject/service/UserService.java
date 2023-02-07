@@ -32,15 +32,15 @@ public class UserService {
         String password;
 
         // id 중복검사
-        if (userRepository.existsByLoginId(signupRequestDto.getLoginId()))
+        if (userRepository.existsByLoginIdAndUserStatus(signupRequestDto.getLoginId(), true))
             throw new CustomException(ErrorCode.OVERLAPPED_LOGINID);
 
         // nickname 중복검사
-        if (userRepository.existsByNickname(signupRequestDto.getNickname()))
+        if (userRepository.existsByNicknameAndUserStatus(signupRequestDto.getNickname(), true))
             throw new CustomException(ErrorCode.OVERLAPPED_NICKNAME);
 
         // email 중복검사
-        if (userRepository.existsByEmail(signupRequestDto.getEmail()))
+        if (userRepository.existsByEmailAndUserStatus(signupRequestDto.getEmail(), true))
             throw new CustomException(ErrorCode.OVERLAPPED_EMAIL);
 
         // password 암호화
@@ -54,7 +54,7 @@ public class UserService {
 
     @Transactional     // id 중복체크
     public MsgResponseDto idCheck(String loginId) {
-        Optional<User> found = userRepository.findByLoginId(loginId);
+        Optional<User> found = userRepository.findByLoginIdAndUserStatus(loginId, true);
         if (found.isPresent()) {
             throw new CustomException(ErrorCode.OVERLAPPED_LOGINID);
         }
@@ -63,7 +63,7 @@ public class UserService {
 
     @Transactional     // 닉네임 중복체크
     public MsgResponseDto nickCheck(String nickname) {
-        Optional<User> found = userRepository.findByNickname(nickname);
+        Optional<User> found = userRepository.findByNicknameAndUserStatus(nickname, true);
         if(found.isPresent()) {
             throw new CustomException(ErrorCode.OVERLAPPED_NICKNAME);
         }
@@ -77,7 +77,7 @@ public class UserService {
         String password = loginRequestDto.getPassword();
 
         // id 가 틀림
-        User user = userRepository.findByLoginId(loginId).orElseThrow(
+        User user = userRepository.findByLoginIdAndUserStatus(loginId, true).orElseThrow(
                 () -> new CustomException(ErrorCode.WRONG_ID)
         );
 
@@ -120,7 +120,7 @@ public class UserService {
     public FindLoginIdResponseDto findId(EmailDto emailDto) {
         String email = emailDto.getEmail();
         System.out.println(email);
-        User user = userRepository.findByEmail(email).orElseThrow(
+        User user = userRepository.findByEmailAndUserStatus(email, true).orElseThrow(
                 () -> new CustomException(ErrorCode.NOTFOUND_EMAIL)
         );
         System.out.println(user.getEmail());

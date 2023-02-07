@@ -81,13 +81,12 @@ public class MyPageService {
 //        userRepository.findByLoginId(loginId).orElseThrow(
 //                () -> new CustomException(ErrorCode.WRONG_ID)
 //        );
-
         if (user.getLoginId().equals(loginId)) {
-            userRepository.delete(user);
+            user.softDelete();
+            userRepository.save(user);
         } else {
             throw new CustomException(ErrorCode.WRONG_ID);
         }
-
         return MsgResponseDto.success("그동안 서비스를 이용해 주셔서 감사합니다.");
     }
 
@@ -125,7 +124,7 @@ public class MyPageService {
 ////        User user = new User(nickname, loginId, password, email);
 //        user.socialUpdate(myPageDto);
 //        SocialSetResponseDto socialSetResponseDto = new SocialSetResponseDto(nickname, user.getLoginId(), user.getEmail());
-        Optional<User> found = userRepository.findByNickname(nickname);
+        Optional<User> found = userRepository.findByNicknameAndUserStatus(nickname, true);
         if(found.isPresent()) {
             throw new CustomException(ErrorCode.NOT_CHECK_NICKNAME);
 
@@ -138,11 +137,13 @@ public class MyPageService {
     //  상정 마이페이지 내 포스트 가져오기
     @Transactional
     public List<MyPostRepsonseDto> myPost (User user, int pageNum) {
+        Long myPostCount = postRepository.countByUserAndPostStatus(user, true);
+        Long myScrapCount = scrapPostRepository.countByUser(user);
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<Post> posts = postRepository.findAllByUserAndPostStatusOrderByCreatedAtDesc(pageable, user, true);
         List<MyPostRepsonseDto> myPostList = new ArrayList<>();
         for(Post post : posts) {
-            myPostList.add(new MyPostRepsonseDto(post));
+            myPostList.add(new MyPostRepsonseDto(post, myPostCount, myScrapCount));
         }
         return myPostList;
     }
@@ -150,11 +151,13 @@ public class MyPageService {
     // 상정 마이페이지 내 스크랩 가져오기
     @Transactional
     public List<MyPostRepsonseDto> myScrap (User user, int pageNum) {
+        Long myPostCount = postRepository.countByUserAndPostStatus(user, true);
+        Long myScrapCount = scrapPostRepository.countByUser(user);
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<ScrapPost> posts = scrapPostRepository.findAllByUser(pageable, user);
         List<MyPostRepsonseDto> myScrapList = new ArrayList<>();
         for(ScrapPost scrapPost : posts) {
-            myScrapList.add(new MyPostRepsonseDto(scrapPost));
+            myScrapList.add(new MyPostRepsonseDto(scrapPost, myPostCount, myScrapCount));
         }
         return myScrapList;
     }

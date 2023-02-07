@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()        // 상세게시글 조회
                 .antMatchers(HttpMethod.GET,"/api/post/postlist").permitAll()    // 전체게시글 조회
                 .antMatchers("/api/post/imageUrlReturn").permitAll()
+                .antMatchers("/api/post/likeTop6").permitAll()
 //                .antMatchers(HttpMethod.GET,"/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/**").permitAll()
                 .antMatchers("/api/mypage/pwCheck").permitAll()
@@ -79,8 +80,8 @@ public class WebSecurityConfig {
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://www.ggultong.co.kr/");
         config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
-
-        config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
+        config.addAllowedOrigin("https://dev2.d134m2xe6xydy2.amplifyapp.com");
+        config.addAllowedOrigin("https://dev2.d1g5ive02v0psv.amplifyapp.com");
 
         // 특정 헤더를 클라이언트 측에서 꺼내어 사용할 수 있게 지정
         // 만약 지정하지 않는다면, Authorization 헤더 내의 토큰 값을 사용할 수 없음

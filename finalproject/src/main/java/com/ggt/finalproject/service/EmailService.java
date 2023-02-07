@@ -25,10 +25,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 @PropertySource("classpath:application.properties")
@@ -90,7 +86,7 @@ public class EmailService {
     public MsgResponseDto sendSimpleMessage(EmailDto emailDto)throws MessagingException, UnsupportedEncodingException {
 
         // 이메일 중복체크 추가
-        if (userRepository.existsByEmail(emailDto.getEmail()))
+        if (userRepository.existsByEmailAndUserStatus(emailDto.getEmail(), true))
             throw new CustomException(ErrorCode.OVERLAPPED_EMAIL);
 
 //        StringBuffer key = new StringBuffer();
@@ -161,28 +157,21 @@ public class EmailService {
 
         EmailCode emailCode = emailCodeRepository.findByEmail(email);
 
-        LocalDateTime overTime = emailCode.getModifiedAt().plusSeconds(180); //인증번호 발송 기준 3분뒤 시간
-
-        LocalDateTime currentTime = LocalDateTime.now(); //현재 시간
-
-        Boolean over = currentTime.isAfter(overTime); //3분뒤 시간이 현재시간 이후인지 확인하는 메소드
-
-        if(!emailCode.getEmailCode().matches(code)){ //이메일이 일치하지 않을 경우 에러
+        if(!emailCode.getEmailCode().matches(code)){
             throw new CustomException(ErrorCode.WRONG_EMAIL_CODE);
-        } else if(over){ //코드는 일치하지만 시간이 오버 될 경우 에러
-            throw new CustomException(ErrorCode.OVERTIME_EMAIL);
         } else {
-                emailCodeRepository.deleteById(emailCode.getId());
-                return MsgResponseDto.success("이메일 인증 완료");
-            }
+            emailCodeRepository.deleteById(emailCode.getId());
+            return MsgResponseDto.success("이메일 인증 완료");
         }
+
+    }
 
     @Transactional
     public MsgResponseDto findPw(FindPwRequestDto requestDto) throws MessagingException, UnsupportedEncodingException {
         String loginId = requestDto.getLoginId();
         String email = requestDto.getEmail();
 
-        User user = userRepository.findByLoginId(loginId).orElseThrow(
+        User user = userRepository.findByLoginIdAndUserStatus(loginId, true).orElseThrow(
                 () -> new CustomException(ErrorCode.WRONG_ID)
         );
 

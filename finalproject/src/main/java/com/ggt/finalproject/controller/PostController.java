@@ -47,6 +47,8 @@ public class PostController {
     public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
         return postService.getPostsOfCategory(category, pageNum-1);
     }
+
+    // 카테고리별 총 게시글 수
     @ApiOperation(value = "카테고리별 총 게시글 수")
     @GetMapping("/postList/count")
     public CategoryDto getCountOfCategory() {
@@ -92,13 +94,6 @@ public class PostController {
     public List<PostResponseDto> searchPost(@RequestParam String keyword, @PathVariable int pageNum) {
         return postService.searchPost(keyword, pageNum -1);
     }
-
-//    @ApiOperation(value = "검색")
-//    @GetMapping("/search")
-//    public List<PostResponseDto> searchPost(@RequestParam String keyword) {
-//        return postService.searchPost(keyword);
-//    }
-
 
     // 이 이후는 음식월드컵 용
     @ApiOperation(value = "좋아요 상위 사진 가져오기")

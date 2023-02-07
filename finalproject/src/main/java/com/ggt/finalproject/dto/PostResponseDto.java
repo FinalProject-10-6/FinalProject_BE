@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class PostResponseDto {
     private Long id;      // id 가 아니라 num 이라 한 이유가????- 종열
     private String nickname;
+    private String userProfile;
 
     private String content;
     private String title;
@@ -39,6 +40,7 @@ public class PostResponseDto {
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
+        this.userProfile = post.getUser().getProfileImg();
         this.category = post.getCategory();
 //        this.videoFile = post.getVideoFile();
         this.imageFile = post.getImageFile();
@@ -54,6 +56,7 @@ public class PostResponseDto {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
+        this.userProfile = post.getUser().getProfileImg();
         this.title = post.getTitle();
         this.category = post.getCategory();
         this.imageFile = post.getImageFile();
@@ -74,7 +77,9 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.title = post.getTitle();
         this.category = post.getCategory();
+        this.userProfile = post.getUser().getProfileImg();
 //        this.videoFile = post.getVideoFile();
+        this.scrapPostSum = post.getScrapPostSum();
         this.imageFile = post.getImageFile();
         this.modifiedAt = post.getModifiedAt();
         this.createdAt = post.getCreatedAt();
