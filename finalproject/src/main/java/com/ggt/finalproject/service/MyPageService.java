@@ -60,12 +60,31 @@ public class MyPageService {
 
 
         if (!multipartFileList.get(0).isEmpty()){
+            //프로필 사진만 바꿀경우 닉네임은 그대로 유지, 아닐경우 중복검사
+            if(nickname.equals("")){
+                nickname=user.getNickname();
+            } else {
+                Optional<User> found = userRepository.findByNickname(nickname);
+                if(found.isPresent()) {
+                    throw new CustomException(ErrorCode.NOT_CHECK_NICKNAME);
+                }
+            }
             profileImg = awss3Service.upload(multipartFileList.get(0), "profile");
             MyPageDto myPageDto = new MyPageDto(nickname, profileImg);
             user.updateMyPage(myPageDto);
             userRepository.save(user);
 //            return ResponseEntity.ok(new MyPageDto(user));
             return MsgResponseDto.success("정보 수정 완료");
+        }
+
+        //프로필 사진만 바꿀경우 닉네임은 그대로 유지
+        if(nickname.equals("")){
+            nickname=user.getNickname();
+        } else {
+            Optional<User> found = userRepository.findByNickname(nickname);
+            if(found.isPresent()) {
+                throw new CustomException(ErrorCode.NOT_CHECK_NICKNAME);
+            }
         }
         profileImg = user.getProfileImg();
         MyPageDto myPageDto = new MyPageDto(nickname, profileImg);
