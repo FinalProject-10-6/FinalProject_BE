@@ -79,6 +79,7 @@ public class WebSecurityConfig {
         // Access-Control-Allow-Origin
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://www.ggultong.co.kr/");
+        config.addAllowedOrigin("https://ggultong.co.kr/");
         config.addAllowedOrigin("https://dev.d134m2xe6xydy2.amplifyapp.com");
         config.addAllowedOrigin("https://dev2.d134m2xe6xydy2.amplifyapp.com");
         config.addAllowedOrigin("https://dev2.d1g5ive02v0psv.amplifyapp.com");
