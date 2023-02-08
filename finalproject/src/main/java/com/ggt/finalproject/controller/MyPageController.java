@@ -36,7 +36,7 @@ public class MyPageController {
         return mypageService.getMyPage(userDetails.getUser());
     }
     @PatchMapping("/update")
-    public MsgResponseDto updateMyPage(
+    public MyPageResponseDto updateMyPage(
             @RequestPart(value = "profileImg") List<MultipartFile> multipartFileList,
             @RequestParam("nickname") String nickname,
             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {

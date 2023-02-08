@@ -53,7 +53,7 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, User user) throws IOException {
+    public MyPageResponseDto updateMyPage(List<MultipartFile> multipartFileList, String nickname, User user) throws IOException {
 
         // 프로필 사진 업로드
         String profileImg = null;
@@ -74,7 +74,7 @@ public class MyPageService {
             user.updateMyPage(myPageDto);
             userRepository.save(user);
 //            return ResponseEntity.ok(new MyPageDto(user));
-            return MsgResponseDto.success("정보 수정 완료");
+            return new MyPageResponseDto(user.getNickname(), user.getProfileImg(),"정보 수정완료!", HttpStatus.OK.value());
         }
 
         //프로필 사진만 바꿀경우 닉네임은 그대로 유지
@@ -91,7 +91,7 @@ public class MyPageService {
         user.updateMyPage(myPageDto);
         userRepository.save(user);
 //        return ResponseEntity.ok(new MyPageDto(user));
-        return MsgResponseDto.success("정보 수정 완료");
+        return new MyPageResponseDto(user.getNickname(), user.getProfileImg(),"정보 수정완료!", HttpStatus.OK.value());
     }
 
 

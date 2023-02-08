@@ -22,7 +22,6 @@ public class CommentResponseDto {
     private LocalDateTime modifiedAt;
 
     private String nickname;
-    private String loginId;
 
     private String content;
 

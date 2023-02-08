@@ -10,7 +10,8 @@ import javax.validation.constraints.Size;
 public class SignupRequestDto {
 
     @Size(min = 6, max = 10, message = "아이디는 6자 이상 10자 이하만 가능합니다.")
-    @Pattern(regexp = "^(?=.*?[0-9])(?=.*?[a-z]).{6,10}$", message = "아이디는 소문자 영문, 숫자 를 필수로 포함하여야 합니다.")
+//    @Pattern(regexp = "^(?=.*?[0-9])(?=.*?[a-z]).{6,10}$", message = "아이디는 소문자 영문, 숫자 를 필수로 포함하여야 합니다.")
+    @Pattern(regexp = "^[0-9a-zA-Z]{6,10}$", message = "아이디는 대소문자 영문, 숫자로만 이루어져야 합니다.")
     private String loginId;
 
     @NotBlank(message = "비밀번호가 입력되지 않았습니다.")
