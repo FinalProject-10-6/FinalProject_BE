@@ -40,4 +40,7 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
     // status가 true인 해당 유저의 글 갯수를 알려줌
     Page<Post> findAllByUserAndPostStatusOrderByCreatedAtDesc(Pageable pageable, User user, boolean postStatus);
     // status가 true인 해당 유저의 글들 모두를 가져옴
+
+    Page<Post> findAllByPostStatusAndCategoryOrderByLikePostSumDesc(Pageable pageable, boolean postStatus, String category);
+    Page<Post> findAllByPostStatusAndCategoryOrderByScrapPostSumDesc(Pageable pageable, boolean postStatus, String category);
 }

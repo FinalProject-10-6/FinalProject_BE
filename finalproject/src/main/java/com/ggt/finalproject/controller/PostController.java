@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
-import java.security.Principal;
 import java.util.List;
 
 @Api(tags = {"Post API"})
@@ -46,6 +44,12 @@ public class PostController {
     @GetMapping("/postList/{category}/{pageNum}")
     public List<PostResponseDto> getPostsOfCategory(@PathVariable String category, @PathVariable int pageNum) {
         return postService.getPostsOfCategory(category, pageNum-1);
+    }
+
+    @ApiOperation(value = "게시글 필터")
+    @GetMapping("/postList/{category}/{filter}/{pageNum}")
+    public List<PostResponseDto> getPostsOfCategoryForFilter(@PathVariable String category, @PathVariable int pageNum, @PathVariable String filter) {
+        return postService.getPostsOfCategoryForFilter(category, pageNum-1, filter);
     }
 
     // 카테고리별 총 게시글 수

@@ -101,6 +101,36 @@ public class PostService {
         }
         return postList;
     }
+
+
+    // 좋아요는 like, 스크랩은 scrap, 최신순 recent
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> getPostsOfCategoryForFilter(String category, int pageNum, String filter) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        List<PostResponseDto> postList = new ArrayList<>();
+        Page<Post> posts;
+
+        switch (filter) {
+            case "like":
+                posts = postRepository.findAllByPostStatusAndCategoryOrderByLikePostSumDesc(pageable, true, category);
+                break;
+            case "scrap":
+                posts = postRepository.findAllByPostStatusAndCategoryOrderByScrapPostSumDesc(pageable, true, category);
+                break;
+            case "recent":
+                posts = postRepository.findAllByPostStatusAndCategoryOrderByCreatedAtDesc(pageable, true, category);
+                break;
+            default:
+                throw new CustomException(ErrorCode.WRONG_POST);
+        }
+
+        for (Post post : posts) {
+            Long commentCount = commentRepository.countByPost(post);
+            postList.add(new PostResponseDto(post, commentCount));
+        }
+        return postList;
+    }
+
     // 카테고리별 총 게시글 갯수 보내주기
     @Transactional
     public CategoryDto getCountOfCategory() {
