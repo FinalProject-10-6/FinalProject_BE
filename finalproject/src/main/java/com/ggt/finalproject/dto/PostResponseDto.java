@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 public class PostResponseDto {
     private Long id;      // id 가 아니라 num 이라 한 이유가????- 종열
+    private String loginId;
     private String nickname;
     private String userProfile;
 
@@ -41,6 +42,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.nickname = post.getUser().getNickname();
+        this.loginId = post.getUser().getLoginId();
         this.content = post.getContent();
         this.title = post.getTitle();
         this.userProfile = post.getUser().getProfileImg();
@@ -57,6 +59,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post,List<CommentResponseDto> comment, boolean IsLikedPost, boolean IsScrapPost) {
         this.id = post.getId();
+        this.loginId = post.getUser().getLoginId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.userProfile = post.getUser().getProfileImg();
@@ -75,6 +78,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post, int searchPostSum) {
         this.id = post.getId();
+        this.loginId = post.getUser().getLoginId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
@@ -93,6 +97,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post, Long commentCount) {
         this.id = post.getId();
+        this.loginId = post.getUser().getLoginId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
@@ -111,6 +116,7 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post, int searchPostSum, Long commentCount, String categoryName) {
         this.id = post.getId();
+        this.loginId = post.getUser().getLoginId();
         this.nickname = post.getUser().getNickname();
         this.content = post.getContent();
         this.title = post.getTitle();
