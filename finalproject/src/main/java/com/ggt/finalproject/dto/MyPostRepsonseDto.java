@@ -49,7 +49,7 @@ public class MyPostRepsonseDto {
         this.imageFile = scrapPost.getPost().getImageFile();
         this.myPostCount = myPostCount;
         this.myScrapCount = myScrapCount;
-        this.profileImage = scrapPost.getUser().getProfileImg();
+        this.profileImage = scrapPost.getPost().getUser().getProfileImg();
         this.commentCount = scrapPost.getPost().getComments().size();
     }
 }
