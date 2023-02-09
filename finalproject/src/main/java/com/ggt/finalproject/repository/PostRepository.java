@@ -19,7 +19,9 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
     //
-    Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(Pageable pageable, String title, String content);
+    Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByCreatedAtDesc(Pageable pageable, String title, String content);
+    Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByLikePostSumDesc(Pageable pageable, String title, String content);
+    Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByScrapPostSumDesc(Pageable pageable, String title, String content);
     // title, content로검색하였을때 페이지별로 나타냄
 
     int countByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content);

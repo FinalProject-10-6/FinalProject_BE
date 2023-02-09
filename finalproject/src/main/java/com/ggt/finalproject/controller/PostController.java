@@ -90,9 +90,9 @@ public class PostController {
     }
 
     @ApiOperation(value = "검색")
-    @GetMapping("/search/{pageNum}")
-    public List<PostResponseDto> searchPost(@RequestParam String keyword, @PathVariable int pageNum) {
-        return postService.searchPost(keyword, pageNum -1);
+    @GetMapping("/search/{pageNum}/{category}")
+    public List<PostResponseDto> searchPost(@RequestParam String keyword, @PathVariable int pageNum, @PathVariable String category) {
+        return postService.searchPost(keyword, pageNum -1, category);
     }
 
     // 이 이후는 음식월드컵 용

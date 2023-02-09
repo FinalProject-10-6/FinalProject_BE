@@ -171,15 +171,35 @@ public class PostService {
 
 
     @Transactional
-    public List<PostResponseDto> searchPost(String keyword, int pageNum) {
+    public List<PostResponseDto> searchPost(String keyword, int pageNum, String category) {
         Pageable pageable = PageRequest.of(pageNum, 10);
         List<PostResponseDto> postList = new ArrayList<>();
         int searchPostSum = postRepository.countByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
-        Page<Post> posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByModifiedAtDesc(pageable, keyword, keyword);
+
+        Page<Post> posts;
+        if (category.equals("recent")) {
+            posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByCreatedAtDesc(pageable, keyword, keyword);
+        } else if (category.equals("like")) {
+            posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByLikePostSumDesc(pageable, keyword, keyword);
+        } else {
+            posts = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByScrapPostSumDesc(pageable, keyword, keyword);
+        }
+
         if (posts.isEmpty()) return postList;
 
         for(Post post : posts) {
-            postList.add(new PostResponseDto(post, searchPostSum));
+            Long commentCount = commentRepository.countByPost(post);
+
+            String categoryName;
+            if (post.getCategory().equals("meal")) {
+                categoryName = "혼밥";
+            } else if (post.getCategory().equals("drink")) {
+                categoryName = "혼술";
+            } else {
+                categoryName = "리사이꿀";
+            }
+
+            postList.add(new PostResponseDto(post, searchPostSum, commentCount, categoryName));
         }
         return postList;
     }
