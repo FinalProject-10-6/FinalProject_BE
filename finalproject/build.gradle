@@ -18,6 +18,11 @@ repositories {
     mavenCentral()
 }
 
+//cicd 관련 설정
+jar {
+    enabled = false
+}
+
 dependencies {
     // JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -35,7 +40,8 @@ dependencies {
     implementation 'mysql:mysql-connector-java'
 
     // Jasypt  -ENC 암호화를 위해
-    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+//    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
 
     // 스프링 시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -51,6 +57,20 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 
+    // 상정
+    //SWAGGER 의존성
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+    // 파일확장자 확인용 의존성 추가
+//    implementation group: 'org.apache.tika', name: 'tika-core', version: '1.24'
+
+    //email 관련
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.7.0'
+
+
+    //AWS에 접근하기 위한 의존성 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
