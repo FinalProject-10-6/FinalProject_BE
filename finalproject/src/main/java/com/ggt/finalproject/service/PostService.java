@@ -168,22 +168,21 @@ public class PostService {
     // 선택포스트 스크랩하기
     @Transactional(readOnly = false)
     public ScrapButtonResponseDto scrapPost(User user, Long id) {
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(ErrorCode.NOTFOUND_POST)
-        );
-        if(scrapPostRepository.existsByUserIdAndPostId(user.getId(), post.getId())) {
-            ScrapPost scrapPost = scrapPostRepository.findByUserAndPost(user, post);
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_POST));
+        ScrapPost scrapPost = scrapPostRepository.findByUserAndPost(user, post);
+        if (scrapPost == null) {
+            scrapPost = new ScrapPost(post, user);
+            scrapPostRepository.saveAndFlush(scrapPost);
+            post.plusScrapPostSum();
+            return new ScrapButtonResponseDto(true, post.getScrapPostSum(), "성공적으로 스크랩 추가하였습니다");
+        } else {
             scrapPostRepository.deleteById(scrapPost.getId());
             post.minusScrapPostSum();
-            Long count = scrapPostRepository.countByPost(post);
-            return new ScrapButtonResponseDto(false, count, "스크랩을 삭제하였습니다");
-        } else {
-            scrapPostRepository.saveAndFlush(new ScrapPost(post, user));
-            post.plusScrapPostSum();
-            Long count = scrapPostRepository.countByPost(post);
-            return new ScrapButtonResponseDto(true, count, "스크랩을 추가하였습니다");
+            return new ScrapButtonResponseDto(false, post.getScrapPostSum(), "스크랩을 삭제하였습니다");
         }
     }
+
 
 
     // 소프트 딜리트하기
@@ -305,28 +304,18 @@ public class PostService {
     @Transactional
     public FoodWorldcupResponseDto[][] getWorldcupMonth() {
         FoodWorldcupResponseDto[][] monthRank = new FoodWorldcupResponseDto[12][2];
-        Pageable pageable = PageRequest.of(0, 2);
         for(int i = 1; i <= 12; i ++) {
-            List<FoodWorldcupResponseDto> topRank = new ArrayList<>();
             String defalut = today.withYear(2023).withMonth(i).format(DateTimeFormatter.ofPattern("YYYY.MM"));
-            Page<FoodWorldCup> worldCupRank = worldCupRepository.findAllByNumOrderByPointDesc(pageable, defalut);
-            if(worldCupRepository.existsByNum(defalut)) {
-                for (FoodWorldCup worldCup : worldCupRank) {
-                    topRank.add(new FoodWorldcupResponseDto(worldCup));
-                }
-                if(topRank.size() == 2) {
-                    for (int j = 0; j < 2; j++) {
-                        monthRank[i - 1][j] = topRank.get(j);
-                    }
-                } else if (topRank.size() == 1) {
-                    monthRank[i-1][0] = topRank.get(0);
-                    monthRank[i-1][1] = new FoodWorldcupResponseDto();
-                }
-            } else {
-                monthRank[i-1][0] = new FoodWorldcupResponseDto();
-                monthRank[i-1][1] = new FoodWorldcupResponseDto();
+            List<FoodWorldCup> worldCupRank = worldCupRepository.findTop2ByNumOrderByPointDesc(defalut);
+
+            int j = 0;
+            for (FoodWorldCup worldCup : worldCupRank) {
+                monthRank[i - 1][j++] = new FoodWorldcupResponseDto(worldCup);
             }
-            topRank.clear();
+
+            while (j < 2) {
+                monthRank[i-1][j++] = new FoodWorldcupResponseDto();
+            }
         }
         return monthRank;
     }

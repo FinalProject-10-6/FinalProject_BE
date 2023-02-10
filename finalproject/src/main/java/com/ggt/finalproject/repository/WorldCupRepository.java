@@ -28,4 +28,6 @@ public interface WorldCupRepository extends JpaRepository<FoodWorldCup, Long> {
     List<FoodWorldCup> findByNumOrderByPointDesc(String num);
     // num 회차에 포인트 높은 순으로 모두 가져옴
 
+    List<FoodWorldCup> findTop2ByNumOrderByPointDesc(String defalut);
+
 }
