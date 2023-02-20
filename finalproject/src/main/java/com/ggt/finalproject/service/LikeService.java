@@ -39,7 +39,7 @@ public class LikeService {
 
             //해당 게시글로 이동하는 url
 //            String Url = "https://tom-jelly.shop/api/post/"+post.getId();
-            String Url = "https://ggultong.co.kr/"+post.getCategory()+"List/"+post.getCategory()+"/"+"detail/"+post.getId();
+            String Url = "/"+post.getCategory()+"List/"+post.getCategory()+"/"+"detail/"+post.getId();
             //댓글 생성 시 모집글 작성 유저에게 실시간 알림 전송 ,
             String content = post.getUser().getNickname()+"님! "+user.getNickname()+"님이 게시글에 좋아요을 눌렀습니다!";
 
