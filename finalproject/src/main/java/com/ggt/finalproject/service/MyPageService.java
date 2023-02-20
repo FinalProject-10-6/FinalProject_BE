@@ -137,7 +137,7 @@ public class MyPageService {
 
 
     @Transactional
-    public MsgResponseDto socialSetting (String nickname, User user){
+    public LoginResponseDto socialSetting (String nickname, User user){
 
 //        MyPageDto myPageDto = new MyPageDto(nickname, user.getLoginId(), user.getPassword());
 ////        User user = new User(nickname, loginId, password, email);
@@ -150,7 +150,7 @@ public class MyPageService {
         }
         user.socialUpdate(nickname);
         userRepository.save(user);
-        return MsgResponseDto.success("정보 업데이트 완료");
+        return LoginResponseDto.success("변경완료",user.getLoginId(), user.getNickname(), user.getProfileImg(), user.getEmail());
     }
 
     //  상정 마이페이지 내 포스트 가져오기

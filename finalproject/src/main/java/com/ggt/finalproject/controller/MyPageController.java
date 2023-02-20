@@ -62,7 +62,7 @@ public class MyPageController {
         return mypageService.changePW(requestDto, userDetails.getUser());
     }
     @PatchMapping("/socialSetting/{nickname}")
-    public MsgResponseDto socialSet(@PathVariable String nickname,
+    public LoginResponseDto socialSet(@PathVariable String nickname,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
         return mypageService.socialSetting(nickname, userDetails.getUser());
     }
